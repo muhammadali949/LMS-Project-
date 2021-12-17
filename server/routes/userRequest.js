@@ -70,15 +70,31 @@ router.get('/request/:id', async (req, res) => {
 router.put('/request/:id', async (req, res) => {
 
     const user = req.body;
+    console.log(user)
     const editUser = new UserRequest(user);
     try {
-        await UserRequest.updateOne({ _id: "61bb8135828a4abc96dc9a1c" }, editUser)
+        await UserRequest.updateOne({ _id: req.params.id }, editUser)
         res.json(editUser)
 
     } catch (error) {
         res.json({ message: error.message })
     }
 })
+// @route   Delete /User Request
+// @desc    Get user by id
+// @access  Private
+router.delete('/request/:id', async (req, res) => {
+
+    try {
+
+        await UserRequest.deleteOne({ _id: '61bb8135828a4abc96dc9a1c' })
+        res.json("User Deleted Successfully")
+
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
+
 
 
 

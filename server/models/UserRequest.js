@@ -16,7 +16,6 @@ const UserRequestSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'Pending',
-
     },
     date: {
         type: Date,
