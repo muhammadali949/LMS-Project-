@@ -1,10 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const cors = require('cors');
-
-
-
-
 const app = express()
 // DB Config 
 const db = require('./config/keys').mongoURI;
@@ -23,8 +19,6 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use("/users", require("./routes/auth"));
 app.use("/users", require("./routes/userRequest"));
 app.use("/admin", require("./routes/leavetype"));
-
-
 
 const PORT = process.env.PORT || 5000
 

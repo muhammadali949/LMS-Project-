@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -12,13 +11,17 @@ import Dashboard from "./components/Dashboard";
 import setAuthToken from "./utils/setAuthToken";
 import store from "./store";
 import { loadUser } from "./actions/auth";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Admin from "./components/admin/Admin";
 
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-function App() {
+function App({ auth: { user } }) {
+
   useEffect(() => {
     store.dispatch(loadUser());
 
@@ -38,21 +41,31 @@ function App() {
                   <PrivateRoute>
                     <Dashboard />
                   </PrivateRoute>
-
-
                 }
               />
-
-              <Route exact path="/register" element={<Register />} />
+              {
+                user?.role == 'admin' ? <Route exact path="/admin" element={<Admin />} />
+                  : <Route exact path="/admin" element={<NotFound />} />
+              }
+              {
+                user?.role == 'admin' ? <Route exact path="/register" element={<Register />} />
+                  : <Route exact path="/register" element={<NotFound />} />
+              }
               <Route exact path="/login" element={<Login />} />
-              <Route exact path="" element={<NotFound />} />
+              <Route path='*' exact={true} element={<NotFound />} />
             </Routes>
           </>
-
         </Router>
       </div>
     </>
   );
 }
+App.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(App);

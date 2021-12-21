@@ -4,7 +4,8 @@ import { Route,Routes, Navigate ,Outlet} from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-const PrivateRoute = ({component: Component,auth: { isAuthenticated, loading },children,...rest }) => {	
+const PrivateRoute = ({component: Component,auth: { isAuthenticated, loading},children,...rest }) => {
+
 			const auth = isAuthenticated;
 			return auth ? children : <Navigate to="/login" />;	
   }

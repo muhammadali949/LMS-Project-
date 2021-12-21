@@ -86,18 +86,11 @@ router.put('/request/:id', async (req, res) => {
 router.delete('/request/:id', async (req, res) => {
 
     try {
-
-        await UserRequest.deleteOne({ _id: '61bb8135828a4abc96dc9a1c' })
+        await UserRequest.deleteOne({ _id: req.params.id })
         res.json("User Deleted Successfully")
 
     } catch (error) {
         res.json({ message: error.message })
     }
 })
-
-
-
-
-
-
 module.exports = router;

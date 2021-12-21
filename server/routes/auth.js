@@ -5,9 +5,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
-
-
-var jwtSecret = "mysecrettoken";
+const jwtSecret = require('../config/keys').jwtSecret;
 
 // @route   POST /users
 // @desc    Register user
@@ -36,31 +34,35 @@ router.post(
 
             if (user) {
                 res.status(400).json({ errors: [{ msg: "User already exists" }] });
+                res.end()
+            } else {
+                user = new User({
+                    name,
+                    email,
+                    password,
+                });
+
+                //Encrypt Password
+                const salt = await bcrypt.genSalt(10);
+
+                user.password = await bcrypt.hash(password, salt);
+
+                await user.save();
+
+                //Return jsonwebtoken
+                const payload = {
+                    user: {
+                        id: user.id,
+                    },
+                };
+
+                jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+                    if (err) throw err;
+                    res.json({ token });
+                });
+
             }
-            user = new User({
-                name,
-                email,
-                password,
-            });
 
-            //Encrypt Password
-            const salt = await bcrypt.genSalt(10);
-
-            user.password = await bcrypt.hash(password, salt);
-
-            await user.save();
-
-            //Return jsonwebtoken
-            const payload = {
-                user: {
-                    id: user.id,
-                },
-            };
-
-            jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            });
         } catch (err) {
             console.error(err.message);
             res.status(500).send("Server error");

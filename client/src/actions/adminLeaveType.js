@@ -1,0 +1,4 @@
+export const ADD_LEAVE_TYPE = "ADD_LEAVE_TYPE";
+export const GET_LEAVE_TYPE = "GET_LEAVE_TYPE";
+export const UPDATE_LEAVE_TYPE = "UPDATE_LEAVE_TYPE";
+export const DELETE_LEAVE_TYPE = "DELETE_LEAVE_TYPE";

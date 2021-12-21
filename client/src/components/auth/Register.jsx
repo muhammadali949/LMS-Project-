@@ -1,4 +1,3 @@
- 
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import PropTypes from "prop-types";
 import Alert from "../layout/Alert";
 import { setAlert } from "../../actions/alert";
 
-const Register = ({ setAlert, register, isAuthenticated }) => {
+const Register = ({ setAlert, register }) => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -27,17 +26,12 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 			setAlert("Password do not match", "danger");
 		} else {
 			register({ name, email, password });
+			
 		}
 	};
-
-	// Redirect if logged in
-	if (isAuthenticated) {
-		return <Navigate to="/dashboard" />;
-	}
-
 	return (
 		<div className="register-form">
-			<h1 className="heading">Sign Up</h1>
+			<h1 className="heading">Add User</h1>
 			<p className="lead">
 				<i className="fas fa-user"></i> Create Your Account
 			</p>
@@ -82,11 +76,9 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 						onChange={(e) => onChange(e)}
 					/>
 				</div>
-				<input type="submit" className="btn btn-primary" value="Register" />
+				<input type="submit" className="btn btn-primary" value="AddUser" />
 			</form>
-			<p className="link">
-				Already have an account? <Link to="/login">Sign In</Link>
-			</p>
+			
 		</div>
 	);
 };

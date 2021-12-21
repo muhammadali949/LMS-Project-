@@ -12,11 +12,10 @@ router.post('/leave', async (req, res) => {
 
     const leave = req.body;
     const lType = req.body.leaveType;
-    console.log(lType)
     const newLeaveType = new leavetype(leave);
     try {
         let userLeave = await leavetype.findOne({ leaveType: lType });
-        console.log(userLeave)
+        // console.log(userLeave)
         if (userLeave) {
             res.status(400).json({ errors: [{ msg: "This Type Already Decleared" }] });
         } else {
@@ -49,8 +48,9 @@ router.put('/leave/:id', async (req, res) => {
 
     const leaveData = req.body;
     const editLeave = new leavetype(leaveData);
+    const id = req.params.id;
     try {
-        await editLeave.updateOne({ _id: '61bc72328f59376c7ec50f51' }, editLeave)
+        await leavetype.updateOne({ _id: id }, editLeave)
         res.json(editLeave)
 
     } catch (error) {
@@ -64,7 +64,7 @@ router.delete('/leave/:id', async (req, res) => {
 
     try {
 
-        await leavetype.deleteOne({ _id: '61bc7945e73e5af84c00936e' })
+        await leavetype.deleteOne({ _id: req.params.id })
         res.json("User Deleted Successfully")
 
     } catch (error) {

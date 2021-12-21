@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { addLeave, getLeave, updateLeave } from '../actions/leaveAction';
+import { addLeave, deleteLeave, getLeave, updateLeave } from '../actions/leaveAction';
 import Alert from './layout/Alert';
 
 function Test() {
@@ -9,7 +9,7 @@ function Test() {
 
     const  a = {
         _id:'61bccb68105b315be6cef51d',
-        leaveDate:'ali',
+        leaveDate:'01-01-2025',
         leaveCategory:'ali',
         leaveDescription:'ali',
         status:'granted'
@@ -18,7 +18,7 @@ function Test() {
     useEffect(()=>{
         dispatch(getLeave())
         dispatch(updateLeave(a,id))
-
+      
     },[dispatch])
     return (
         <div>
@@ -27,7 +27,7 @@ function Test() {
                     return (
                      <div style={{display:'flex',justifyContent:'center'}}>  
                     <h1>{l.leaveDate}</h1>
-                    <button>Delete</button>
+                    <button onClick={()=>dispatch(deleteLeave(l._id))}>Delete</button>
                     </div> 
                     )
                 })
