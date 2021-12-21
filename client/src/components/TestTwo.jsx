@@ -20,7 +20,7 @@ function TestTwo() {
     return (
         <div>
             <button onClick={()=>{dispatch(addLeaveType(a))}}>add Leave</button>
-            <button onClick={()=>{dispatch(updateLeaveType(a,id))}}>adit Leave</button>
+            <button onClick={()=>{dispatch(updateLeaveType(a,id))}}>edit Leave</button>
             <button onClick={()=>{dispatch(deleteLeaveType(id))}}>Delete</button>
 
 
