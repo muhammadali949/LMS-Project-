@@ -33,7 +33,7 @@ const Register = ({ setAlert, register }) => {
 		<div className="register-form">
 			<h1 className="heading">Add User</h1>
 			<p className="lead">
-				<i className="fas fa-user"></i> Create Your Account
+				<i className="fas fa-user"></i> Create An Account
 			</p>
 			<Alert />
 			<br />

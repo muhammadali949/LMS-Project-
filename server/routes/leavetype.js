@@ -1,10 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const leavetype = require("../models/LeaveTypes");
-
-
-
-
 // @route   POST /LeaveTypes
 // @desc    Leave Type and number
 // @access  Private
