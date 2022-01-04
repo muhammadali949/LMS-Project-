@@ -7,7 +7,7 @@ const Dashboard = ({ auth: { user } }) => {
 	return (
         <>		
         <div style={{ marginTop: "6rem", textAlign: "center" }}>
-			<h1>Welcome, {user && user._id}</h1>
+			<h1>Welcome, {user && user.name}</h1>
 			<TestTwo/>
 		</div>
         </>

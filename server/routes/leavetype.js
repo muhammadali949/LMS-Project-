@@ -35,12 +35,24 @@ router.get('/leave', async (req, res) => {
         res.json({ message: error.message })
     }
 })
+// @route   GET /Leave
+// @desc    Get leave by id
+// @access  Private
+router.get("/leave/:id", async (req, res) => {
+    try {
+        const leave = await leavetype.findById({ _id: req.params.id });
+        res.json(leave);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
 
 
 // @route   Update /Leave
 // @desc    Get user by id
 // @access  Private
-router.put('/leave/:id', async (req, res) => {
+router.patch('/leave/:id', async (req, res) => {
 
     const leaveData = req.body;
     const editLeave = new leavetype(leaveData);

@@ -26,7 +26,7 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { name, email, password } = req.body;
+        const { name, email, password, datepicker, manager } = req.body;
 
         try {
             // See if user exists
@@ -40,6 +40,8 @@ router.post(
                     name,
                     email,
                     password,
+                    datepicker,
+                    manager
                 });
 
                 //Encrypt Password
@@ -58,10 +60,62 @@ router.post(
 
                 jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
                     if (err) throw err;
-                    res.json({ token });
+                    res.status(201).json({ token });
                 });
 
             }
+
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("Server error");
+        }
+    }
+);
+// @route   POST /users
+// @desc    Update Password user
+// @access  Private
+router.patch(
+    "/",
+    [
+        check(
+            "password",
+            "Please enter password with 6 or more characters"
+        ).isLength({ min: 6 }),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { password, _id, role } = req.body;
+
+        try {
+            // See if user exists
+
+
+            newuser = new User({
+                _id,
+                password,
+                role
+            });
+
+            //Encrypt Password
+            const salt = await bcrypt.genSalt(10);
+
+            newuser.password = await bcrypt.hash(password, salt);
+            await User.updateOne({ _id: _id }, newuser)
+            //Return jsonwebtoken
+            const payload = {
+                user: {
+                    id: newuser._id,
+                },
+            };
+
+            jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+                if (err) throw err;
+                res.json({ token });
+            });
 
         } catch (err) {
             console.error(err.message);
@@ -76,6 +130,18 @@ router.post(
 router.get("/auth", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+// @route   GET /All user
+// @desc    Get all
+// @access  Private
+router.get("/auth/alluser", auth, async (req, res) => {
+    try {
+        const user = await User.find({}).select("-password");
         res.json(user);
     } catch (err) {
         console.error(err.message);
@@ -103,7 +169,6 @@ router.post(
         try {
             // See if user exists
             let user = await User.findOne({ email });
-
             if (!user) {
                 return res
                     .status(400)

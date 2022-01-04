@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
 const UserRequestSchema = new mongoose.Schema({
-    leaveDate: {
+    name: {
         type: String,
+        required: true
+    },
+    leaveDate: {
+        type: Date,
         required: true
     },
     leaveCategory: {
@@ -16,6 +20,13 @@ const UserRequestSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'Pending',
+    },
+    userid: {
+        type: String,
+        required: true,
+    },
+    manager: {
+        type: String,
     },
     date: {
         type: Date,

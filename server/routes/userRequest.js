@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const UserRequest = require("../models/UserRequest.js");
-
-
-
-
 // @route   POST /userRequest
 // @desc    userRequest
 // @access  Private
@@ -15,7 +11,7 @@ router.post('/request', [
     check(
         "leaveDescription",
         "leaveCategory is required"
-    ),
+    ).not().isEmpty(),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,7 +19,10 @@ router.post('/request', [
     }
     const user = req.body;
     const leaveDate = req.body.leaveDate;
+    const userid = req.body.userid;
+
     const newUser = new UserRequest(user);
+
     try {
         let user = await UserRequest.findOne({ leaveDate });
 
@@ -31,7 +30,7 @@ router.post('/request', [
             res.status(400).json({ errors: [{ msg: "your leave request has been send" }] });
         } else {
             await newUser.save()
-            res.json(newUser);
+            res.status(201).json(newUser);
         }
 
     } catch (error) {
@@ -50,14 +49,40 @@ router.get('/request', async (req, res) => {
         res.json({ message: error.message })
     }
 })
-// @route   get /userRequest
+// @route   get by id /userRequest
 // @desc    Get Login user
 // @access  Private
 router.get('/request/:id', async (req, res) => {
 
     // const id = req.params.id;
     try {
-        const userReq = await UserRequest.findById("61bb8135828a4abc96dc9a1c")
+        const userReq = await UserRequest.findById({ _id: req.params.id })
+        res.json(userReq);
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
+// @route   get by userid /userRequest
+// @desc    Get Login user
+// @access  Private
+router.get('/request/userleave/:id', async (req, res) => {
+
+    // const userid = req.body.userid
+    try {
+        const userReq = await UserRequest.find({ userid: req.params.id })
+        res.json(userReq);
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
+// @route   get by manager /userRequest
+// @desc    manager
+// @access  Private
+router.get('/request/manageleave/:id', async (req, res) => {
+
+    // const userid = req.body.userid
+    try {
+        const userReq = await UserRequest.find({ manager: req.params.id })
         res.json(userReq);
     } catch (error) {
         res.json({ message: error.message })
@@ -67,13 +92,12 @@ router.get('/request/:id', async (req, res) => {
 // @route   Update /users/userRequest
 // @desc    Get user by id
 // @access  Private
-router.put('/request/:id', async (req, res) => {
-
+router.patch('/request/:id', async (req, res) => {
     const user = req.body;
-    console.log(user)
+    const id = req.params.id
     const editUser = new UserRequest(user);
     try {
-        await UserRequest.updateOne({ _id: req.params.id }, editUser)
+        await UserRequest.updateOne({ _id: id }, editUser)
         res.json(editUser)
 
     } catch (error) {

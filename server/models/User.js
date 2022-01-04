@@ -17,6 +17,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    manager: {
+        type: String,
+    },
+
+    datepicker: {
+        type: Date,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now,

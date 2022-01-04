@@ -5,6 +5,7 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
+    UPDATE_PASSWORD,
 } from "../actions/types";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
     isAuthenticated: null,
     loading: true,
     user: null,
+    datepicker: null
 };
 
 function auth(state = initialState, action) {
@@ -33,10 +35,12 @@ function auth(state = initialState, action) {
                 ...payload,
                 isAuthenticated: true,
                 loading: false,
+                datepicker: payload.datepicker
             };
 
         case AUTH_ERROR:
         case LOGIN_FAIL:
+        case UPDATE_PASSWORD:
         case LOGOUT:
             localStorage.removeItem("token");
             return {

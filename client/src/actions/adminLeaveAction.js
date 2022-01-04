@@ -36,6 +36,7 @@ export const addLeaveType = ({ leaveType, numberLeave }) =>
         };
         const body = JSON.stringify({ leaveType, numberLeave });
         try {
+            console.log(body)
             const res = await axios.post(
                 "http://localhost:5000/admin/leave",
                 body,
@@ -54,17 +55,19 @@ export const addLeaveType = ({ leaveType, numberLeave }) =>
             }
         }
     };
-export const updateLeaveType = (a, id) =>
+export const updateLeaveType = ({ leaveType, numberLeave, _id }) =>
     async (dispatch) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
+        const body = JSON.stringify({ leaveType, numberLeave, _id });
+
         try {
-            const res = await axios.put(
-                `http://localhost:5000/admin/leave/${id}`,
-                a,
+            const res = await axios.patch(
+                `http://localhost:5000/admin/leave/${_id}`,
+                body,
                 config
             );
 

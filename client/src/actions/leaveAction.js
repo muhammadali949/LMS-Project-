@@ -28,21 +28,20 @@ export const getLeave = () =>
             }
         }
     }
-export const addLeave = ({ leaveDate, leaveCategory, leaveDescription }) =>
+export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager }) =>
     async (dispatch) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        const body = JSON.stringify({ leaveDate, leaveCategory, leaveDescription });
+        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager });
         try {
             const res = await axios.post(
                 "http://localhost:5000/users/request",
                 body,
                 config
             );
-
             dispatch({
                 type: ADD_LEAVE,
                 payload: res.data,
@@ -57,6 +56,7 @@ export const addLeave = ({ leaveDate, leaveCategory, leaveDescription }) =>
         }
     };
 export const updateLeave = (a, id) =>
+
     async (dispatch) => {
         const config = {
             headers: {
@@ -64,7 +64,9 @@ export const updateLeave = (a, id) =>
             },
         };
         try {
-            const res = await axios.put(
+            console.log("Action Leave")
+            console.log(a)
+            const res = await axios.patch(
                 `http://localhost:5000/users/request/${id}`,
                 a,
                 config
