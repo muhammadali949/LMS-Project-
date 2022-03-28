@@ -18,12 +18,15 @@ import UserLeaveAvailable from "./components/leaveAvailable/UserLeaveAvailable";
 import AddLeave from "./components/userleave/AddLeave";
 import UpdateStatus from "./components/admin/UpdateStatus";
 import UserLeave from "./components/userleave/UserLeave";
-import AddLeaveType from "./components/admin/AddLeaveType";
+import AddLeaveType from "./components/admin/addleavetype/AddLeaveType";
 import UpdateLeaveType from "./components/admin/UpdateLeaveType";
 import UpdatePage from "./components/admin/UpdatePage";
 import UpdateMyLeave from "./components/userleave/UpdateMyLeave";
 import UpdatePassword from "./components/auth/updatepassword/UpdatePassword";
 import ManagerLeave from "./components/managerLeave/ManagerLeave";
+import DrawerBar from "./components/sidebar/Drawer";
+import Profile from "./components/myprofile/Profile";
+
 
 
 if (localStorage.token) {
@@ -38,18 +41,31 @@ function App({ auth: { user } }) {
   }, []);
   return (
     <>
-      <div className="App">
+      <div>
         <Router>
+          {/* <Navbar /> */}
           <>
-            <Navbar />
             <Routes>
-              <Route exact path="/" component={Landing} />
+              <Route exact path="/" element={<Landing />} />
               <Route
                 exact
                 path="/dashboard"
                 element={
                   <PrivateRoute>
-                    <Dashboard />
+                    <DrawerBar>
+                      <Dashboard />
+                    </DrawerBar>
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                exact
+                path="/myprofile"
+                element={
+                  <PrivateRoute>
+                    <DrawerBar>
+                      <Profile />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
@@ -125,7 +141,8 @@ function App({ auth: { user } }) {
                   : <Route exact path="/admin" element={<NotFound />} />
               }
               {
-                user?.role == 'admin' ? <Route exact path="/addleavetype" element={<AddLeaveType />} />
+
+                user?.role == 'admin' ? <Route exact path="/addleavetype" element={<DrawerBar><AddLeaveType /></DrawerBar>} />
                   : <Route exact path="/admin" element={<NotFound />} />
               }
               {

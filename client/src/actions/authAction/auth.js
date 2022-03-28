@@ -20,7 +20,7 @@ export const loadUser = () => async (dispatch) => {
 
     try {
         const res = await axios.get("http://localhost:5000/users/auth");
-
+        console.log(res.data);
         dispatch({
             type: USER_LOADED,
             payload: res.data,

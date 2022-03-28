@@ -1,11 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const leavetype = require("../models/LeaveTypes");
+const { check, validationResult } = require("express-validator");
+
 // @route   POST /LeaveTypes
 // @desc    Leave Type and number
 // @access  Private
-router.post('/leave', async (req, res) => {
-
+router.post('/leave', [
+    check("leaveType", "leaveType is required").not().isEmpty(),
+    check("numberLeave", "numberLeave is required").not().isEmpty(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
     const leave = req.body;
     const lType = req.body.leaveType;
     const newLeaveType = new leavetype(leave);
@@ -71,7 +79,6 @@ router.patch('/leave/:id', async (req, res) => {
 router.delete('/leave/:id', async (req, res) => {
 
     try {
-
         await leavetype.deleteOne({ _id: req.params.id })
         res.json("User Deleted Successfully")
 

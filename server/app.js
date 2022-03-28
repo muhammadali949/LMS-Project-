@@ -12,11 +12,11 @@ app.use(express.json({ type: 'application/*+json' }))
 
 // Connect to mongodb
 
-/*mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("connect to mongodb")
     }).catch(err => console.warn(err))
-*/
+
 //routes    
 app.use("/users", require("./routes/auth"));
 app.use("/users", require("./routes/userRequest"));
