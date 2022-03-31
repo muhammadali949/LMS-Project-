@@ -13,7 +13,6 @@ const jwtSecret = require('../config/keys').jwtSecret;
 router.post(
     "/",
     [
-        check("name", "Name is required").not().isEmpty(),
         check("email", "Please include a valid email").isEmail(),
         check(
             "password",
@@ -26,7 +25,19 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { name, email, password, datepicker, manager } = req.body;
+        const { datepicker,
+            employee,
+            gender,
+            firstname,
+            lastname,
+            department,
+            position,
+            address,
+            phoneNo,
+            email,
+            password,
+            manager, } = req.body;
+        console.log(datepicker)
 
         try {
             // See if user exists
@@ -37,11 +48,18 @@ router.post(
                 res.end()
             } else {
                 user = new User({
-                    name,
+                    datepicker,
+                    employee,
+                    gender,
+                    firstname,
+                    lastname,
+                    department,
+                    position,
+                    address,
+                    phoneNo,
                     email,
                     password,
-                    datepicker,
-                    manager
+                    manager,
                 });
 
                 //Encrypt Password
@@ -61,6 +79,7 @@ router.post(
                 jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
                     if (err) throw err;
                     res.status(201).json({ token });
+
                 });
 
             }
@@ -88,39 +107,51 @@ router.patch(
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { password, _id, role } = req.body;
+        const { password, _id, role, currentPassword, email } = req.body;
+        let user = await User.findOne({ email });
+        console.log(user);
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        console.log(isMatch);
+        if (!isMatch) {
+            return res
+                .status(401)
+                .json({ errors: [{ msg: "Invalid Credentials" }] });
+        } else {
+            try {
+                // See if user exists
 
-        try {
-            // See if user exists
 
+                newuser = new User({
+                    _id,
+                    password,
+                    role
+                });
 
-            newuser = new User({
-                _id,
-                password,
-                role
-            });
+                //Encrypt Password
+                const salt = await bcrypt.genSalt(10);
 
-            //Encrypt Password
-            const salt = await bcrypt.genSalt(10);
+                newuser.password = await bcrypt.hash(password, salt);
+                await User.updateOne({ _id: _id }, newuser)
+                //Return jsonwebtoken
+                const payload = {
+                    user: {
+                        id: newuser._id,
+                    },
+                };
 
-            newuser.password = await bcrypt.hash(password, salt);
-            await User.updateOne({ _id: _id }, newuser)
-            //Return jsonwebtoken
-            const payload = {
-                user: {
-                    id: newuser._id,
-                },
-            };
+                jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+                    if (err) throw err;
+                    res.json({ token });
+                });
 
-            jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            });
-
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send("Server error");
+            } catch (err) {
+                console.error(err.message);
+                res.status(500).send("Server error");
+            }
         }
+
+
+
     }
 );
 
@@ -129,13 +160,24 @@ router.patch(
 // @access  Private
 router.get("/auth", auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select("-password");
+        const user = await User.findById(req.user.id);
         res.json(user);
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
     }
 });
+router.get("/authid", auth, async (req, res) => {
+    console.log(req.query.id);
+    try {
+        const user = await User.findById(req.query.id);
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
 // @route   GET /All user
 // @desc    Get all
 // @access  Private

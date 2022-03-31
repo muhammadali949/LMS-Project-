@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: '238px',
     height: '60px',
     padding: '10px',
+    paddingLeft: '50px !important',
   },
 }));
 
@@ -64,6 +65,7 @@ const Landing = ({ isAuthenticated }) => {
                 className={classes.btn}
                 startIcon={<PermIdentityIcon />}
                 onClick={() => navigate('login')}
+                style={{ justifyContent: 'flex-start' }}
               >
                 Employee Login
               </Button>
@@ -74,6 +76,7 @@ const Landing = ({ isAuthenticated }) => {
                 className={classes.btn}
                 startIcon={<PermIdentityIcon />}
                 onClick={() => navigate('login')}
+                style={{ justifyContent: 'flex-start' }}
               >
                 Admin Login
               </Button>

@@ -43,7 +43,6 @@ function App({ auth: { user } }) {
     <>
       <div>
         <Router>
-          {/* <Navbar /> */}
           <>
             <Routes>
               <Route exact path="/" element={<Landing />} />
@@ -83,7 +82,9 @@ function App({ auth: { user } }) {
                 path="/addleave"
                 element={
                   <PrivateRoute>
-                    <AddLeave />
+                    <DrawerBar>
+                      <AddLeave />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
@@ -101,7 +102,9 @@ function App({ auth: { user } }) {
                 path="/userleave"
                 element={
                   <PrivateRoute>
-                    <UserLeave />
+                    <DrawerBar>
+                      <UserLeave />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
@@ -110,16 +113,20 @@ function App({ auth: { user } }) {
                 path="/managerleave"
                 element={
                   <PrivateRoute>
-                    <ManagerLeave />
+                    <DrawerBar>
+                      <ManagerLeave />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
               <Route
                 exact
-                path="/updatepassword"
+                path="/changepassword"
                 element={
                   <PrivateRoute>
-                    <UpdatePassword />
+                    <DrawerBar>
+                      <UpdatePassword />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
@@ -128,7 +135,9 @@ function App({ auth: { user } }) {
                 path="/updatemyleave/:id"
                 element={
                   <PrivateRoute>
-                    <UpdateMyLeave />
+                    <DrawerBar>
+                      <UpdateMyLeave />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
@@ -150,7 +159,7 @@ function App({ auth: { user } }) {
                   : <Route exact path="/admin" element={<NotFound />} />
               }
               {
-                user?.role == 'admin' ? <Route exact path="/register" element={<Register />} />
+                user?.role == 'admin' ? <Route exact path="/register" element={<DrawerBar><Register /></DrawerBar>} />
                   : <Route exact path="/register" element={<NotFound />} />
               }
               <Route exact path="/login" element={<Login />} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/authAction/auth';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import UpdateIcon from '@mui/icons-material/Update';
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import PersonIcon from '@material-ui/icons/Person';
+import store from '../../store';
+import { loadUser } from '../../actions/authAction/auth';
 
 const drawerWidth = 240;
 
@@ -36,9 +43,11 @@ const useStyles = makeStyles({
   },
 });
 
-function DrawerBar({ children, logout }) {
+function DrawerBar({ children, logout, auth: { user } }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [check, setCheck] = useState(false);
+  const [empcheck, setEmpCheck] = useState(false);
   const location = useLocation();
   const menuItems = [
     {
@@ -47,19 +56,41 @@ function DrawerBar({ children, logout }) {
       path: '/myprofile',
     },
     {
-      text: 'Add Leave',
-      icon: <AddCircleOutlineOutlined color="gray" />,
+      text: 'Change Password',
+      icon: <UpdateIcon color="gray" />,
+      path: '/changepassword',
+    },
+  ];
+  const levaemenuItems = [
+    {
+      text: 'Apply Leave',
       path: '/addleave',
     },
     {
-      text: 'Add Leave Type',
-      icon: <AddCircleOutlineOutlined color="gray" />,
-      path: '/addleavetype',
+      text: 'My Leaves',
+      path: '/userleave',
+    },
+    {
+      text: 'Manager Leaves',
+      path: '/managerleave',
+    },
+  ];
+  const Employees = [
+    {
+      text: 'Add Employee',
+      path: '/register',
+    },
+    {
+      text: 'Manage Employee',
+      path: '/userleave',
     },
   ];
   const redirect = (path) => {
     navigate(path);
   };
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
   return (
     <div className={classes.root}>
       {/* app bar */}
@@ -80,18 +111,91 @@ function DrawerBar({ children, logout }) {
         {/* links/list section */}
         <List>
           {menuItems.map((item) => (
-            <ListItem
-              button
-              key={item.text}
-              onClick={() => navigate(item.path)}
-              className={location.pathname == item.path ? classes.active : null}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
+            <>
+              <ListItem
+                button
+                key={item.text}
+                onClick={() => navigate(item.path)}
+                className={
+                  location.pathname == item.path ? classes.active : null
+                }
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItem>
+              <hr />
+            </>
           ))}
-        </List>
-        <List>
+          <ListItem button onClick={() => setCheck((prevCheck) => !prevCheck)}>
+            <ListItemIcon>
+              <SpeakerNotesIcon />
+            </ListItemIcon>
+            <ListItemText primary="Leave" />
+            {check ? (
+              <ArrowDropDownIcon />
+            ) : (
+              <KeyboardArrowRightIcon fontSize="small" />
+            )}
+          </ListItem>
+          <hr />
+          {check ? (
+            <>
+              {levaemenuItems.map((item) => (
+                <>
+                  <ListItem
+                    button
+                    key={item.text}
+                    onClick={() => navigate(item.path)}
+                    className={
+                      location.pathname == item.path ? classes.active : null
+                    }
+                  >
+                    <ListItemIcon></ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItem>
+                </>
+              ))}
+            </>
+          ) : null}
+          {user.role === 'admin' ? (
+            <>
+              <ListItem
+                button
+                onClick={() => setEmpCheck((prevCheck) => !prevCheck)}
+              >
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Employee's" />
+                {empcheck ? (
+                  <ArrowDropDownIcon />
+                ) : (
+                  <KeyboardArrowRightIcon fontSize="small" />
+                )}
+              </ListItem>
+              <hr />
+              {empcheck ? (
+                <>
+                  {Employees.map((item) => (
+                    <>
+                      <ListItem
+                        button
+                        key={item.text}
+                        onClick={() => navigate(item.path)}
+                        className={
+                          location.pathname == item.path ? classes.active : null
+                        }
+                      >
+                        <ListItemIcon></ListItemIcon>
+                        <ListItemText primary={item.text} />
+                      </ListItem>
+                    </>
+                  ))}
+                </>
+              ) : null}
+            </>
+          ) : null}
+
           <ListItem button onClick={() => logout()}>
             <ListItemIcon>
               <ExitToAppIcon />
@@ -99,6 +203,7 @@ function DrawerBar({ children, logout }) {
             <ListItemText primary="Sign out" />
           </ListItem>
         </List>
+        <hr />
       </Drawer>
 
       {/* main content */}

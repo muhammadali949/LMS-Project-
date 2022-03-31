@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE } from './leaveType';
+import { useNavigate } from 'react-router-dom';
 
 export const getLeave = () =>
+
     async (dispatch) => {
         const config = {
             headers: {
@@ -46,8 +48,13 @@ export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, use
                 type: ADD_LEAVE,
                 payload: res.data,
             });
+            if (res?.status == 201) {
+                dispatch(setAlert("successfully apply", "success"))
+            }
+
 
         } catch (err) {
+            console.log(err);
             const errors = err.response.data.errors;
 
             if (errors) {
