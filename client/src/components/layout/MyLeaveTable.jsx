@@ -146,44 +146,6 @@ function MyLeaveTable({ HandleDeleteLeaveType, id }) {
         </Table>
       </Paper>{' '}
     </Grid>
-    // <div style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
-    //     <TableContainer component={Paper}>
-    //         <Table className={classes.table} aria-label="simple table">
-
-    //             <TableHead>
-    //                 <TableRow>
-    //                     <TableCell className={classes.MuiTableRowroot}>LeaveDate</TableCell>
-    //                     <TableCell className={classes.MuiTableRowroot}>LeaveCategory</TableCell>
-    //                     <TableCell className={classes.MuiTableRowroot}>LeaveDescription</TableCell>
-    //                     <TableCell className={classes.MuiTableRowroot}>Status</TableCell>
-
-    //                     <TableCell className={classes.MuiTableRowroot}>Action</TableCell>
-    //                 </TableRow>
-    //             </TableHead>
-
-    //             <TableBody>
-    //                 {leaveMy?.map((row) => (
-    //                     <TableRow key={row._id}>
-    //                         <TableCell component="th" scope="row">
-    //                             {row.leaveDate}
-    //                         </TableCell>
-    //                         <TableCell>{row.leaveCategory}</TableCell>
-    //                         <TableCell>{row.leaveDescription}</TableCell>
-    //                         <TableCell>{row.status}</TableCell>
-
-    //                         <TableCell>
-
-    //                             <div style={{ display: 'flex', justifyContent: 'start' }}>
-    //                                 <IconButton className={classes.button1} component={Link} to={`/updatemyleave/${row._id}`}><LaunchIcon /></IconButton>
-    //                                 <IconButton className={classes.button2} onClick={()=>HandleDelete(row._id)}><DeleteIcon className={classes.delete} /></IconButton>
-    //                             </div>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                 ))}
-    //             </TableBody>
-    //         </Table>
-    //     </TableContainer>
-    // </div>
   );
 }
 

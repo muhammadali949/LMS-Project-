@@ -10,7 +10,21 @@ import Button from '@material-ui/core/Button';
 import store from '../../store';
 import { getLeaveType } from '../../actions/adminLeaveAction';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100%',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
+  },
   btn: {
     background: '#0EA900',
     '&:hover': {
@@ -18,7 +32,7 @@ const useStyles = makeStyles({
       backgroundColor: '#0EA900',
     },
   },
-});
+}));
 const AddLeave = () => {
   const leave = useSelector((state) => state.leave);
   const adminleave = useSelector((state) => state.adminleave);
@@ -47,19 +61,7 @@ const AddLeave = () => {
     store.dispatch(getLeaveType());
   }, []);
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '90%',
-        height: '100%',
-        marginLeft: 'auto',
-        marginTop: '2%',
-        marginRight: 'auto',
-        background: '#fff',
-      }}
-    >
+    <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>Apply For Leave</h3>
       <div
         style={{

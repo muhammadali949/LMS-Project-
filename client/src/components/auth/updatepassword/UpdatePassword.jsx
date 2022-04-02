@@ -9,13 +9,27 @@ import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './UpdatePassword.css';
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height: '50vh',
+    height: '100%',
     borderRadius: '0px',
     background: '#F5F5F5',
     marginTop: '0.5%',
+  },
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100%',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
   },
   btn: {
     background: '#0EA900',
@@ -24,7 +38,7 @@ const useStyles = makeStyles({
       backgroundColor: '#0EA900',
     },
   },
-});
+}));
 const UpdatePassword = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -56,23 +70,10 @@ const UpdatePassword = () => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          width: '90%',
-          height: '50vh',
-          marginLeft: 'auto',
-          marginTop: '2%',
-          marginRight: 'auto',
-          background: '#fff',
-        }}
-      >
+      <div className={classes.mainContainer}>
         <h3 style={{ marginTop: '5px' }}>Change Password</h3>
         <div
           style={{
-            minHeight: '59vh',
             width: '100%',
             borderRadius: '0px',
             background: '#F5F5F5',

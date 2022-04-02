@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     height: '100vh',
     justifyContent: 'center',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   btn: {
     backgroundColor: '#00DFC0 !important',
@@ -38,6 +41,26 @@ const useStyles = makeStyles((theme) => ({
     height: '60px',
     padding: '10px',
     paddingLeft: '50px !important',
+    [theme.breakpoints.down('md')]: {
+      width: '200px',
+      height: '40px',
+      padding: '10px',
+      paddingLeft: '30px !important',
+    },
+  },
+  fontsizeh1: {
+    [theme.breakpoints.down('md')]: {
+      fontSize: '22px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px',
+    },
+  },
+  img: {
+    [theme.breakpoints.down('sm')]: {
+      width: '340px',
+      height: '340px',
+    },
   },
 }));
 
@@ -53,7 +76,7 @@ const Landing = ({ isAuthenticated }) => {
     <>
       <div className={classes.root}>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={12} lg={3} md={4} sm={5}>
             <Paper className={classes.paper}>
               <br />
               <br />
@@ -82,10 +105,13 @@ const Landing = ({ isAuthenticated }) => {
               </Button>
             </Paper>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item lg={9} md={8} sm={7} xs={0}>
             <Paper className={classes.papertwo}>
-              <h1>Welcome To Leave Management System</h1>
+              <h1 className={classes.fontsizeh1}>
+                Welcome To Leave Management System
+              </h1>
               <img
+                className={classes.img}
                 src="https://i.pinimg.com/564x/cb/dc/9b/cbdc9bf758a327b81d8c8a937f95fcf4.jpg"
                 alt=""
                 width="408px"

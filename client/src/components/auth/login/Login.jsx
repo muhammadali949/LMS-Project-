@@ -25,7 +25,19 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '500px',
     height: '450px',
-
+    [theme.breakpoints.down('md')]: {
+      width: '370px',
+      height: '400px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '300px',
+      height: '400px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: '50px',
+    },
     /* white */
 
     background: '#FFFFFF',
@@ -33,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
     boxShadow: '4px 0px 10px rgba(0, 0, 0, 0.2)',
     borderRadius: '20px',
+  },
+  centerUpperGrid: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -78,7 +95,7 @@ const Login = ({ login, isAuthenticated }) => {
 
           <Grid
             container
-            xs={10}
+            xs={12}
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -88,8 +105,8 @@ const Login = ({ login, isAuthenticated }) => {
               marginTop: '5%',
             }}
           >
-            <Grid item xs={6}>
-              <div>
+            <Grid item xs={12} lg={6} md={6} sm={6}>
+              <div className={classes.centerUpperGrid}>
                 <p style={{ fontSize: '30px' }}>Welcome To</p>
                 <p style={{ fontSize: '30px', fontWeight: 'bold' }}>
                   Leave Management System
@@ -97,20 +114,20 @@ const Login = ({ login, isAuthenticated }) => {
                 <p>Login To Access Your Account</p>
               </div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6} md={6} sm={6}>
+              <div className="circle">
+                <AccountCircleIcon
+                  style={{
+                    fontSize: '50px',
+                    color: '#4E4376',
+                  }}
+                />
+              </div>
               <Paper className={classes.paper}>
-                <div className="circle" style={{ marginTop: '-125px' }}>
-                  <AccountCircleIcon
-                    style={{
-                      fontSize: '50px',
-                      color: '#4E4376',
-                    }}
-                  />
-                </div>
                 <form onSubmit={(e) => onSubmit(e)}>
                   <div>
                     <input
-                      style={{ padding: '10px', marginTop: '80px' }}
+                      style={{ padding: '10px' }}
                       className="main"
                       type="email"
                       placeholder="email"

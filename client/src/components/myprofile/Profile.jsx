@@ -11,14 +11,15 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import TableContainer from '@material-ui/core/TableContainer';
+
 import { useSelector } from 'react-redux';
 import { getLeaveType } from '../../actions/adminLeaveAction';
 import store from '../../store';
 import { loadUser } from '../../actions/authAction/auth';
 import moment from 'moment';
 import axios from 'axios';
-
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     height: '95vh',
@@ -26,6 +27,20 @@ const useStyles = makeStyles({
     background: '#F5F5F5',
     marginTop: '0.5%',
     boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
+  },
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100vh',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
   },
   paper: {
     background: '#F5F5F5',
@@ -38,15 +53,17 @@ const useStyles = makeStyles({
     marginRight: 'auto',
     width: '96%',
   },
-});
+}));
+
 const styles = (theme) => ({
   rootTable: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
+    overflowY: 'auto',
   },
   table: {
-    minWidth: 300,
+    minWidth: 100,
   },
 });
 let id = 0;
@@ -63,14 +80,14 @@ const rows = [
 function Profile() {
   const classes = useStyles();
   const [manageremail, setManageremail] = useState([]);
+  const [count, setCount] = useState(0);
+
   const adminleave = useSelector((state) => state.adminleave);
 
   const auth = useSelector((state) => state.auth);
   let date = auth.user.datepicker;
   const newDate = new Date(date);
   let month = newDate.getMonth();
-  console.log(adminleave);
-  console.log(auth);
   useEffect(() => {
     store.dispatch(getLeaveType());
     store.dispatch(loadUser());
@@ -85,21 +102,24 @@ function Profile() {
         console.log(res.data);
       });
   }, []);
+  const getLeaveById = async () => {
+    await axios
+      .get(`http://localhost:5000/users/request/userleave/${auth.user._id}`)
+      .then((res) => {
+        res.data.map((data) => {
+          if (data.status == 'Granted') {
+            setCount((count) => count + 1);
+          }
+        });
+      });
+  };
+  console.log(count);
+  useEffect(() => {
+    getLeaveById();
+  }, []);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '90%',
-        height: '100vh',
-        marginLeft: 'auto',
-        marginTop: '2%',
-        marginRight: 'auto',
-        background: '#fff',
-      }}
-    >
+    <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>My Profile</h3>
       <div
         style={{
@@ -115,120 +135,160 @@ function Profile() {
           <LaunchIcon />
         </Grid>
         <br />
-        <Grid className={classes.bodyContainer} xs={12}>
+        <Grid container className={classes.bodyContainer}>
           <Grid
             style={{
               display: 'flex',
               alignItems: 'center',
               alignContent: 'flex-start',
             }}
-            xs={4}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
           >
-            <p style={{ fontWeight: 'bold' }}>Emp ID :</p>
-            <p style={{ paddingLeft: '3.5rem' }}>{auth.user.employee}</p>
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Emp ID :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.employee} </Grid>
           </Grid>
           <Grid
             style={{
               display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Emp Name :</p>
-            <p style={{ paddingLeft: '1rem' }}>
-              {auth.user.firstname} {auth.user.lastname}{' '}
-            </p>
-          </Grid>
-          &nbsp;
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Gender :</p>
-            <p style={{ paddingLeft: '2.9rem' }}>{auth.user.gender}</p>
-          </Grid>
-        </Grid>
-        <Grid className={classes.bodyContainer} xs={12}>
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Emp Email ID :</p>
-            <p style={{ paddingLeft: '0.5rem' }}>{auth.user.email}</p>
-          </Grid>
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Phone No :</p>
-            <p style={{ paddingLeft: '1.7rem' }}>{auth.user.phoneNo}</p>
-          </Grid>
-          &nbsp;
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Department :</p>
-            <p style={{ paddingLeft: '0.5rem' }}>{auth.user.department}</p>
-          </Grid>
-        </Grid>
-        <Grid className={classes.bodyContainer} xs={12}>
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Birthday :</p>
-            <p style={{ paddingLeft: '2.8rem' }}>
-              {moment(auth.user.datepicker).format('DD/MM/YYYY')}
-            </p>
-          </Grid>
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Manager :</p>
-            <p style={{ paddingLeft: '1.9rem' }}>{manageremail}</p>
-          </Grid>
-          &nbsp;
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
-            }}
-            xs={4}
-          >
-            <p style={{ fontWeight: 'bold' }}>Position :</p>
-            <p style={{ paddingLeft: '2.7rem' }}>{auth.user.position}</p>
-          </Grid>
-        </Grid>
-        <Grid className={classes.bodyContainer} xs={12}>
-          <Grid
-            style={{
-              display: 'flex',
-              minWidth: '33%',
             }}
             xs={12}
+            lg={4}
+            sm={12}
+            md={6}
           >
-            <p style={{ fontWeight: 'bold' }}>Address :</p>
-            <p style={{ paddingLeft: '2.9rem' }}>{auth.user.address}</p>
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Emp Name :{' '}
+            </Grid>
+            <Grid xs={8}>
+              {`${auth.user.firstname} ${auth.user.lastname}`}{' '}
+            </Grid>
+          </Grid>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Gender :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.gender} </Grid>
+          </Grid>
+        </Grid>
+        <Grid container className={classes.bodyContainer}>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Emp Email ID :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.email} </Grid>
+          </Grid>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Phone No :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.phoneNo} </Grid>
+          </Grid>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Department :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.department} </Grid>
+          </Grid>
+        </Grid>
+        <Grid className={classes.bodyContainer} container>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Birthday :{' '}
+            </Grid>
+            <Grid xs={8}>
+              {moment(auth.user.datepicker).format('DD/MM/YYYY')}{' '}
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Manager :{' '}
+            </Grid>
+            <Grid xs={8}>{manageremail} </Grid>
+          </Grid>
+          <Grid
+            container
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Position :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.position} </Grid>
+          </Grid>
+        </Grid>
+        <Grid className={classes.bodyContainer}>
+          <Grid
+            style={{
+              display: 'flex',
+            }}
+            xs={12}
+            lg={4}
+            sm={12}
+            md={6}
+          >
+            <Grid xs={4} style={{ fontWeight: 'bold' }}>
+              Address :{' '}
+            </Grid>
+            <Grid xs={8}>{auth.user.address} </Grid>
           </Grid>
         </Grid>
         <br />
@@ -236,58 +296,101 @@ function Profile() {
           <h2>Leave Details</h2>
         </Grid>
         <br />
-        <Grid
-          style={{
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-          xs={9}
-        >
-          <Paper
-            className={classes.rootTable}
-            style={{ background: '#F5F5F5' }}
+        <Grid container className={classes.bodyContainer}>
+          <Grid
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+            xs={9}
+            sm={9}
+            lg={9}
+            md={9}
           >
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ borderBottom: '2px solid gray' }}>
-                    Leave Type
-                  </TableCell>
-                  <TableCell style={{ borderBottom: '2px solid gray' }}>
-                    Total Leave
-                  </TableCell>
-                  {/* <TableCell style={{ borderBottom: '2px solid gray' }}>
-                    Used
-                  </TableCell>
-                  <TableCell style={{ borderBottom: '2px solid gray' }}>
-                    Available
-                  </TableCell> */}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {adminleave?.map((row) => (
-                  <TableRow key={row?.id}>
-                    <TableCell
-                      style={{ borderBottom: 'none' }}
-                      component="th"
-                      scope="row"
-                    >
-                      {row?.leaveType}
-                    </TableCell>
-                    <TableCell style={{ borderBottom: 'none' }}>
-                      {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
-                    </TableCell>
-                    {/* <TableCell style={{ borderBottom: 'none' }}>
-                      {row.fat}
-                    </TableCell>
-                    <TableCell style={{ borderBottom: 'none' }}>
-                      {row.carbs}
-                    </TableCell> */}
+            {/* <TableContainer component={Paper}>
+              <Table
+                className={classes.table}
+                size="small"
+                aria-label="a dense table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Dessert (100g serving)</TableCell>
+                    <TableCell align="right">Calories</TableCell>
+                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>{' '}
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{row.calories}</TableCell>
+                      <TableCell align="right">{row.fat}</TableCell>
+                      <TableCell align="right">{row.carbs}</TableCell>
+                      <TableCell align="right">{row.protein}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer> */}
+            <TableContainer
+              component={Paper}
+              className={classes.rootTable}
+              style={{ background: '#F5F5F5' }}
+            >
+              {/* <Paper
+                className={classes.rootTable}
+                style={{ background: '#F5F5F5' }}
+              > */}
+              <Table
+                className={classes.table}
+                style={{ maxWidth: '90vw', overflow: 'auto' }}
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ borderBottom: '2px solid gray' }}>
+                      Leave Type
+                    </TableCell>
+                    <TableCell style={{ borderBottom: '2px solid gray' }}>
+                      Total Leave
+                    </TableCell>
+                    <TableCell style={{ borderBottom: '2px solid gray' }}>
+                      Used
+                    </TableCell>
+                    <TableCell style={{ borderBottom: '2px solid gray' }}>
+                      Available
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {adminleave?.map((row) => (
+                    <TableRow key={row?.id}>
+                      <TableCell
+                        style={{ borderBottom: 'none' }}
+                        component="th"
+                        scope="row"
+                      >
+                        {row?.leaveType}
+                      </TableCell>
+                      <TableCell style={{ borderBottom: 'none' }}>
+                        {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
+                      </TableCell>
+                      <TableCell style={{ borderBottom: 'none' }}>
+                        {count}
+                      </TableCell>
+                      <TableCell style={{ borderBottom: 'none' }}>
+                        {12}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
         </Grid>
       </div>
     </div>

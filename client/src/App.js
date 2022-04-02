@@ -93,7 +93,9 @@ function App({ auth: { user } }) {
                 path="/updatestatus/:id"
                 element={
                   <PrivateRoute>
-                    <UpdateStatus />
+                    <DrawerBar>
+                      <UpdateStatus />
+                    </DrawerBar>
                   </PrivateRoute>
                 }
               />
