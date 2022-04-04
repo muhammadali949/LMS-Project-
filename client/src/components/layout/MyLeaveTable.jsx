@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
+import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@material-ui/core/Grid';
@@ -72,7 +72,11 @@ function MyLeaveTable({ HandleDeleteLeaveType, id }) {
       }}
       xs={11}
     >
-      <Paper className={classes.rootTable} style={{ background: '#F5F5F5' }}>
+      <TableContainer
+        component={Paper}
+        className={classes.rootTable}
+        style={{ background: '#F5F5F5' }}
+      >
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
@@ -144,7 +148,7 @@ function MyLeaveTable({ HandleDeleteLeaveType, id }) {
             ))} */}
           </TableBody>
         </Table>
-      </Paper>{' '}
+      </TableContainer>
     </Grid>
   );
 }

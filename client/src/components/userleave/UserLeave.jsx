@@ -3,9 +3,28 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import MyLeaveTable from '../layout/MyLeaveTable';
 import { deleteLeave } from '../../actions/leaveAction';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100%',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
+  },
+}));
 
 function UserLeave() {
   const auth = useSelector((state) => state.auth);
+  const classes = useStyles();
 
   const id = auth.user._id;
   const dispatch = useDispatch();
@@ -14,19 +33,7 @@ function UserLeave() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '90%',
-        height: '50vh',
-        marginLeft: 'auto',
-        marginTop: '2%',
-        marginRight: 'auto',
-        background: '#fff',
-      }}
-    >
+    <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>My Leave</h3>
       <div
         style={{

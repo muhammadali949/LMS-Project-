@@ -10,7 +10,21 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100%',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
+  },
   btn: {
     background: '#0EA900',
     '&:hover': {
@@ -18,7 +32,7 @@ const useStyles = makeStyles({
       backgroundColor: '#0EA900',
     },
   },
-});
+}));
 const UpdateMyLeave = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -55,19 +69,7 @@ const UpdateMyLeave = () => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          width: '90%',
-          height: '50vh',
-          marginLeft: 'auto',
-          marginTop: '2%',
-          marginRight: 'auto',
-          background: '#fff',
-        }}
-      >
+      <div className={classes.mainContainer}>
         <h3 style={{ marginTop: '5px' }}>Update Leave</h3>
         <div
           style={{

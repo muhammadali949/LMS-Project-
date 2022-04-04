@@ -13,7 +13,21 @@ import Grid from '@material-ui/core/Grid';
 import DatePicker from '../register/DatePickers';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: '90%',
+    height: '100%',
+    marginLeft: 'auto',
+    marginTop: '2%',
+    marginRight: 'auto',
+    background: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '20%',
+    },
+  },
   btn: {
     background: '#0EA900',
     '&:hover': {
@@ -21,7 +35,7 @@ const useStyles = makeStyles({
       backgroundColor: '#0EA900',
     },
   },
-});
+}));
 
 const Register = ({ setAlert, register }) => {
   const [datepicker, setDatePicker] = useState(new Date());
@@ -81,19 +95,7 @@ const Register = ({ setAlert, register }) => {
     }
   };
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        width: '90%',
-        marginLeft: 'auto',
-        marginTop: '2%',
-        marginRight: 'auto',
-        background: '#fff',
-        height: '100%',
-      }}
-    >
+    <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>Apply For Leave</h3>
       <div
         style={{
@@ -114,7 +116,7 @@ const Register = ({ setAlert, register }) => {
           <Grid item xs={12}>
             <h2 style={{ paddingTop: '10px' }}>Employee Info</h2>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <label htmlFor="">Employee Code</label>
             <input
               id="standard-basic"
@@ -126,7 +128,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Gender</label>
             <select
               name="select"
@@ -142,11 +144,11 @@ const Register = ({ setAlert, register }) => {
               <option>Female</option>
             </select>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Birthdate</label>
             <DatePicker datepicker={datepicker} setDatePicker={setDatePicker} />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">First Name</label>
             <input
               id="standard-basic"
@@ -158,7 +160,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Last Name</label>
             <input
               id="standard-basic"
@@ -170,7 +172,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Department</label>
             <select
               name="select"
@@ -185,7 +187,7 @@ const Register = ({ setAlert, register }) => {
               <option>b</option>
             </select>
           </Grid>{' '}
-          <Grid item xs={3}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Position</label>
             <input
               id="standard-basic"
@@ -197,7 +199,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <label htmlFor="">Email</label>
             <input
               id="standard-basic"
@@ -209,10 +211,10 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <SelectUser manager={manager} setManager={setManager} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12}>
             <label htmlFor="">Address</label>
             <input
               id="standard-basic"
@@ -224,7 +226,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <label htmlFor="">Phone No</label>
             <input
               id="standard-basic"
@@ -236,7 +238,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <label htmlFor="">Password</label>
             <input
               id="standard-basic"
@@ -248,7 +250,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} xs={12} md={6}>
             <label htmlFor="">Confirm Password</label>
             <input
               id="standard-basic"
@@ -260,7 +262,7 @@ const Register = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item lg={6} md={12}>
             <Alert />
             <Button
               variant="contained"

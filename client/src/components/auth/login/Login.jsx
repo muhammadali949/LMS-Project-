@@ -7,8 +7,10 @@ import Alert from '../../layout/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DraftsIcon from '@material-ui/icons/Drafts';
 import './Login.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +51,13 @@ const useStyles = makeStyles((theme) => ({
   centerUpperGrid: {
     [theme.breakpoints.down('xs')]: {
       display: 'none',
+    },
+  },
+  smMain: {
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: '50px',
     },
   },
 }));
@@ -105,70 +114,79 @@ const Login = ({ login, isAuthenticated }) => {
               marginTop: '5%',
             }}
           >
-            <Grid item xs={12} lg={6} md={6} sm={6}>
-              <div className={classes.centerUpperGrid}>
-                <p style={{ fontSize: '30px' }}>Welcome To</p>
-                <p style={{ fontSize: '30px', fontWeight: 'bold' }}>
+            <Grid item xs={9.3} lg={5} md={5} sm={5}>
+              <div>
+                <p className="paragraph-Style">Welcome To</p>
+                <p className="paragraph-Style" style={{ fontWeight: 'bold' }}>
                   Leave Management System
                 </p>
                 <p>Login To Access Your Account</p>
               </div>
             </Grid>
-            <Grid item xs={12} lg={6} md={6} sm={6}>
-              <div className="circle">
-                <AccountCircleIcon
-                  style={{
-                    fontSize: '50px',
-                    color: '#4E4376',
-                  }}
-                />
-              </div>
-              <Paper className={classes.paper}>
-                <form onSubmit={(e) => onSubmit(e)}>
-                  <div>
-                    <input
-                      style={{ padding: '10px' }}
-                      className="main"
-                      type="email"
-                      placeholder="email"
-                      name="email"
-                      value={email}
-                      onChange={(e) => onChange(e)}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <br />
-                    <input
-                      style={{ padding: '10px' }}
-                      className="main"
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                      minLength="6"
-                      value={password}
-                      onChange={(e) => onChange(e)}
-                      required
-                    />
-                  </div>
-                  <br />
-                  <Alert />
-                  <div
+            <Grid item xs={9.3} lg={5} md={5} sm={5}>
+              <Grid>
+                <div className="circle">
+                  <AccountCircleIcon
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      fontSize: '50px',
+                      color: '#4E4376',
                     }}
-                  >
-                    <input
-                      type="submit"
-                      className="btnTwo"
-                      style={{ color: '#fff' }}
-                      value="Login"
-                    />
-                  </div>
-                </form>{' '}
-              </Paper>
+                  />
+                </div>
+              </Grid>
+              <Grid>
+                <Paper className={classes.paper}>
+                  <form onSubmit={(e) => onSubmit(e)}>
+                    <div>
+                      <input
+                        startAdornment={
+                          <InputAdornment position="start">
+                            <DraftsIcon />
+                          </InputAdornment>
+                        }
+                        style={{ padding: '10px' }}
+                        className="main"
+                        type="email"
+                        placeholder="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => onChange(e)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <br />
+                      <input
+                        style={{ padding: '10px' }}
+                        className="main"
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        minLength="6"
+                        value={password}
+                        onChange={(e) => onChange(e)}
+                        required
+                      />
+                    </div>
+                    <br />
+                    <Alert />
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <input
+                        type="submit"
+                        className="btnTwo"
+                        style={{ color: '#fff' }}
+                        value="Login"
+                      />
+                    </div>
+                  </form>{' '}
+                </Paper>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

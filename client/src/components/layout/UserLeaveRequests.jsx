@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import Paper from '@mui/material/Paper';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -57,7 +57,11 @@ function UserLeaveRequests(props) {
       xs={11}
     >
       {' '}
-      <Paper className={classes.rootTable} style={{ background: '#F5F5F5' }}>
+      <TableContainer
+        component={Paper}
+        className={classes.rootTable}
+        style={{ background: '#F5F5F5' }}
+      >
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
@@ -147,7 +151,7 @@ function UserLeaveRequests(props) {
             ))} */}
           </TableBody>
         </Table>
-      </Paper>{' '}
+      </TableContainer>{' '}
       {/* <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

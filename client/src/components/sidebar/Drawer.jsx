@@ -61,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       display: 'block',
       marginBottom: '50px',
+      background: 'linear-gradient(90deg, #2B5876 0%, #4E4376 100%) !important',
     },
   },
   active: {
@@ -253,9 +254,6 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Responsive drawer
-          </Typography>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

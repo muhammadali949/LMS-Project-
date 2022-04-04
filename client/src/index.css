@@ -3,11 +3,10 @@
 }
 body {
   margin: 0;
-  font-family: 'Nunito';
+  font-family: Nunito;
   background: #fff !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family:Nunito ;
 }
