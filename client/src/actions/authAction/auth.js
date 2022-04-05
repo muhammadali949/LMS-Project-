@@ -8,6 +8,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     UPDATE_PASSWORD,
+    USER_All_LOADED,
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 import { setAlert } from "../alert";
@@ -22,6 +23,23 @@ export const loadUser = () => async (dispatch) => {
         const res = await axios.get("http://localhost:5000/users/auth");
         dispatch({
             type: USER_LOADED,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: AUTH_ERROR,
+        });
+    }
+};
+export const loadAllUser = () => async (dispatch) => {
+    if (localStorage.token) {
+        setAuthToken(localStorage.token);
+    }
+
+    try {
+        const res = await axios.get("http://localhost:5000/users/auth/alluser");
+        dispatch({
+            type: USER_All_LOADED,
             payload: res.data,
         });
     } catch (err) {

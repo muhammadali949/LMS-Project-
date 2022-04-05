@@ -42,17 +42,6 @@ function DatePickers({ datepicker, setDatePicker }) {
             />
           )}
         />
-        {/* <DatePicker
-          openTo="year"
-          views={['day']}
-          value={datepicker}
-          onChange={(newValue) => {
-            setDatePicker(newValue);
-          }}
-          renderInput={(params) => (
-            <TextField className={classes.inputstyle} {...params} />
-          )}
-        /> */}
       </Stack>
     </LocalizationProvider>
   );

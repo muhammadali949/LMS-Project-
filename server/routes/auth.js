@@ -154,7 +154,22 @@ router.patch(
 
     }
 );
+// @route   Update /User
+// @desc    Get user by id
+// @access  Private
+router.patch('/:id', async (req, res) => {
 
+    const employeeData = req.body;
+    const editemployee = new User(employeeData);
+    const id = req.params.id;
+    try {
+        await User.updateOne({ _id: id }, editemployee)
+        res.json(editemployee)
+
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
 // @route   GET /users/auth
 // @desc    Get user by token/ Loading user
 // @access  Private
@@ -167,6 +182,7 @@ router.get("/auth", auth, async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
+
 router.get("/authid", auth, async (req, res) => {
     console.log(req.query.id);
     try {
@@ -190,7 +206,15 @@ router.get("/auth/alluser", auth, async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-
+router.get("/auth/:id", auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
 // @route   POST /users/auth
 // @desc    Authentication user & get token/ Login user
 // @access  Public
@@ -242,4 +266,14 @@ router.post(
         }
     }
 );
+router.delete('/auth/:id', async (req, res) => {
+
+    try {
+        await User.deleteOne({ _id: req.params.id })
+        res.json("User Deleted Successfully")
+
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
 module.exports = router;

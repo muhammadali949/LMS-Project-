@@ -1,6 +1,8 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { ADD_LEAVE_TYPE, DELETE_LEAVE_TYPE, GET_LEAVE_TYPE, UPDATE_LEAVE_TYPE } from "./adminLeaveType";
 import { setAlert } from "./alert";
+
 export const getLeaveType = () =>
     async (dispatch) => {
         const config = {
@@ -28,6 +30,7 @@ export const getLeaveType = () =>
         }
     }
 export const addLeaveType = ({ leaveType, numberLeave }) =>
+
     async (dispatch) => {
         const config = {
             headers: {
@@ -36,19 +39,19 @@ export const addLeaveType = ({ leaveType, numberLeave }) =>
         };
         const body = JSON.stringify({ leaveType, numberLeave });
         try {
-            console.log(body)
             const res = await axios.post(
                 "http://localhost:5000/admin/leave",
                 body,
                 config
-            );
+            )
             dispatch({
                 type: ADD_LEAVE_TYPE,
                 payload: res.data,
             });
 
         } catch (err) {
-            const errors = err.response.data.errors;
+            const errors = err?.response.data.errors;
+            console.log(err)
 
             if (errors) {
                 errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));

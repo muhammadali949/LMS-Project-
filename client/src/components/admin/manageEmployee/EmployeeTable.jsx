@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
+import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Grid from '@material-ui/core/Grid';
+
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import LaunchIcon from '@mui/icons-material/Launch';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
+import moment from 'moment';
 
 const useStyles = makeStyles({
   table: {
@@ -41,11 +45,15 @@ const useStyles = makeStyles({
   },
 });
 
-function LeaveTypeTable({ adminleave, HandleDeleteLeaveType }) {
+function EmployeeTable({ users, getAllusers, setDeleteCheck }) {
   const classes = useStyles();
 
-  const HandleDelete = (id) => {
-    HandleDeleteLeaveType(id);
+  const HandleDeleteOne = (id) => {
+    axios.delete(`http://localhost:5000/users/auth/${id}`).then((res) => {
+      console.log(res.data);
+    });
+    getAllusers();
+    setDeleteCheck((deleteCheck) => !deleteCheck);
   };
   return (
     <Grid
@@ -60,50 +68,59 @@ function LeaveTypeTable({ adminleave, HandleDeleteLeaveType }) {
         className={classes.rootTable}
         style={{ background: '#F5F5F5' }}
       >
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell
-                className={classes.MuiTableRowroot}
-                style={{ borderBottom: '2px solid gray' }}
-              >
-                LeaveType
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Emp .ID
               </TableCell>
-              <TableCell
-                className={classes.MuiTableRowroot}
-                style={{ borderBottom: '2px solid gray' }}
-              >
-                LeaveNumber
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Full Name
               </TableCell>
-              <TableCell
-                className={classes.MuiTableRowroot}
-                style={{ borderBottom: '2px solid gray' }}
-              >
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Position
+              </TableCell>
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Reg Date
+              </TableCell>
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
                 Action
               </TableCell>
             </TableRow>
           </TableHead>
-
           <TableBody>
-            {adminleave?.map((row) => (
+            {users?.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">
-                  {row.leaveType}
+                  {row.employee}
                 </TableCell>
-                <TableCell>{row.numberLeave}</TableCell>
+                <TableCell>{`${row.firstname} ${row.lastname} `}</TableCell>
+                <TableCell>{row.position}</TableCell>
+                <TableCell>
+                  {moment(row.datepicker).format('DD/MM/YYYY')}
+                </TableCell>
 
                 <TableCell>
-                  <div style={{ display: 'flex', justifyContent: 'start' }}>
+                  <div style={{ display: 'flex' }}>
+                    <IconButton
+                      className={classes.button1}
+                      style={{ paddingRight: '15px' }}
+                      component={Link}
+                      to={`/employee/${row._id}`}
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
                     <IconButton
                       className={classes.button1}
                       component={Link}
-                      to={`/updatepage/${row._id}`}
+                      to={`/updateemployee/${row._id}`}
                     >
                       <LaunchIcon />
                     </IconButton>
+
                     <IconButton
                       className={classes.button2}
-                      onClick={() => HandleDelete(row._id)}
+                      onClick={() => HandleDeleteOne(row._id)}
                     >
                       <DeleteIcon className={classes.delete} />
                     </IconButton>
@@ -118,4 +135,4 @@ function LeaveTypeTable({ adminleave, HandleDeleteLeaveType }) {
   );
 }
 
-export default LeaveTypeTable;
+export default EmployeeTable;

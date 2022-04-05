@@ -3,10 +3,10 @@
 }
 body {
   margin: 0;
-  font-family: Nunito;
+  font-family: Nunito !important;
   background: #fff !important;
 }
 
 code {
-  font-family:Nunito ;
+  font-family:Nunito !important;
 }

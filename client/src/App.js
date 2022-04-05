@@ -26,6 +26,9 @@ import UpdatePassword from "./components/auth/updatepassword/UpdatePassword";
 import ManagerLeave from "./components/managerLeave/ManagerLeave";
 import DrawerBar from "./components/sidebar/Drawer";
 import Profile from "./components/myprofile/Profile";
+import ManageEmployee from "./components/admin/manageEmployee/ManageEmployee";
+import EmployeeDetail from "./components/admin/manageEmployee/EmployeeDetail";
+import EmployeeUpdate from "./components/admin/manageEmployee/EmployeeUpdate";
 
 
 
@@ -46,6 +49,7 @@ function App({ auth: { user } }) {
           <>
             <Routes>
               <Route exact path="/" element={<Landing />} />
+
               <Route
                 exact
                 path="/dashboard"
@@ -144,11 +148,11 @@ function App({ auth: { user } }) {
                 }
               />
               {
-                user?.role == 'admin' ? <Route exact path="/updatepage/:id" element={<UpdatePage />} />
+                user?.role == 'admin' ? <Route exact path="/updatepage/:id" element={<DrawerBar><UpdatePage /></DrawerBar>} />
                   : <Route exact path="/admin" element={<NotFound />} />
               }
               {
-                user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<UpdateLeaveType />} />
+                user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<DrawerBar><UpdateLeaveType /></DrawerBar>} />
                   : <Route exact path="/admin" element={<NotFound />} />
               }
               {
@@ -164,6 +168,19 @@ function App({ auth: { user } }) {
                 user?.role == 'admin' ? <Route exact path="/register" element={<DrawerBar><Register /></DrawerBar>} />
                   : <Route exact path="/register" element={<NotFound />} />
               }
+              {
+                user?.role == 'admin' ? <Route exact path="/employee" element={<DrawerBar><ManageEmployee /></DrawerBar>} />
+                  : <Route exact path="/employee" element={<NotFound />} />
+              }
+              {
+                user?.role == 'admin' ? <Route exact path="/updateemployee/:id" element={<DrawerBar><EmployeeUpdate /></DrawerBar>} />
+                  : <Route exact path="/updateemployee/:id" element={<NotFound />} />
+              }
+              {
+                user?.role == 'admin' ? <Route exact path="/employee/:id" element={<DrawerBar><EmployeeDetail /></DrawerBar>} />
+                  : <Route exact path="/employee/:id" element={<NotFound />} />
+              }
+
               <Route exact path="/login" element={<Login />} />
               <Route path='*' exact={true} element={<NotFound />} />
             </Routes>

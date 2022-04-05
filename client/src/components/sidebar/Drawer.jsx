@@ -23,6 +23,7 @@ import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CodeIcon from '@material-ui/icons/Code';
 
 import PersonIcon from '@material-ui/icons/Person';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -117,7 +118,17 @@ const Employees = [
   },
   {
     text: 'Manage Employee',
-    path: '/userleave',
+    path: '/employee',
+  },
+];
+const leaveType = [
+  {
+    text: 'Add Leave Type',
+    path: '/addleavetype',
+  },
+  {
+    text: 'Manage Leave type',
+    path: '/updateleavetype',
   },
 ];
 
@@ -129,6 +140,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [check, setCheck] = useState(false);
   const [empcheck, setEmpCheck] = useState(false);
+  const [leaveCheck, setLeaveCheck] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -158,35 +170,42 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
             <hr />
           </>
         ))}{' '}
-        <ListItem button onClick={() => setCheck((prevCheck) => !prevCheck)}>
-          <ListItemIcon>
-            <SpeakerNotesIcon />
-          </ListItemIcon>
-          <ListItemText primary="Leave" />
-          {check ? (
-            <ArrowDropDownIcon />
-          ) : (
-            <KeyboardArrowRightIcon fontSize="small" />
-          )}
-        </ListItem>
-        <hr />
-        {check ? (
+        {user?.role === 'user' ? (
           <>
-            {levaemenuItems.map((item) => (
+            <ListItem
+              button
+              onClick={() => setCheck((prevCheck) => !prevCheck)}
+            >
+              <ListItemIcon>
+                <SpeakerNotesIcon />
+              </ListItemIcon>
+              <ListItemText primary="Leave" />
+              {check ? (
+                <ArrowDropDownIcon />
+              ) : (
+                <KeyboardArrowRightIcon fontSize="small" />
+              )}
+            </ListItem>
+            <hr />
+            {check ? (
               <>
-                <ListItem
-                  button
-                  key={item.text}
-                  onClick={() => navigate(item.path)}
-                  className={
-                    location.pathname == item.path ? classes.active : null
-                  }
-                >
-                  <ListItemIcon></ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItem>
+                {levaemenuItems.map((item) => (
+                  <>
+                    <ListItem
+                      button
+                      key={item.text}
+                      onClick={() => navigate(item.path)}
+                      className={
+                        location.pathname == item.path ? classes.active : null
+                      }
+                    >
+                      <ListItemIcon></ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItem>
+                  </>
+                ))}
               </>
-            ))}
+            ) : null}
           </>
         ) : null}
         {user?.role === 'admin' ? (
@@ -209,6 +228,44 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
             {empcheck ? (
               <>
                 {Employees.map((item) => (
+                  <>
+                    <ListItem
+                      button
+                      key={item.text}
+                      onClick={() => navigate(item.path)}
+                      className={
+                        location.pathname == item.path ? classes.active : null
+                      }
+                    >
+                      <ListItemIcon></ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItem>
+                  </>
+                ))}
+              </>
+            ) : null}
+          </>
+        ) : null}
+        {user?.role === 'admin' ? (
+          <>
+            <ListItem
+              button
+              onClick={() => setLeaveCheck((prevCheck) => !prevCheck)}
+            >
+              <ListItemIcon>
+                <CodeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Leave Type" />
+              {leaveCheck ? (
+                <ArrowDropDownIcon />
+              ) : (
+                <KeyboardArrowRightIcon fontSize="small" />
+              )}
+            </ListItem>
+            <hr />
+            {leaveCheck ? (
+              <>
+                {leaveType.map((item) => (
                   <>
                     <ListItem
                       button

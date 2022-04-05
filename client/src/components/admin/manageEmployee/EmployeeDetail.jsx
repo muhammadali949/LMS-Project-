@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { useParams } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -14,9 +15,8 @@ import Paper from '@material-ui/core/Paper';
 import TableContainer from '@material-ui/core/TableContainer';
 
 import { useSelector } from 'react-redux';
-import { getLeaveType } from '../../actions/adminLeaveAction';
-import store from '../../store';
-import { loadUser } from '../../actions/authAction/auth';
+import { getLeaveType } from '../../../actions/adminLeaveAction';
+import store from '../../../store';
 import moment from 'moment';
 import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
@@ -77,10 +77,13 @@ const rows = [
   createData('Casual', '05 Days', 2, 2),
   createData('Casual', '05 Days', 2, 2),
 ];
-function Profile() {
+function EmployeeDetail() {
   const classes = useStyles();
   const [manageremail, setManageremail] = useState([]);
+  const [user, setUser] = useState({ manager: '' });
+
   const [count, setCount] = useState(0);
+  const params = useParams();
 
   const adminleave = useSelector((state) => state.adminleave);
 
@@ -88,35 +91,24 @@ function Profile() {
   let date = auth.user.datepicker;
   const newDate = new Date(date);
   let month = newDate.getMonth();
+
+  const getUser = () => {
+    axios.get(`http://localhost:5000/users/auth/${params.id}`).then((res) => {
+      setUser(res.data);
+    });
+  };
   useEffect(() => {
     store.dispatch(getLeaveType());
-    store.dispatch(loadUser());
+    getUser();
   }, []);
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:5000/users/authid?id=${auth.user.manager}&type=single`
-      )
+      .get(`http://localhost:5000/users/authid?id=${user?.manager}&type=single`)
       .then((res) => {
         setManageremail(res.data.email);
         console.log(res.data);
       });
-  }, []);
-  const getLeaveById = async () => {
-    await axios
-      .get(`http://localhost:5000/users/request/userleave/${auth.user._id}`)
-      .then((res) => {
-        res.data.map((data) => {
-          if (data.status == 'Granted') {
-            setCount((count) => count + 1);
-          }
-        });
-      });
-  };
-  console.log(count);
-  useEffect(() => {
-    getLeaveById();
-  }, []);
+  }, [user.manager]);
 
   return (
     <div className={classes.mainContainer}>
@@ -131,10 +123,6 @@ function Profile() {
           boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <Grid className={classes.bodyContainer}>
-          <p style={{ fontWeight: 'bold' }}>Employee Detail</p>
-          <LaunchIcon />
-        </Grid>
         <br />
         <Grid container className={classes.bodyContainer}>
           <Grid
@@ -151,7 +139,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Emp ID :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.employee} </Grid>
+            <Grid xs={8}>{user.employee} </Grid>
           </Grid>
           <Grid
             style={{
@@ -165,9 +153,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Emp Name :{' '}
             </Grid>
-            <Grid xs={8}>
-              {`${auth.user.firstname} ${auth.user.lastname}`}{' '}
-            </Grid>
+            <Grid xs={8}>{`${user.firstname} ${user.lastname}`} </Grid>
           </Grid>
           <Grid
             style={{
@@ -181,7 +167,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Gender :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.gender} </Grid>
+            <Grid xs={8}>{user.gender} </Grid>
           </Grid>
         </Grid>
         <Grid container className={classes.bodyContainer}>
@@ -197,7 +183,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Emp Email ID :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.email} </Grid>
+            <Grid xs={8}>{user.email} </Grid>
           </Grid>
           <Grid
             style={{
@@ -211,7 +197,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Phone No :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.phoneNo} </Grid>
+            <Grid xs={8}>{user.phoneNo} </Grid>
           </Grid>
           <Grid
             style={{
@@ -225,7 +211,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Department :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.department} </Grid>
+            <Grid xs={8}>{user.department} </Grid>
           </Grid>
         </Grid>
         <Grid className={classes.bodyContainer} container>
@@ -241,9 +227,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Birthday :{' '}
             </Grid>
-            <Grid xs={8}>
-              {moment(auth.user.datepicker).format('DD/MM/YYYY')}{' '}
-            </Grid>
+            <Grid xs={8}>{moment(user.datepicker).format('DD/MM/YYYY')} </Grid>
           </Grid>
           <Grid
             container
@@ -273,7 +257,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Position :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.position} </Grid>
+            <Grid xs={8}>{user.position} </Grid>
           </Grid>
         </Grid>
         <Grid className={classes.bodyContainer}>
@@ -289,7 +273,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Address :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.address} </Grid>
+            <Grid xs={8}>{user.address} </Grid>
           </Grid>
         </Grid>
         <br />
@@ -398,8 +382,8 @@ function Profile() {
   );
 }
 
-Profile.propTypes = {
+EmployeeDetail.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Profile);
+export default withStyles(styles)(EmployeeDetail);
