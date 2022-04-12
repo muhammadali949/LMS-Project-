@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import { makeStyles } from '@material-ui/core';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
@@ -30,6 +29,7 @@ function DatePickers({ datepicker, setDatePicker }) {
       <Stack spacing={2}>
         <MobileDatePicker
           value={datepicker}
+          minDate={new Date()}
           onChange={(newValue) => {
             setDatePicker(newValue);
           }}

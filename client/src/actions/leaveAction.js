@@ -44,24 +44,32 @@ export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, use
                 body,
                 config
             );
+            console.log(res);
             dispatch({
                 type: ADD_LEAVE,
-                payload: res.data,
+                payload: res,
             });
-            if (res?.status == 201) {
-                dispatch(setAlert("successfully apply", "success"))
-            }
-
-
         } catch (err) {
             console.log(err);
             const errors = err.response.data.errors;
 
             if (errors) {
                 errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+                dispatch({
+                    type: ADD_LEAVE,
+                    payload: errors,
+                });
             }
         }
     };
+export const clearState = () =>
+
+    async (dispatch) => {
+        dispatch({
+            type: ADD_LEAVE,
+            payload: [{ msg: 'your leave request has been send' }],
+        });
+    }
 export const updateLeave = (a, id) =>
 
     async (dispatch) => {

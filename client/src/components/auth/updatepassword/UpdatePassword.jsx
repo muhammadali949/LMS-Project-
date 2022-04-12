@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import Alert from '../../layout/Alert';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadUser, updatepassword } from '../../../actions/./authAction/auth';
@@ -9,6 +8,9 @@ import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import './UpdatePassword.css';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const UpdatePassword = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const alert = useSelector((state) => state.alert);
   const [currentPassword, setCurrentPassword] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -50,9 +53,9 @@ const UpdatePassword = () => {
     store.dispatch(loadUser());
   }, []);
 
-  const _id = auth.user._id;
-  const role = auth.user.role;
-  const email = auth.user.email;
+  const _id = auth?.user?._id;
+  const role = auth?.user?.role;
+  const email = auth?.user?.email;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -67,6 +70,34 @@ const UpdatePassword = () => {
       setAlert('update...', 'success');
     }
   };
+  const formik = useFormik({
+    initialValues: {
+      currentPassword: '',
+      password: '',
+      password2: '',
+    },
+    validationSchema: Yup.object({
+      currentPassword: Yup.string()
+        .min(6, 'Current password should be 6 digit or more')
+        .required('Current password is required'),
+      password: Yup.string()
+        .min(6, 'Password should be 6 digit or more')
+        .required('Password is required'),
+      password2: Yup.string()
+        .required('Confirm password is required')
+        .min(6, 'Confirm password should be 6 digit or more')
+        .oneOf([Yup.ref('password'), null], 'Password must match'),
+    }),
+    onSubmit: (values) => {
+      if (alert?.length === 0) {
+        let password = values.password;
+        let currentPassword = values.currentPassword;
+        dispatch(
+          updatepassword({ _id, role, password, currentPassword, email })
+        );
+      }
+    },
+  });
 
   return (
     <>
@@ -85,46 +116,73 @@ const UpdatePassword = () => {
             style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
           >
             <br />
-            <form noValidate autoComplete="off">
+            <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
               <label htmlFor="">Current Password</label>
               <input
                 id="standard-basic"
                 label="Standard"
+                name="currentPassword"
                 fullWidth
-                className="inputstyle"
                 placeholder="Enter Current Password"
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                value={currentPassword}
+                className={
+                  formik.touched.currentPassword &&
+                  formik.errors.currentPassword
+                    ? 'inputstyleTwo'
+                    : 'inputstyle'
+                }
+                onChange={formik.handleChange}
+                value={formik.values.currentPassword}
                 type="password"
               />
+              {formik.touched.currentPassword &&
+              formik.errors.currentPassword ? (
+                <div style={{ color: 'red' }}>
+                  {formik.errors.currentPassword}
+                </div>
+              ) : null}
               <br />
               <br />
               <label htmlFor="">New Password</label>
               <input
                 id="standard-basic"
                 label="Standard"
-                className="inputstyle"
                 placeholder="Enter New Password"
                 name="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                className={
+                  formik.touched.password && formik.errors.password
+                    ? 'inputstyleTwo'
+                    : 'inputstyle'
+                }
+                onChange={formik.handleChange}
+                value={formik.values.password}
                 type="password"
                 fullWidth
               />
+              {formik.touched.password && formik.errors.password ? (
+                <div style={{ color: 'red' }}>{formik.errors.password}</div>
+              ) : null}
               <br />
               <br />
               <label htmlFor="">Confirm Password</label>
               <input
                 id="standard-basic"
-                className="inputstyle"
                 placeholder="Confirm Password"
+                name="password2"
                 minLength="6"
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
+                className={
+                  formik.touched.password2 && formik.errors.password2
+                    ? 'inputstyleTwo'
+                    : 'inputstyle'
+                }
+                onChange={formik.handleChange}
+                value={formik.values.password2}
                 label="Standard"
                 type="password"
                 fullWidth
               />
+              {formik.touched.password2 && formik.errors.password2 ? (
+                <div style={{ color: 'red' }}>{formik.errors.password2}</div>
+              ) : null}
               <br />
               <br />
               <Alert />
@@ -132,7 +190,7 @@ const UpdatePassword = () => {
                 variant="contained"
                 className={classes.btn}
                 color="secondary"
-                onClick={onSubmit}
+                type="submit"
               >
                 Change
               </Button>

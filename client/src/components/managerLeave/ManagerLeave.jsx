@@ -25,7 +25,7 @@ function ManagerLeave() {
   const auth = useSelector((state) => state.auth);
   const [leave, setLeave] = useState([]);
   const classes = useStyles();
-  const id = auth.user._id;
+  const id = auth?.user?._id;
   const getManagerLeave = () => {
     axios
       .get(`http://localhost:5000/users/request/manageleave/${id}`)
@@ -35,7 +35,7 @@ function ManagerLeave() {
   };
   useEffect(() => {
     getManagerLeave();
-  }, []);
+  });
   const HandleDeleteLeave = () => {};
   return (
     <div className={classes.mainContainer}>

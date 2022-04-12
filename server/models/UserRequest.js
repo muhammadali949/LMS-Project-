@@ -6,7 +6,7 @@ const UserRequestSchema = new mongoose.Schema({
         required: true
     },
     leaveDate: {
-        type: Date,
+        type: String,
         required: true
     },
     leaveCategory: {

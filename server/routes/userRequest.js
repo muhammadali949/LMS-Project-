@@ -27,7 +27,7 @@ router.post('/request', [
         let user = await UserRequest.findOne({ leaveDate });
 
         if (user) {
-            res.status(400).json({ errors: [{ msg: "your leave request has been send" }] });
+            res.status(409).json({ errors: [{ msg: "your leave request has been send" }] });
         } else {
             await newUser.save()
             res.status(201).json(newUser);
@@ -94,6 +94,7 @@ router.get('/request/manageleave/:id', async (req, res) => {
 // @access  Private
 router.patch('/request/:id', async (req, res) => {
     const user = req.body;
+    console.log(user);
     const id = req.params.id
     const editUser = new UserRequest(user);
     try {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Alert from '../layout/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateLeaveType } from '../../actions/adminLeaveAction';
+import { getLeaveType, updateLeaveType } from '../../actions/adminLeaveAction';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UpdateDatePickers from './UpdateDatePickers';
@@ -9,6 +9,7 @@ import { updateLeave } from '../../actions/leaveAction';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
+import store from '../../store';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -64,6 +65,7 @@ const UpdateMyLeave = () => {
   };
   useEffect(() => {
     getLeaveById(id);
+    store.dispatch(getLeaveType());
     return () => {};
   }, []);
 
@@ -95,7 +97,7 @@ const UpdateMyLeave = () => {
                 <option value="" disabled hidden>
                   Select Leave Type
                 </option>{' '}
-                {adminleave.map(function (n) {
+                {adminleave?.map(function (n) {
                   return (
                     <option
                       key={n._id}
@@ -142,38 +144,6 @@ const UpdateMyLeave = () => {
           </Grid>
         </div>
       </div>
-      {/* <div className="login-form">
-			<h1 className="heading">Update MyLeave</h1>
-			<Alert />
-			<br />
-			<form className="form" onSubmit={(e) => onSubmit(e)}>
-            <div className="form-group">
-				<UpdateDatePickers  formData={formData} setFormData={setFormData}/>
-				</div>
-				<div className="form-group">
-					<input
-						type="text"
-						placeholder="Add leaveCategory"
-						name="leaveCategory"
-						value={leaveCategory}
-						onChange={(e) => onChange(e)}
-						required
-					/>
-				</div>
-				<div className="form-group">
-					<input
-						type="text"
-						placeholder="Add leaveDescription"
-						name="leaveDescription"
-						value={leaveDescription}
-						onChange={(e) => onChange(e)}
-						required
-					/>
-				</div>
-				<input type="submit" className="btn" value="submit" />
-			</form>
-			
-		</div> */}
     </>
   );
 };

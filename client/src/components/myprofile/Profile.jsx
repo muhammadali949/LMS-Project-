@@ -85,7 +85,7 @@ function Profile() {
   const adminleave = useSelector((state) => state.adminleave);
 
   const auth = useSelector((state) => state.auth);
-  let date = auth.user.datepicker;
+  let date = auth?.user?.datepicker;
   const newDate = new Date(date);
   let month = newDate.getMonth();
   useEffect(() => {
@@ -95,7 +95,7 @@ function Profile() {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/users/authid?id=${auth.user.manager}&type=single`
+        `http://localhost:5000/users/authid?id=${auth?.user?.manager}&type=single`
       )
       .then((res) => {
         setManageremail(res.data.email);
@@ -104,7 +104,7 @@ function Profile() {
   }, []);
   const getLeaveById = async () => {
     await axios
-      .get(`http://localhost:5000/users/request/userleave/${auth.user._id}`)
+      .get(`http://localhost:5000/users/request/userleave/${auth?.user?._id}`)
       .then((res) => {
         res.data.map((data) => {
           if (data.status == 'Granted') {
@@ -113,7 +113,6 @@ function Profile() {
         });
       });
   };
-  console.log(count);
   useEffect(() => {
     getLeaveById();
   }, []);
@@ -123,7 +122,6 @@ function Profile() {
       <h3 style={{ marginTop: '5px' }}>My Profile</h3>
       <div
         style={{
-          minHeight: '85vh',
           width: '100%',
           borderRadius: '0px',
           background: '#F5F5F5',
@@ -151,7 +149,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Emp ID :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.employee} </Grid>
+            <Grid xs={8}>{auth?.user?.employee} </Grid>
           </Grid>
           <Grid
             style={{
@@ -166,7 +164,7 @@ function Profile() {
               Emp Name :{' '}
             </Grid>
             <Grid xs={8}>
-              {`${auth.user.firstname} ${auth.user.lastname}`}{' '}
+              {`${auth?.user?.firstname} ${auth?.user?.lastname}`}{' '}
             </Grid>
           </Grid>
           <Grid
@@ -181,7 +179,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Gender :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.gender} </Grid>
+            <Grid xs={8}>{auth?.user?.gender} </Grid>
           </Grid>
         </Grid>
         <Grid container className={classes.bodyContainer}>
@@ -197,7 +195,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Emp Email ID :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.email} </Grid>
+            <Grid xs={8}>{auth?.user?.email} </Grid>
           </Grid>
           <Grid
             style={{
@@ -211,7 +209,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Phone No :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.phoneNo} </Grid>
+            <Grid xs={8}>{auth?.user?.phoneNo} </Grid>
           </Grid>
           <Grid
             style={{
@@ -225,7 +223,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Department :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.department} </Grid>
+            <Grid xs={8}>{auth?.user?.department} </Grid>
           </Grid>
         </Grid>
         <Grid className={classes.bodyContainer} container>
@@ -242,7 +240,7 @@ function Profile() {
               Birthday :{' '}
             </Grid>
             <Grid xs={8}>
-              {moment(auth.user.datepicker).format('DD/MM/YYYY')}{' '}
+              {moment(auth?.user?.datepicker).format('DD/MM/YYYY')}{' '}
             </Grid>
           </Grid>
           <Grid
@@ -273,7 +271,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Position :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.position} </Grid>
+            <Grid xs={8}>{auth?.user?.position} </Grid>
           </Grid>
         </Grid>
         <Grid className={classes.bodyContainer}>
@@ -289,7 +287,7 @@ function Profile() {
             <Grid xs={4} style={{ fontWeight: 'bold' }}>
               Address :{' '}
             </Grid>
-            <Grid xs={8}>{auth.user.address} </Grid>
+            <Grid xs={8}>{auth?.user?.address} </Grid>
           </Grid>
         </Grid>
         <br />
@@ -308,36 +306,6 @@ function Profile() {
             lg={9}
             md={9}
           >
-            {/* <TableContainer component={Paper}>
-              <Table
-                className={classes.table}
-                size="small"
-                aria-label="a dense table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer> */}
             <TableContainer
               component={Paper}
               className={classes.rootTable}

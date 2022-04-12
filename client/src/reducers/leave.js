@@ -8,9 +8,9 @@ function leave(leave = [], action) {
     // console.log(payload)
     switch (type) {
         case GET_LEAVE:
-            return payload;
+            return payload
         case ADD_LEAVE:
-            return [payload, ...leave]
+            return payload
         case UPDATE_LEAVE:
             return leave.map((l) =>
                 l._id === payload._id ? payload : l

@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Alert from '../layout/Alert';
-import { addLeave } from '../../actions/leaveAction';
+import { addLeave, clearState } from '../../actions/leaveAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import DatePickers from '../auth/register/DatePickers';
-import { setAlert } from '../../actions/alert';
 import Button from '@material-ui/core/Button';
 import store from '../../store';
 import { getLeaveType } from '../../actions/adminLeaveAction';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import TextField from '@material-ui/core/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -32,34 +40,67 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#0EA900',
     },
   },
+  inputstyle: {
+    background: '#ffffff',
+    borderRadius: '10px 10px 0px 0px !important',
+    height: '50px',
+    padding: '14px',
+    borderBottom: '2px solid #000 !important',
+    border: 'none !important',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
-const AddLeave = () => {
-  const leave = useSelector((state) => state.leave);
+const AddLeave = ({ alerts }) => {
   const adminleave = useSelector((state) => state.adminleave);
-  console.log(adminleave);
   const auth = useSelector((state) => state.auth);
+  const leave = useSelector((state) => state.leave);
   const dispatch = useDispatch();
-  const [leaveDate, setLeaveDate] = useState(new Date());
-  const [leaveCategory, setLeaveCategory] = useState('');
-  const [leaveDescription, setLeaveDescription] = useState('');
   const classes = useStyles();
-
-  const Handlesubmit = async (e) => {
-    e.preventDefault();
-    dispatch(
-      addLeave({
-        leaveDate,
-        leaveCategory,
-        leaveDescription,
-        userid: auth.user._id,
-        name: `${auth.user.firstname} ${auth.user.lastname}`,
-        manager: auth.user.manager,
-      })
-    );
-  };
+  const navigate = useNavigate();
+  console.log('this is the user leave');
+  console.log(leave);
+  const formik = useFormik({
+    initialValues: {
+      leaveDate: new Date(),
+      leaveCategory: '',
+      leaveDescription: '',
+    },
+    validationSchema: Yup.object({
+      leaveCategory: Yup.string().required('Leave Category is required'),
+      leaveDescription: Yup.string().required('Leave Description is required'),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      if (alert?.length === 0) {
+        let leaveDate = moment(values.leaveDate).format('DD/MM/YYYY');
+        let leaveCategory = values.leaveCategory;
+        let leaveDescription = values.leaveDescription;
+        dispatch(
+          addLeave({
+            leaveDate,
+            leaveCategory,
+            leaveDescription,
+            userid: auth.user._id,
+            name: `${auth.user.firstname} ${auth.user.lastname}`,
+            manager: auth.user.manager,
+          })
+        );
+      }
+    },
+  });
+  if (leave[0]?.msg !== 'your leave request has been send') {
+    store.dispatch(clearState());
+    navigate('/userleave');
+  }
   useEffect(() => {
     store.dispatch(getLeaveType());
   }, []);
+
   return (
     <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>Apply For Leave</h3>
@@ -75,14 +116,18 @@ const AddLeave = () => {
       >
         <Grid style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
           <br />
-          <form noValidate autoComplete="off">
+          <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
             <label htmlFor="">Leave Type</label>
             <select
-              name="select"
-              className="inputstyle"
               placeholder="Enter a Description"
-              value={leaveCategory}
-              onChange={(event) => setLeaveCategory(event.target.value)}
+              name="leaveCategory"
+              className={
+                formik.touched.leaveCategory && formik.errors.leaveCategory
+                  ? 'inputstyleTwo'
+                  : 'inputstyle'
+              }
+              onChange={formik.handleChange}
+              value={formik.values.leaveCategory}
             >
               <option value="" disabled hidden>
                 Select Leave Type
@@ -92,7 +137,7 @@ const AddLeave = () => {
                   <option
                     key={n._id}
                     value={n.leaveType}
-                    selected={leaveCategory}
+                    selected={formik.values.leaveCategory}
                     placeholder="Enter a Description"
                   >
                     {n.leaveType}
@@ -100,22 +145,56 @@ const AddLeave = () => {
                 );
               })}
             </select>
+            {formik.touched.leaveCategory && formik.errors.leaveCategory ? (
+              <div style={{ color: 'red' }}>{formik.errors.leaveCategory}</div>
+            ) : null}
             <br />
             <br />
             <label htmlFor="">Date</label>
-            <DatePickers datepicker={leaveDate} setDatePicker={setLeaveDate} />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker
+                name="leaveDate"
+                minDate={new Date()}
+                onChange={(val) => {
+                  //val is the variable which contain the selected date
+                  //You can set it anywhere
+                  formik.setFieldValue('leaveDate', val);
+                }}
+                value={formik.values.leaveDate}
+                renderInput={(params) => (
+                  <TextField
+                    className={classes.inputstyle}
+                    style={{ width: '100%' }}
+                    {...params}
+                    InputProps={{ disableUnderline: true }}
+                  />
+                )}
+              />
+            </LocalizationProvider>
             <br />
             <br />
             <label htmlFor="">Description</label>
             <input
               id="standard-basic"
-              className="inputstyle"
               placeholder="Enter a Description"
-              value={leaveDescription}
-              onChange={(e) => setLeaveDescription(e.target.value)}
               label="Standard"
+              name="leaveDescription"
+              className={
+                formik.touched.leaveDescription &&
+                formik.errors.leaveDescription
+                  ? 'inputstyleTwo'
+                  : 'inputstyle'
+              }
+              onChange={formik.handleChange}
+              value={formik.values.leaveDescription}
               fullWidth
             />
+            {formik.touched.leaveDescription &&
+            formik.errors.leaveDescription ? (
+              <div style={{ color: 'red' }}>
+                {formik.errors.leaveDescription}
+              </div>
+            ) : null}
             <br />
             <br />
             <Alert />
@@ -123,7 +202,7 @@ const AddLeave = () => {
               variant="contained"
               className={classes.btn}
               color="secondary"
-              onClick={Handlesubmit}
+              type="submit"
             >
               Apply
             </Button>
@@ -131,35 +210,15 @@ const AddLeave = () => {
         </Grid>
       </div>
     </div>
-    // <div className="register-form">
-    // 	<h1 className="heading">Add Leave</h1>
-    // 	<Alert />
-    // 	<br />
-    // 	<form className="form">
-    //         <div className="form-group" style={{marginLeft:'252px'}}>
-    //         <DatePickers datepicker={leaveDate} setDatePicker={setLeaveDate} />
-    //         </div>
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="text"
-    // 				placeholder="leaveCategory"
-    // 				value={leaveCategory}
-    // 				onChange={(e) => setLeaveCategory(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="text"
-    // 				placeholder="leaveDescription"
-    // 				value={leaveDescription}
-    // 				onChange={(e) => setLeaveDescription(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<button  className="btn btn-primary" onClick={Handlesubmit}>Add Leave</button>
-    // 	</form>
-
-    // </div>
   );
 };
 
-export default AddLeave;
+AddLeave.propTypes = {
+  alerts: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  alerts: state.alert,
+});
+
+export default connect(mapStateToProps)(AddLeave);

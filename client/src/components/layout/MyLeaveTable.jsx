@@ -44,21 +44,14 @@ const useStyles = makeStyles({
   },
 });
 
-function MyLeaveTable({ HandleDeleteLeaveType, id }) {
+function MyLeaveTable({
+  HandleDeleteLeaveType,
+  id,
+  leaveMy,
+  setleaveMy,
+  getLeaveById,
+}) {
   const classes = useStyles();
-  const [leaveMy, setleaveMy] = useState([]);
-
-  const getLeaveById = async () => {
-    await axios
-      .get(`http://localhost:5000/users/request/userleave/${id}`)
-      .then((res) => {
-        setleaveMy(res.data);
-        console.log(res.data);
-      });
-  };
-  useEffect(() => {
-    getLeaveById();
-  }, []);
 
   const HandleDelete = (id) => {
     HandleDeleteLeaveType(id);
@@ -99,26 +92,27 @@ function MyLeaveTable({ HandleDeleteLeaveType, id }) {
           </TableHead>
           <TableBody>
             {leaveMy?.map((row) => (
-              <TableRow key={row._id}>
+              <TableRow key={row?._id}>
                 <TableCell component="th" scope="row">
-                  {moment(row.leaveDate).format('DD/MM/YYYY')}
+                  {/* {moment(row.leaveDate).format('DD/MM/YYYY')} */}
+                  {row.leaveDate}
                 </TableCell>
-                <TableCell>{row.leaveCategory}</TableCell>
-                <TableCell>{row.leaveDescription}</TableCell>
-                <TableCell>{row.status}</TableCell>
+                <TableCell>{row?.leaveCategory}</TableCell>
+                <TableCell>{row?.leaveDescription}</TableCell>
+                <TableCell>{row?.status}</TableCell>
 
                 <TableCell>
                   <div style={{ display: 'flex', justifyContent: 'start' }}>
                     <IconButton
                       className={classes.button1}
                       component={Link}
-                      to={`/updatemyleave/${row._id}`}
+                      to={`/updatemyleave/${row?._id}`}
                     >
                       <LaunchIcon />
                     </IconButton>
                     <IconButton
                       className={classes.button2}
-                      onClick={() => HandleDelete(row._id)}
+                      onClick={() => HandleDelete(row?._id)}
                     >
                       <DeleteIcon className={classes.delete} />
                     </IconButton>
@@ -126,26 +120,6 @@ function MyLeaveTable({ HandleDeleteLeaveType, id }) {
                 </TableCell>
               </TableRow>
             ))}
-            {/* {adminleave?.map((row) => (
-              <TableRow key={row?.id}>
-                <TableCell
-                  style={{ borderBottom: 'none' }}
-                  component="th"
-                  scope="row"
-                >
-                  {row?.leaveType}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row.fat}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row.carbs}
-                </TableCell>
-              </TableRow>
-            ))} */}
           </TableBody>
         </Table>
       </TableContainer>

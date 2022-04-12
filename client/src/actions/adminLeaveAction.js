@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { ADD_LEAVE_TYPE, DELETE_LEAVE_TYPE, GET_LEAVE_TYPE, UPDATE_LEAVE_TYPE } from "./adminLeaveType";
 import { setAlert } from "./alert";
 

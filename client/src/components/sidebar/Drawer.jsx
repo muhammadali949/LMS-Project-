@@ -88,12 +88,12 @@ const useStyles = makeStyles((theme) => ({
 const menuItems = [
   {
     text: 'My Profile',
-    icon: <PermIdentityIcon color="gray" />,
+    icon: <PermIdentityIcon style={{ color: '#000' }} />,
     path: '/myprofile',
   },
   {
     text: 'Change Password',
-    icon: <UpdateIcon color="gray" />,
+    icon: <UpdateIcon style={{ color: '#000' }} />,
     path: '/changepassword',
   },
 ];
@@ -177,7 +177,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
               onClick={() => setCheck((prevCheck) => !prevCheck)}
             >
               <ListItemIcon>
-                <SpeakerNotesIcon />
+                <SpeakerNotesIcon style={{ color: '#000' }} />
               </ListItemIcon>
               <ListItemText primary="Leave" />
               {check ? (
@@ -215,7 +215,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
               onClick={() => setEmpCheck((prevCheck) => !prevCheck)}
             >
               <ListItemIcon>
-                <PersonIcon />
+                <PersonIcon style={{ color: '#000' }} />
               </ListItemIcon>
               <ListItemText primary="Employee's" />
               {empcheck ? (
@@ -253,7 +253,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
               onClick={() => setLeaveCheck((prevCheck) => !prevCheck)}
             >
               <ListItemIcon>
-                <CodeIcon />
+                <CodeIcon style={{ color: '#000' }} />
               </ListItemIcon>
               <ListItemText primary="Leave Type" />
               {leaveCheck ? (
@@ -286,7 +286,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
         ) : null}
         <ListItem button onClick={() => logout()}>
           <ListItemIcon>
-            <ExitToAppIcon />
+            <ExitToAppIcon style={{ color: '#000' }} />
           </ListItemIcon>
           <ListItemText primary="Sign out" />
         </ListItem>

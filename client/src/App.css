@@ -2,14 +2,17 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: Nunito !important;
+font-style: 'Regular';
+font-size: 16px;
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 i {
-  font-family: 'Poppins', sans-serif;
+  font-family: Nunito, sans-serif !important;
   cursor: pointer;
 }
 

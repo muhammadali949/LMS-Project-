@@ -10,7 +10,7 @@ import {
 
 const initialState = {
     token: localStorage.getItem("token"),
-    isAuthenticated: null,
+    isAuthenticated: !!localStorage.getItem("token"),
     loading: true,
     user: null,
     datepicker: null
@@ -23,7 +23,7 @@ function auth(state = initialState, action) {
         case USER_LOADED:
             return {
                 ...state,
-                isAuthenticated: true,
+                isAuthenticated: !!localStorage.getItem("token"),
                 loading: false,
                 user: payload,
             };
@@ -46,8 +46,10 @@ function auth(state = initialState, action) {
             return {
                 ...state,
                 token: null,
-                isAuthenticated: false,
+                isAuthenticated: !!localStorage.getItem("token"),
                 loading: false,
+
+
             };
         default:
             return state;

@@ -25,8 +25,20 @@ const useStyles = makeStyles((theme) => ({
 function UserLeave() {
   const auth = useSelector((state) => state.auth);
   const classes = useStyles();
+  const [leaveMy, setleaveMy] = useState([]);
 
-  const id = auth.user._id;
+  const getLeaveById = async () => {
+    await axios
+      .get(`http://localhost:5000/users/request/userleave/${id}`)
+      .then((res) => {
+        setleaveMy(res.data);
+      });
+  };
+  useEffect(() => {
+    getLeaveById();
+  });
+
+  const id = auth?.user?._id;
   const dispatch = useDispatch();
   const HandleDeleteLeaveType = (id) => {
     dispatch(deleteLeave(id));
@@ -49,7 +61,13 @@ function UserLeave() {
         <br />
         <br />
         <br />
-        <MyLeaveTable HandleDeleteLeaveType={HandleDeleteLeaveType} id={id} />
+        <MyLeaveTable
+          HandleDeleteLeaveType={HandleDeleteLeaveType}
+          id={id}
+          leaveMy={leaveMy}
+          setleaveMy={setleaveMy}
+          getLeaveById={getLeaveById}
+        />
       </div>
     </div>
   );

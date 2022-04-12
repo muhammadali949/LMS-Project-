@@ -12,9 +12,6 @@ export default function SelectUser({ manager, setManager }) {
   useEffect(() => {
     getAllusers();
   }, []);
-  console.log('*********');
-  console.log(users);
-  console.log('*********');
   return (
     <>
       <label htmlFor="">Manager</label>

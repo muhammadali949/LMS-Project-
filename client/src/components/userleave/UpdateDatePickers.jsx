@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
+import TextField from '@material-ui/core/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
@@ -11,12 +11,10 @@ const useStyles = makeStyles({
   inputstyle: {
     background: '#ffffff',
     borderRadius: '10px 10px 0px 0px !important',
-    width: '100%',
     height: '50px',
     padding: '14px',
     borderBottom: '2px solid #000 !important',
     border: 'none !important',
-    outline: 'none !important',
   },
 });
 function UpdateDatePickers({ formData, setFormData }) {
@@ -32,10 +30,10 @@ function UpdateDatePickers({ formData, setFormData }) {
           }}
           renderInput={(params) => (
             <TextField
-              variant="standard"
+              style={{ width: '100%' }}
               className={classes.inputstyle}
-              style={{ padding: '17px' }}
               {...params}
+              InputProps={{ disableUnderline: true }}
             />
           )}
         />

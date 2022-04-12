@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,9 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@material-ui/core/TextField';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DraftsIcon from '@material-ui/icons/Drafts';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+
+import * as Yup from 'yup';
 import './Login.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,24 +67,30 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = ({ login, isAuthenticated }) => {
   const classes = useStyles();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+  const alert = useSelector((state) => state.alert);
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email').required('Email is required'),
+      password: Yup.string().required('Password is required'),
+    }),
+    onSubmit: (values) => {
+      if (alert?.length === 0) {
+        let email = values.email;
+        let password = values.password;
+        login(email, password);
+      }
+    },
   });
 
-  const { email, password } = formData;
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    login(email, password);
-  };
-
   // Redirect if logged in
+
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/myprofile" />;
   }
 
   return (
@@ -136,7 +145,11 @@ const Login = ({ login, isAuthenticated }) => {
               </Grid>
               <Grid>
                 <Paper className={classes.paper}>
-                  <form onSubmit={(e) => onSubmit(e)}>
+                  <form
+                    noValidate
+                    autoComplete="off"
+                    onSubmit={formik.handleSubmit}
+                  >
                     <div>
                       <input
                         startAdornment={
@@ -145,28 +158,46 @@ const Login = ({ login, isAuthenticated }) => {
                           </InputAdornment>
                         }
                         style={{ padding: '10px' }}
-                        className="main"
                         type="email"
-                        placeholder="email"
+                        placeholder="Email"
                         name="email"
-                        value={email}
-                        onChange={(e) => onChange(e)}
+                        className={
+                          formik.touched.email && formik.errors.email
+                            ? 'mainTwo'
+                            : 'main'
+                        }
+                        onChange={formik.handleChange}
+                        value={formik.values.email}
                         required
                       />
+                      {formik.touched.email && formik.errors.email ? (
+                        <div style={{ color: 'red' }}>
+                          {formik.errors.email}
+                        </div>
+                      ) : null}
                     </div>
                     <div>
                       <br />
                       <input
                         style={{ padding: '10px' }}
-                        className="main"
                         type="password"
                         placeholder="Password"
                         name="password"
                         minLength="6"
-                        value={password}
-                        onChange={(e) => onChange(e)}
+                        className={
+                          formik.touched.password && formik.errors.password
+                            ? 'mainTwo'
+                            : 'main'
+                        }
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
                         required
                       />
+                      {formik.touched.password && formik.errors.password ? (
+                        <div style={{ color: 'red' }}>
+                          {formik.errors.password}
+                        </div>
+                      ) : null}
                     </div>
                     <br />
                     <Alert />
@@ -178,10 +209,10 @@ const Login = ({ login, isAuthenticated }) => {
                       }}
                     >
                       <input
-                        type="submit"
                         className="btnTwo"
                         style={{ color: '#fff' }}
                         value="Login"
+                        type="submit"
                       />
                     </div>
                   </form>{' '}

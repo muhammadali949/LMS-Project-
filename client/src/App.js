@@ -29,8 +29,19 @@ import Profile from "./components/myprofile/Profile";
 import ManageEmployee from "./components/admin/manageEmployee/ManageEmployee";
 import EmployeeDetail from "./components/admin/manageEmployee/EmployeeDetail";
 import EmployeeUpdate from "./components/admin/manageEmployee/EmployeeUpdate";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#fefefe'
+    },
+  },
+  typography: {
+    fontFamily: 'Nunito',
 
+  }
+})
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -40,153 +51,166 @@ function App({ auth: { user } }) {
 
   useEffect(() => {
     store.dispatch(loadUser());
-
   }, []);
+
   return (
     <>
-      <div>
-        <Router>
-          <>
-            <Routes>
-              <Route exact path="/" element={<Landing />} />
+      <ThemeProvider theme={theme}>
+        <div>
+          <Router>
+            <>
+              <Routes>
+                <Route exact path="/" element={<Landing />} />
 
-              <Route
-                exact
-                path="/dashboard"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <Dashboard />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/myprofile"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <Profile />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/leave"
-                element={
-                  <PrivateRoute>
-                    <UserLeaveAvailable />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/addleave"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <AddLeave />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/updatestatus/:id"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <UpdateStatus />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/userleave"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <UserLeave />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/managerleave"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <ManagerLeave />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/changepassword"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <UpdatePassword />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
-                path="/updatemyleave/:id"
-                element={
-                  <PrivateRoute>
-                    <DrawerBar>
-                      <UpdateMyLeave />
-                    </DrawerBar>
-                  </PrivateRoute>
-                }
-              />
-              {
-                user?.role == 'admin' ? <Route exact path="/updatepage/:id" element={<DrawerBar><UpdatePage /></DrawerBar>} />
-                  : <Route exact path="/admin" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<DrawerBar><UpdateLeaveType /></DrawerBar>} />
-                  : <Route exact path="/admin" element={<NotFound />} />
-              }
-              {
 
-                user?.role == 'admin' ? <Route exact path="/addleavetype" element={<DrawerBar><AddLeaveType /></DrawerBar>} />
-                  : <Route exact path="/admin" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/admin" element={<Admin />} />
-                  : <Route exact path="/admin" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/register" element={<DrawerBar><Register /></DrawerBar>} />
-                  : <Route exact path="/register" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/employee" element={<DrawerBar><ManageEmployee /></DrawerBar>} />
-                  : <Route exact path="/employee" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/updateemployee/:id" element={<DrawerBar><EmployeeUpdate /></DrawerBar>} />
-                  : <Route exact path="/updateemployee/:id" element={<NotFound />} />
-              }
-              {
-                user?.role == 'admin' ? <Route exact path="/employee/:id" element={<DrawerBar><EmployeeDetail /></DrawerBar>} />
-                  : <Route exact path="/employee/:id" element={<NotFound />} />
-              }
+                <Route
+                  exact
+                  path="/myprofile"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <Profile />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/leave"
+                  element={
+                    <PrivateRoute>
+                      <UserLeaveAvailable />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/addleave"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <AddLeave />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/updatestatus/:id"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <UpdateStatus />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/userleave"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <UserLeave />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/managerleave"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <ManagerLeave />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/changepassword"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <UpdatePassword />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path="/updatemyleave/:id"
+                  element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <UpdateMyLeave />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  }
+                />
 
-              <Route exact path="/login" element={<Login />} />
-              <Route path='*' exact={true} element={<NotFound />} />
-            </Routes>
-          </>
-        </Router>
-      </div>
+                {
+                  user?.role == 'admin' ? <Route
+                    exact
+                    path="/dashboard"
+                    element={
+                      <PrivateRoute>
+                        <DrawerBar>
+                          <Dashboard />
+                        </DrawerBar>
+                      </PrivateRoute>
+                    }
+                  />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/updatepage/:id" element={
+                    <PrivateRoute>
+                      <DrawerBar>
+                        <UpdatePage />
+                      </DrawerBar>
+                    </PrivateRoute>
+                  } />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<PrivateRoute><DrawerBar><UpdateLeaveType /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+
+                  user?.role == 'admin' ? <Route exact path="/addleavetype" element={<PrivateRoute><DrawerBar><AddLeaveType /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/register" element={<PrivateRoute><DrawerBar><Register /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/register" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/employee" element={<PrivateRoute><DrawerBar><ManageEmployee /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/employee" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/updateemployee/:id" element={<PrivateRoute><DrawerBar><EmployeeUpdate /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/updateemployee/:id" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/employee/:id" element={<PrivateRoute><DrawerBar><EmployeeDetail /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/employee/:id" element={<NotFound />} />
+                }
+
+                <Route exact path="/login" element={<Login />} />
+                <Route path='*' exact={true} element={<NotFound />} />
+              </Routes>
+            </>
+          </Router>
+        </div>
+      </ThemeProvider>
     </>
   );
 }

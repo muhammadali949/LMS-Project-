@@ -69,7 +69,7 @@ const Landing = ({ isAuthenticated }) => {
   let navigate = useNavigate();
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/myprofile" />;
   }
 
   return (
