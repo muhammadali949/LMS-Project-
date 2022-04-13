@@ -56,7 +56,8 @@ function UserLeaveRequests(props) {
       }}
       xs={11}
     >
-      {' '}
+      <h1>Leatest Leave Application</h1>
+      <br />
       <TableContainer
         component={Paper}
         className={classes.rootTable}
@@ -69,13 +70,13 @@ function UserLeaveRequests(props) {
                 Name{' '}
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                leaveDate{' '}
+                Date{' '}
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                leaveCategory{' '}
+                Category{' '}
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                leaveDescription
+                Description
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
                 status

@@ -24,7 +24,7 @@ router.post('/leave', [
             res.status(400).json({ errors: [{ msg: "This Type Already Decleared" }] });
         } else {
             await newLeaveType.save()
-            res.json(newLeaveType);
+            res.status(201).json(newLeaveType);
         }
 
     } catch (error) {

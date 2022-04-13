@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../../../actions/./authAction/auth';
 import PropTypes from 'prop-types';
 import Alert from '../../layout/Alert';
 import { setAlert } from '../../../actions/alert';
 import { makeStyles } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import SelectUser from '../../auth/register/SelectUser';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
-
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
@@ -44,12 +41,10 @@ const useStyles = makeStyles((theme) => ({
   inputstyle: {
     background: '#ffffff',
     borderRadius: '10px 10px 0px 0px !important',
-    width: '100%',
     height: '50px',
     padding: '14px',
     borderBottom: '2px solid #000 !important',
     border: 'none !important',
-    outline: 'none ',
   },
 }));
 
@@ -148,9 +143,11 @@ const EmployeeUpdate = ({ setAlert, register }) => {
       .patch(`http://localhost:5000/users/${params.id}`, formData, config)
       .then((res) => {
         navigate(-1);
+      })
+      .catch((error) => {
+        console.log(error.code);
       });
   };
-
   return (
     <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }}>Apply For Leave</h3>
@@ -213,10 +210,10 @@ const EmployeeUpdate = ({ setAlert, register }) => {
                   }}
                   renderInput={(params) => (
                     <TextField
-                      variant="standard"
                       className={classes.inputstyle}
-                      style={{ padding: '17px' }}
+                      style={{ width: '100%' }}
                       {...params}
+                      InputProps={{ disableUnderline: true }}
                     />
                   )}
                 />

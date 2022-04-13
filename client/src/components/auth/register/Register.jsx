@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { register } from '../../../actions/./authAction/auth';
 import PropTypes from 'prop-types';
 import Alert from '../../layout/Alert';
-import { setAlert } from '../../../actions/alert';
+import { setAlert, remove } from '../../../actions/alert';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,9 @@ import TextField from '@material-ui/core/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import store from '../../../store';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -48,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
 const Register = ({ setAlert, register }) => {
   const classes = useStyles();
   const [users, setUsers] = useState([]);
+  const alert = useSelector((state) => state.alert);
+  const navigate = useNavigate();
+  console.log(alert);
+
   const getAllusers = () => {
     axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
       setUsers(user.data);
@@ -118,6 +125,10 @@ const Register = ({ setAlert, register }) => {
       });
     },
   });
+  if (alert[0]?.msg == 'Employee created successfully') {
+    store.dispatch(remove(alert[0]?.msg, alert[0]?.alertType, alert[0]?.id));
+    navigate('/employee');
+  }
   return (
     <>
       <form onSubmit={formik.handleSubmit} id="validation-forms">

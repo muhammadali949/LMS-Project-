@@ -24,6 +24,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CodeIcon from '@material-ui/icons/Code';
+import PublicIcon from '@material-ui/icons/Public';
 
 import PersonIcon from '@material-ui/icons/Person';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -85,6 +86,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
 }));
+const dashboard = [
+  {
+    text: 'Dashboard',
+    icon: <PublicIcon style={{ color: '#000' }} />,
+    path: '/admindashboard',
+  },
+];
 const menuItems = [
   {
     text: 'My Profile',
@@ -156,6 +164,26 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
+        {user?.role === 'admin' ? (
+          <>
+            {dashboard.map((item) => (
+              <>
+                <ListItem
+                  button
+                  key={item.text}
+                  onClick={() => navigate(item.path)}
+                  className={
+                    location.pathname == item.path ? classes.active : null
+                  }
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItem>
+              </>
+            ))}
+          </>
+        ) : null}
+        <Divider />
         {menuItems.map((item) => (
           <>
             <ListItem

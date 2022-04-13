@@ -9,6 +9,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import store from '../../../store';
+import { remove } from '../../../actions/alert';
+
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
@@ -34,7 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
 const AddLeaveType = ({ alerts }) => {
   const dispatch = useDispatch();
+  const alert = useSelector((state) => state.alert);
   const classes = useStyles();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       leaveType: '',
@@ -50,6 +56,10 @@ const AddLeaveType = ({ alerts }) => {
       dispatch(addLeaveType({ leaveType, numberLeave }));
     },
   });
+  if (alert[0]?.msg == 'successfully created') {
+    store.dispatch(remove(alert[0]?.msg, alert[0]?.alertType, alert[0]?.id));
+    navigate('/updateleavetype');
+  }
 
   return (
     <>

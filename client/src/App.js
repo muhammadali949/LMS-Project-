@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -30,6 +31,7 @@ import ManageEmployee from "./components/admin/manageEmployee/ManageEmployee";
 import EmployeeDetail from "./components/admin/manageEmployee/EmployeeDetail";
 import EmployeeUpdate from "./components/admin/manageEmployee/EmployeeUpdate";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import AdminDashboard from "./components/admin/dashborad/AdminDashboard";
 
 const theme = createMuiTheme({
   palette: {
@@ -39,7 +41,6 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Nunito',
-
   }
 })
 
@@ -176,6 +177,10 @@ function App({ auth: { user } }) {
                 }
                 {
                   user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<PrivateRoute><DrawerBar><UpdateLeaveType /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/admin" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/admindashboard" element={<PrivateRoute><DrawerBar><AdminDashboard /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/admin" element={<NotFound />} />
                 }
                 {

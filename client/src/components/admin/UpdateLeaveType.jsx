@@ -3,6 +3,7 @@ import LeaveTypeTable from '../layout/LeaveTypeTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteLeaveType, getLeaveType } from '../../actions/adminLeaveAction';
 import { makeStyles } from '@material-ui/core/styles';
+import store from '../../store';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -29,8 +30,7 @@ function UpdateLeaveType() {
     dispatch(deleteLeaveType(id));
   };
   useEffect(() => {
-    getLeaveType();
-    return () => {};
+    store.dispatch(getLeaveType());
   }, []);
   return (
     <div className={classes.mainContainer}>

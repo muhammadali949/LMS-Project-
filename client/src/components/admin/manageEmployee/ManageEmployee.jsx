@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import EmployeeTable from './EmployeeTable';
@@ -22,16 +22,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ManageEmployee() {
-  const auth = useSelector((state) => state.auth);
   const [deleteCheck, setDeleteCheck] = useState(false);
-  const [leave, setLeave] = useState([]);
   const classes = useStyles();
-  const id = auth.user._id;
   const [users, setUsers] = useState([]);
   const getAllusers = () => {
     axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
       setUsers(user.data);
-      console.log(user.data);
     });
   };
   useEffect(() => {

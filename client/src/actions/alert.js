@@ -9,6 +9,14 @@ export const setAlert =
                 type: SET_ALERT,
                 payload: { msg, alertType, id },
             });
+            if (!msg.includes('successfully')) {
+                setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
+            }
 
-            setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
+        };
+
+export const remove =
+    (msg, alertType, id) =>
+        (dispatch) => {
+            dispatch({ type: REMOVE_ALERT, payload: id })
         };

@@ -43,6 +43,9 @@ export const addLeaveType = ({ leaveType, numberLeave }) =>
                 body,
                 config
             )
+            if (res?.status == 201) {
+                dispatch(setAlert("successfully created", "success"))
+            }
             dispatch({
                 type: ADD_LEAVE_TYPE,
                 payload: res.data,
