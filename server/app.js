@@ -21,6 +21,8 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use("/users", require("./routes/auth"));
 app.use("/users", require("./routes/userRequest"));
 app.use("/admin", require("./routes/leavetype"));
+app.use("/admin", require("./routes/department"));
+
 
 const PORT = process.env.PORT || 5000
 

@@ -30,10 +30,13 @@ import Profile from "./components/myprofile/Profile";
 import ManageEmployee from "./components/admin/manageEmployee/ManageEmployee";
 import EmployeeDetail from "./components/admin/manageEmployee/EmployeeDetail";
 import EmployeeUpdate from "./components/admin/manageEmployee/EmployeeUpdate";
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { createTheme, ThemeProvider } from '@material-ui/core'
 import AdminDashboard from "./components/admin/dashborad/AdminDashboard";
+import AddDepartment from "./components/admin/department/AddDepartment";
+import ManageDepartment from "./components/admin/department/ManageDepartment";
+import UpdateDepartment from "./components/admin/department/UpdateDepartment";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: '#fefefe'
@@ -177,16 +180,16 @@ function App({ auth: { user } }) {
                 }
                 {
                   user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<PrivateRoute><DrawerBar><UpdateLeaveType /></DrawerBar></PrivateRoute>} />
-                    : <Route exact path="/admin" element={<NotFound />} />
+                    : <Route exact path="/updateleavetype" element={<NotFound />} />
                 }
                 {
                   user?.role == 'admin' ? <Route exact path="/admindashboard" element={<PrivateRoute><DrawerBar><AdminDashboard /></DrawerBar></PrivateRoute>} />
-                    : <Route exact path="/admin" element={<NotFound />} />
+                    : <Route exact path="/admindashboard" element={<NotFound />} />
                 }
                 {
 
                   user?.role == 'admin' ? <Route exact path="/addleavetype" element={<PrivateRoute><DrawerBar><AddLeaveType /></DrawerBar></PrivateRoute>} />
-                    : <Route exact path="/admin" element={<NotFound />} />
+                    : <Route exact path="/addleavetype" element={<NotFound />} />
                 }
                 {
                   user?.role == 'admin' ? <Route exact path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
@@ -203,6 +206,18 @@ function App({ auth: { user } }) {
                 {
                   user?.role == 'admin' ? <Route exact path="/updateemployee/:id" element={<PrivateRoute><DrawerBar><EmployeeUpdate /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/updateemployee/:id" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/adddepartment" element={<PrivateRoute><DrawerBar><AddDepartment /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="adddepartment" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/updatedepartment/:id" element={<PrivateRoute><DrawerBar><UpdateDepartment /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/updatedepartment/:id" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/managedepartment" element={<PrivateRoute><DrawerBar><ManageDepartment /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/managedepartment" element={<NotFound />} />
                 }
                 {
                   user?.role == 'admin' ? <Route exact path="/employee/:id" element={<PrivateRoute><DrawerBar><EmployeeDetail /></DrawerBar></PrivateRoute>} />

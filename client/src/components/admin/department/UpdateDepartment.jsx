@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Alert from '../layout/Alert';
+import Alert from '../../layout/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateLeaveType } from '../../actions/adminLeaveAction';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import { updateLeaveType } from '../../../actions/department/departmentAction';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -31,41 +31,42 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const UpdatePage = () => {
+const UpdateDepartment = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    leaveType: '',
-    numberLeave: '',
+    name: '',
+    shortName: '',
+    code: '',
   });
   const navigate = useNavigate();
   const { id } = useParams();
-  const { leaveType, numberLeave } = formData;
+  const { name, shortName, code } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(leaveType, numberLeave);
-    dispatch(updateLeaveType({ leaveType, numberLeave, _id: id }));
-    navigate('/updateleavetype');
+    dispatch(updateLeaveType({ name, shortName, code, _id: id }));
+    navigate('/managedepartment');
   };
   const getLeaveById = async (id) => {
-    await axios.get(`http://localhost:5000/admin/leave/${id}`).then((res) => {
-      setFormData(res.data);
-    });
+    await axios
+      .get(`http://localhost:5000/admin/department/${id}`)
+      .then((res) => {
+        setFormData(res.data);
+      });
   };
   useEffect(() => {
     getLeaveById(id);
-    return () => {};
   }, []);
 
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Update Leave Type</h3>
+        <h3 style={{ marginTop: '5px' }}>Update Department</h3>
         <div
           style={{
             minHeight: '100%',
@@ -84,9 +85,9 @@ const UpdatePage = () => {
             <input
               type="text"
               className="inputstyle"
-              placeholder="Add Leave Type"
-              name="leaveType"
-              value={leaveType}
+              placeholder="Add Name"
+              name="name"
+              value={name}
               onChange={(e) => onChange(e)}
               required
             />
@@ -95,9 +96,20 @@ const UpdatePage = () => {
             <input
               type="text"
               className="inputstyle"
-              placeholder="Add Number"
-              name="numberLeave"
-              value={numberLeave}
+              placeholder="Add Short Name"
+              name="shortName"
+              value={shortName}
+              onChange={(e) => onChange(e)}
+              required
+            />
+            <br />
+            <br />
+            <input
+              type="text"
+              className="inputstyle"
+              placeholder="Add Code"
+              name="code"
+              value={code}
               onChange={(e) => onChange(e)}
               required
             />
@@ -118,4 +130,4 @@ const UpdatePage = () => {
     </>
   );
 };
-export default UpdatePage;
+export default UpdateDepartment;

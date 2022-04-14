@@ -95,16 +95,19 @@ const dashboard = [
 ];
 const menuItems = [
   {
-    text: 'My Profile',
-    icon: <PermIdentityIcon style={{ color: '#000' }} />,
-    path: '/myprofile',
-  },
-  {
     text: 'Change Password',
     icon: <UpdateIcon style={{ color: '#000' }} />,
     path: '/changepassword',
   },
 ];
+const profile = [
+  {
+    text: 'My Profile',
+    icon: <PermIdentityIcon style={{ color: '#000' }} />,
+    path: '/myprofile',
+  },
+];
+
 const levaemenuItems = [
   {
     text: 'Apply Leave',
@@ -129,6 +132,16 @@ const Employees = [
     path: '/employee',
   },
 ];
+const departmentData = [
+  {
+    text: 'Add Department',
+    path: '/adddepartment',
+  },
+  {
+    text: 'Manage Department',
+    path: '/managedepartment',
+  },
+];
 const leaveType = [
   {
     text: 'Add Leave Type',
@@ -149,6 +162,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
   const [check, setCheck] = useState(false);
   const [empcheck, setEmpCheck] = useState(false);
   const [leaveCheck, setLeaveCheck] = useState(false);
+  const [departmentCheck, setDepartmentCheck] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -184,6 +198,26 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           </>
         ) : null}
         <Divider />
+        {user?.role === 'user' ? (
+          <>
+            {profile.map((item) => (
+              <>
+                <ListItem
+                  button
+                  key={item.text}
+                  onClick={() => navigate(item.path)}
+                  className={
+                    location.pathname == item.path ? classes.active : null
+                  }
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItem>
+                <hr />
+              </>
+            ))}{' '}
+          </>
+        ) : null}
         {menuItems.map((item) => (
           <>
             <ListItem
@@ -218,6 +252,44 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
             {check ? (
               <>
                 {levaemenuItems.map((item) => (
+                  <>
+                    <ListItem
+                      button
+                      key={item.text}
+                      onClick={() => navigate(item.path)}
+                      className={
+                        location.pathname == item.path ? classes.active : null
+                      }
+                    >
+                      <ListItemIcon></ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItem>
+                  </>
+                ))}
+              </>
+            ) : null}
+          </>
+        ) : null}
+        {user?.role === 'admin' ? (
+          <>
+            <ListItem
+              button
+              onClick={() => setDepartmentCheck((prevCheck) => !prevCheck)}
+            >
+              <ListItemIcon>
+                <SpeakerNotesIcon style={{ color: '#000' }} />
+              </ListItemIcon>
+              <ListItemText primary="Department" />
+              {departmentCheck ? (
+                <ArrowDropDownIcon />
+              ) : (
+                <KeyboardArrowRightIcon fontSize="small" />
+              )}
+            </ListItem>
+            <hr />
+            {departmentCheck ? (
+              <>
+                {departmentData?.map((item) => (
                   <>
                     <ListItem
                       button

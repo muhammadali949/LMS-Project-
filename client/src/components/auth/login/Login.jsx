@@ -152,11 +152,6 @@ const Login = ({ login, isAuthenticated }) => {
                   >
                     <div>
                       <input
-                        startAdornment={
-                          <InputAdornment position="start">
-                            <DraftsIcon />
-                          </InputAdornment>
-                        }
                         style={{ padding: '10px' }}
                         type="email"
                         placeholder="Email"
