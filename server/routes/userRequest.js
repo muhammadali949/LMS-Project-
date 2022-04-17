@@ -19,7 +19,6 @@ router.post('/request', [
     }
     const user = req.body;
     const leaveDate = req.body.leaveDate;
-    const userid = req.body.userid;
 
     const newUser = new UserRequest(user);
 
@@ -94,7 +93,6 @@ router.get('/request/manageleave/:id', async (req, res) => {
 // @access  Private
 router.patch('/request/:id', async (req, res) => {
     const user = req.body;
-    console.log(user);
     const id = req.params.id
     const editUser = new UserRequest(user);
     try {

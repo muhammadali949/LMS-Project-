@@ -229,24 +229,26 @@ function AdminDashboard() {
             </Link>
           </Grid>
           <Grid item lg={3} md={3} xs={6}>
-            <Paper className={classes.boxThree}>
-              <h1 style={{ marginRight: 'auto', marginLeft: 'auto' }}>
-                Manages Leaves
-              </h1>
-              <br />
-              <div className={classes.boxThreeCircle}>
-                <h1
-                  style={{
-                    marginRight: 'auto',
-                    marginLeft: 'auto',
-                    fontSize: '26px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  12
+            <Link to="/allleave">
+              <Paper className={classes.boxThree}>
+                <h1 style={{ marginRight: 'auto', marginLeft: 'auto' }}>
+                  Manages Leaves
                 </h1>
-              </div>
-            </Paper>{' '}
+                <br />
+                <div className={classes.boxThreeCircle}>
+                  <h1
+                    style={{
+                      marginRight: 'auto',
+                      marginLeft: 'auto',
+                      fontSize: '26px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    12
+                  </h1>
+                </div>
+              </Paper>{' '}
+            </Link>
           </Grid>
         </Grid>
       </div>

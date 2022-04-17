@@ -63,8 +63,7 @@ const AddLeave = ({ alerts }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const navigate = useNavigate();
-  console.log('this is the user leave');
-  console.log(leave);
+  console.log(auth);
   const formik = useFormik({
     initialValues: {
       leaveDate: new Date(),
@@ -85,9 +84,14 @@ const AddLeave = ({ alerts }) => {
             leaveDate,
             leaveCategory,
             leaveDescription,
-            userid: auth.user._id,
-            name: `${auth.user.firstname} ${auth.user.lastname}`,
-            manager: auth.user.manager,
+            userid: auth?.user?._id,
+            name: `${auth?.user?.firstname} ${auth.user.lastname}`,
+            manager: auth?.user?.manager,
+            employee: auth?.user?.employee,
+            gender: auth?.user?.gender,
+            email: auth?.user?.email,
+            phoneNo: auth?.user?.phoneNo,
+            adminRemark: '',
           })
         );
       }

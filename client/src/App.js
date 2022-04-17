@@ -35,6 +35,8 @@ import AdminDashboard from "./components/admin/dashborad/AdminDashboard";
 import AddDepartment from "./components/admin/department/AddDepartment";
 import ManageDepartment from "./components/admin/department/ManageDepartment";
 import UpdateDepartment from "./components/admin/department/UpdateDepartment";
+import AllLeave from "./components/admin/leaveManagement/AllLeave";
+import LeaveDetails from "./components/admin/leaveManagement/LeaveDetails";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +46,11 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Nunito',
+    button: {
+      textTransform: 'none'
+    }
   }
+
 })
 
 if (localStorage.token) {
@@ -222,6 +228,14 @@ function App({ auth: { user } }) {
                 {
                   user?.role == 'admin' ? <Route exact path="/employee/:id" element={<PrivateRoute><DrawerBar><EmployeeDetail /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/employee/:id" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/allleave" element={<PrivateRoute><DrawerBar><AllLeave /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/allleave" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/leavedetails/:id" element={<PrivateRoute><DrawerBar><LeaveDetails /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/leavedetails/:id" element={<NotFound />} />
                 }
 
                 <Route exact path="/login" element={<Login />} />

@@ -5,6 +5,27 @@ const UserRequestSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    employee: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+    phoneNo: {
+        type: String,
+    },
+    email: {
+        type: String,
+    },
+    adminRemark: {
+        type: String,
+        default: 'Pending',
+
+    },
+    adminActionDate: {
+        type: String,
+        default: ''
+    },
     leaveDate: {
         type: String,
         required: true

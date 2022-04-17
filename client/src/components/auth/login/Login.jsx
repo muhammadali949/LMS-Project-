@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,9 +7,7 @@ import Alert from '../../layout/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 

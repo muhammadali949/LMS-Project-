@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import SelectData from '../layout/SelectData';
 import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
@@ -60,7 +59,6 @@ function UpdateStatus() {
   };
   useEffect(() => {
     getLeaveById(id);
-    return () => {};
   }, []);
   return (
     <>

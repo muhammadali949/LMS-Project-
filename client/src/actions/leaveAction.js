@@ -30,14 +30,14 @@ export const getLeave = () =>
             }
         }
     }
-export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager }) =>
+export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate }) =>
     async (dispatch) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager });
+        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate });
         try {
             const res = await axios.post(
                 "http://localhost:5000/users/request",
