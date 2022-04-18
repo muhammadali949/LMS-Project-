@@ -152,8 +152,8 @@ const leaveManagement = [
     path: '/pendingleave',
   },
   {
-    text: 'Granded Leave',
-    path: '/grandedleave',
+    text: 'Granted Leave',
+    path: '/grantedleave',
   },
   {
     text: 'Rejected Leave',

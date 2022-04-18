@@ -19,7 +19,21 @@ i {
 a {
   text-decoration: none;
 }
+.search-input{
+height: 50px;
+padding: 10px;
+border: none;
+background: #FFFFFF;
+box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.search-input:focus {
+  outline: none;
+}
+.page{
+  background: #FFFFFF;
+box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);
 
+}
 .btn {
   width: 52%;
   padding: 10px;

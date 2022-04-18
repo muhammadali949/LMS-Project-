@@ -36,7 +36,8 @@ router.post(
             phoneNo,
             email,
             password,
-            manager, } = req.body;
+            manager,
+            joinDate } = req.body;
         console.log(datepicker)
 
         try {
@@ -60,6 +61,7 @@ router.post(
                     email,
                     password,
                     manager,
+                    joinDate
                 });
 
                 //Encrypt Password

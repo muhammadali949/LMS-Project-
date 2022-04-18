@@ -91,6 +91,7 @@ const AddLeave = ({ alerts }) => {
             gender: auth?.user?.gender,
             email: auth?.user?.email,
             phoneNo: auth?.user?.phoneNo,
+            joinDate: auth?.user?.joinDate,
             adminRemark: '',
           })
         );

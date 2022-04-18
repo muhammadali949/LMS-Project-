@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE } from './leaveType';
-import { useNavigate } from 'react-router-dom';
+import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED } from './leaveType';
 
 export const getLeave = () =>
 
@@ -30,14 +29,95 @@ export const getLeave = () =>
             }
         }
     }
-export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate }) =>
+export const getLeavePending = () =>
+
     async (dispatch) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate });
+        try {
+            const res = await axios.get(
+                "http://localhost:5000/users/request/api?status=Pending",
+                config
+            );
+
+            dispatch({
+                type: GET_LEAVE_PENDEING,
+                payload: res.data,
+            });
+
+        } catch (err) {
+            const errors = err.response.data.errors;
+
+            if (errors) {
+                errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+            }
+        }
+    }
+export const getLeaveGranted = () =>
+
+    async (dispatch) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        try {
+            const res = await axios.get(
+                "http://localhost:5000/users/request/api?status=Granted",
+                config
+            );
+
+            dispatch({
+                type: GET_LEAVE_GRANTED,
+                payload: res.data,
+            });
+
+        } catch (err) {
+            const errors = err.response.data.errors;
+
+            if (errors) {
+                errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+            }
+        }
+    }
+export const getLeaveRejected = () =>
+
+    async (dispatch) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        try {
+            const res = await axios.get(
+                "http://localhost:5000/users/request/api?status=Rejected",
+                config
+            );
+
+            dispatch({
+                type: GET_LEAVE_REJECTED,
+                payload: res.data,
+            });
+
+        } catch (err) {
+            const errors = err.response.data.errors;
+
+            if (errors) {
+                errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+            }
+        }
+    }
+export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate }) =>
+    async (dispatch) => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate });
         try {
             const res = await axios.post(
                 "http://localhost:5000/users/request",

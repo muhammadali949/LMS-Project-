@@ -1,4 +1,6 @@
-import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE } from "../actions/leaveType";
+import {
+    ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED
+} from "../actions/leaveType";
 
 
 
@@ -10,6 +12,12 @@ function leave(leave = [], action) {
         case GET_LEAVE:
             return payload
         case ADD_LEAVE:
+            return payload
+        case GET_LEAVE_PENDEING:
+            return payload
+        case GET_LEAVE_GRANTED:
+            return payload
+        case GET_LEAVE_REJECTED:
             return payload
         case UPDATE_LEAVE:
             return leave.map((l) =>

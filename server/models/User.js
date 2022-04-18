@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema({
     department: {
         type: String,
     },
+    joinDate: {
+        type: Date,
+        required: true
+    },
     datepicker: {
         type: Date,
         required: true

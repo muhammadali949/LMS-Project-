@@ -66,6 +66,7 @@ const Register = ({ setAlert, register }) => {
   const formik = useFormik({
     initialValues: {
       datepicker: new Date(),
+      joinDate: new Date(),
       employee: '',
       gender: '',
       firstname: '',
@@ -88,6 +89,7 @@ const Register = ({ setAlert, register }) => {
       lastname: Yup.string().required('Lastname is required'),
       department: Yup.string().required('Department is required'),
       position: Yup.string().required('Position is required'),
+      joinDate: Yup.string().required('Join Date is required'),
       manager: Yup.string().required('Manager is required'),
       address: Yup.string().required('Address is required'),
       phoneNo: Yup.string().required('Phone No is required'),
@@ -109,8 +111,10 @@ const Register = ({ setAlert, register }) => {
       let manager = values.manager;
       let email = values.email;
       let password = values.password;
+      let joinDate = values.joinDate;
       register({
         datepicker,
+        joinDate,
         employee,
         gender,
         firstname,
@@ -318,7 +322,7 @@ const Register = ({ setAlert, register }) => {
                   <div style={{ color: 'red' }}>{formik.errors.email}</div>
                 ) : null}
               </Grid>
-              <Grid item lg={6} xs={12} md={6}>
+              <Grid item lg={3} xs={12} md={3}>
                 <label htmlFor="">Manager</label>
                 <select
                   name="manager"
@@ -344,6 +348,26 @@ const Register = ({ setAlert, register }) => {
                 {formik.touched.manager && formik.errors.manager ? (
                   <div style={{ color: 'red' }}>{formik.errors.manager}</div>
                 ) : null}
+              </Grid>
+              <Grid item lg={3} xs={12} md={3}>
+                <label htmlFor="">Join Date</label>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <MobileDatePicker
+                    name="joinDate"
+                    onChange={(val) => {
+                      formik.setFieldValue('joinDate', val);
+                    }}
+                    value={formik.values.joinDate}
+                    renderInput={(params) => (
+                      <TextField
+                        className={classes.inputstyle}
+                        style={{ width: '100%' }}
+                        {...params}
+                        InputProps={{ disableUnderline: true }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </Grid>
               <Grid item lg={6} xs={12}>
                 <label htmlFor="">Address</label>

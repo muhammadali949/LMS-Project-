@@ -62,6 +62,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
     password: '',
     phoneNo: '',
     position: '',
+    joinDate: null,
   });
   const params = useParams();
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
     manager,
     phoneNo,
     position,
+    joinDate,
   } = formData;
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -122,6 +124,8 @@ const EmployeeUpdate = ({ setAlert, register }) => {
       'Content-Type': 'application/json',
     },
   };
+  console.log(joinDate);
+
   const Handlesubmit = (e) => {
     e.preventDefault();
     console.log({
@@ -136,9 +140,9 @@ const EmployeeUpdate = ({ setAlert, register }) => {
       phoneNo,
       email,
       manager,
+      joinDate,
     });
 
-    console.log(datepicker);
     axios
       .patch(`http://localhost:5000/users/${params.id}`, formData, config)
       .then((res) => {
@@ -287,7 +291,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item lg={6} xs={12} md={6}>
+          <Grid item lg={3} xs={12} md={3}>
             <label htmlFor="">Manager</label>
             <select
               className="inputstyle"
@@ -306,6 +310,28 @@ const EmployeeUpdate = ({ setAlert, register }) => {
                 );
               })}
             </select>
+          </Grid>
+          <Grid item lg={3} xs={12} md={3}>
+            <label htmlFor="">Join Date</label>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Stack spacing={2}>
+                <MobileDatePicker
+                  name="joinDate"
+                  value={joinDate}
+                  onChange={(newValue) => {
+                    setFormData({ ...formData, joinDate: newValue });
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      className={classes.inputstyle}
+                      style={{ width: '100%' }}
+                      {...params}
+                      InputProps={{ disableUnderline: true }}
+                    />
+                  )}
+                />
+              </Stack>
+            </LocalizationProvider>{' '}
           </Grid>
           <Grid item lg={6} xs={12}>
             <label htmlFor="">Address</label>

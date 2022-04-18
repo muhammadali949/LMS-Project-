@@ -56,6 +56,7 @@ export const loadAllUser = () => async (dispatch) => {
 // Register User
 export const register = ({ datepicker,
     employee,
+    joinDate,
     gender,
     firstname,
     lastname,
@@ -86,6 +87,7 @@ export const register = ({ datepicker,
             email,
             password,
             manager,
+            joinDate
         });
 
         try {

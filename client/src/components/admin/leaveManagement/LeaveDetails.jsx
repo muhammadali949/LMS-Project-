@@ -80,7 +80,7 @@ function LeaveDetail() {
   console.log(id);
   console.log(data?.adminActionDate);
 
-  let date = data?.datepicker;
+  let date = data?.joinDate;
   const newDate = new Date(date);
   let month = newDate.getMonth();
   useEffect(() => {

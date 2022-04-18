@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AllLeavetable from './AllLeavetable';
-import { getLeave } from '../../../actions/leaveAction';
+import { getLeaveRejected } from '../../../actions/leaveAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,18 +21,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AllLeave() {
+function RejectedLeave() {
   const [q, setQ] = useState('');
 
   const classes = useStyles();
   const leave = useSelector((state) => state.leave);
 
   const dispatch = useDispatch();
-  console.log('*********************^^^^^^^^^^^^^^^');
-  console.log(leave);
-  console.log('*********************^^^^^^^^^^^^^^^');
+
   useEffect(() => {
-    dispatch(getLeave());
+    dispatch(getLeaveRejected());
   }, []);
 
   function search(rows) {
@@ -70,4 +68,4 @@ function AllLeave() {
   );
 }
 
-export default AllLeave;
+export default RejectedLeave;

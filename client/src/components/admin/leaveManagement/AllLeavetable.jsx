@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@material-ui/core/Button';
+import TablePagination from '@material-ui/core/TablePagination';
+
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
@@ -51,10 +53,22 @@ const useStyles = makeStyles({
   },
 });
 
-function AllLeavetable({ leave }) {
+function AllLeavetable({ leave, setQ, q }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, leave?.length - page * rowsPerPage);
   return (
     <Grid
       style={{
@@ -63,6 +77,36 @@ function AllLeavetable({ leave }) {
       }}
       xs={11}
     >
+      <Grid
+        container
+        xs={11}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Grid lg={6} xs={12}>
+          {' '}
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            className="page"
+            count={leave?.length}
+            style={{ width: '100%' }}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Grid>
+        <Grid lg={2} xs={12}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search Records"
+            onChange={(e) => setQ(e.target.value)}
+            value={q}
+          />
+        </Grid>
+      </Grid>
+      <br />
       <TableContainer
         component={Paper}
         className={classes.rootTable}
@@ -105,37 +149,44 @@ function AllLeavetable({ leave }) {
           </TableHead>
 
           <TableBody>
-            {leave?.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell>{row.leaveCategory}</TableCell>
-                <TableCell>{moment(row.date).format('DD/MM/YYYY')}</TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      row.status === 'Pending'
-                        ? '#EDBE17'
-                        : row.status === 'Granted'
-                        ? '#0EA900'
-                        : 'red',
-                  }}
-                >
-                  {row.status}
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={classes.btn}
-                    style={{ textTransform: 'none', fontSize: '8px' }}
-                    onClick={() => navigate(`/leavedetails/${row._id}`)}
+            {leave
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row._id}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell>{row.leaveCategory}</TableCell>
+                  <TableCell>{moment(row.date).format('DD/MM/YYYY')}</TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        row.status === 'Pending'
+                          ? '#EDBE17'
+                          : row.status === 'Granted'
+                          ? '#0EA900'
+                          : 'red',
+                    }}
                   >
-                    View
-                  </Button>
-                </TableCell>
+                    {row.status}
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={classes.btn}
+                      style={{ textTransform: 'none', fontSize: '8px' }}
+                      onClick={() => navigate(`/leavedetails/${row._id}`)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>

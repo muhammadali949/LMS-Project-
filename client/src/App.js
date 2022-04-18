@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect } from "react";
+
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
@@ -37,6 +38,10 @@ import ManageDepartment from "./components/admin/department/ManageDepartment";
 import UpdateDepartment from "./components/admin/department/UpdateDepartment";
 import AllLeave from "./components/admin/leaveManagement/AllLeave";
 import LeaveDetails from "./components/admin/leaveManagement/LeaveDetails";
+import { getLeave, getLeavePending } from "./actions/leaveAction";
+import PendingLeave from "./components/admin/leaveManagement/PendingLeave";
+import GrantedLeave from "./components/admin/leaveManagement/GrantedLeave";
+import RejectedLeave from "./components/admin/leaveManagement/RejectedLeave";
 
 const theme = createTheme({
   palette: {
@@ -59,9 +64,12 @@ if (localStorage.token) {
 
 function App({ auth: { user } }) {
 
+
+
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
+
 
   return (
     <>
@@ -233,6 +241,20 @@ function App({ auth: { user } }) {
                   user?.role == 'admin' ? <Route exact path="/allleave" element={<PrivateRoute><DrawerBar><AllLeave /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/allleave" element={<NotFound />} />
                 }
+                {
+                  user?.role == 'admin' ? <Route exact path="/pendingleave" element={<PrivateRoute><DrawerBar><PendingLeave /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/pendingleave" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/grantedleave" element={<PrivateRoute><DrawerBar><GrantedLeave /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/grantedleave" element={<NotFound />} />
+                }
+                {
+                  user?.role == 'admin' ? <Route exact path="/rejectedleave" element={<PrivateRoute><DrawerBar><RejectedLeave /></DrawerBar></PrivateRoute>} />
+                    : <Route exact path="/rejectedleave" element={<NotFound />} />
+                }
+
+
                 {
                   user?.role == 'admin' ? <Route exact path="/leavedetails/:id" element={<PrivateRoute><DrawerBar><LeaveDetails /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/leavedetails/:id" element={<NotFound />} />

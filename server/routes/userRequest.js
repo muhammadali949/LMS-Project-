@@ -48,6 +48,14 @@ router.get('/request', async (req, res) => {
         res.json({ message: error.message })
     }
 })
+router.get('/request/api', async (req, res) => {
+    try {
+        let userReq = await UserRequest.find({ status: req.query.status })
+        res.json(userReq);
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
 // @route   get by id /userRequest
 // @desc    Get Login user
 // @access  Private

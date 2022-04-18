@@ -49,6 +49,11 @@ const UserRequestSchema = new mongoose.Schema({
     manager: {
         type: String,
     },
+    joinDate: {
+        type: Date,
+        required: true,
+
+    },
     date: {
         type: Date,
         default: Date.now,
