@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   bodyContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginTop: '2%',
+    marginTop: '1%',
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '96%',
@@ -106,13 +106,14 @@ function EmployeeDetail() {
       .get(`http://localhost:5000/users/authid?id=${user?.manager}&type=single`)
       .then((res) => {
         setManageremail(res.data.email);
-        console.log(res.data);
       });
   }, [user.manager]);
 
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>My Profile</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        EMPLOYEE DETAILS
+      </h3>{' '}
       <div
         style={{
           minHeight: '85vh',
@@ -125,6 +126,22 @@ function EmployeeDetail() {
       >
         <br />
         <Grid container className={classes.bodyContainer}>
+          <Grid
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              alignContent: 'flex-start',
+            }}
+            xs={12}
+            lg={12}
+            sm={12}
+            md={12}
+          >
+            <Grid xs={12} style={{ fontWeight: 'bold' }}>
+              <div>Empployee Details</div>
+              <br />
+            </Grid>
+          </Grid>
           <Grid
             style={{
               display: 'flex',

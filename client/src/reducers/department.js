@@ -2,7 +2,6 @@ import { ADD_DEPARTMENT, DELETE_DEPARTMENT, UPDATE_DEPARTMENT, GET_DEPARTMENT } 
 
 function department(department = [], action) {
     const { type, payload } = action;
-    // console.log(payload)
     switch (type) {
         case GET_DEPARTMENT:
             return payload;

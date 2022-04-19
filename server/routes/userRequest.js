@@ -19,11 +19,13 @@ router.post('/request', [
     }
     const user = req.body;
     const leaveDate = req.body.leaveDate;
+    const userid = req.body.userid;
+
 
     const newUser = new UserRequest(user);
 
     try {
-        let user = await UserRequest.findOne({ leaveDate });
+        let user = await UserRequest.findOne({ leaveDate, userid });
 
         if (user) {
             res.status(409).json({ errors: [{ msg: "your leave request has been send" }] });

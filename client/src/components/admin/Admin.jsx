@@ -6,7 +6,6 @@ import UserLeaveRequests from '../layout/UserLeaveRequests';
 function Admin() {
   const dispatch = useDispatch();
   const leave = useSelector((state) => state.leave);
-  console.log(leave);
 
   useEffect(() => {
     dispatch(getLeave());

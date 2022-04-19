@@ -36,7 +36,7 @@ function UserLeave() {
   };
   useEffect(() => {
     getLeaveById();
-  });
+  }, []);
 
   const id = auth?.user?._id;
   const dispatch = useDispatch();

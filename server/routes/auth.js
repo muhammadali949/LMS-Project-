@@ -38,7 +38,6 @@ router.post(
             password,
             manager,
             joinDate } = req.body;
-        console.log(datepicker)
 
         try {
             // See if user exists
@@ -111,9 +110,7 @@ router.patch(
 
         const { password, _id, role, currentPassword, email } = req.body;
         let user = await User.findOne({ email });
-        console.log(user);
         const isMatch = await bcrypt.compare(currentPassword, user.password);
-        console.log(isMatch);
         if (!isMatch) {
             return res
                 .status(401)
@@ -186,7 +183,6 @@ router.get("/auth", auth, async (req, res) => {
 });
 
 router.get("/authid", auth, async (req, res) => {
-    console.log(req.query.id);
     try {
         const user = await User.findById(req.query.id);
         res.json(user);

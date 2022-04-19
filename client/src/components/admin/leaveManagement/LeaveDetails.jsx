@@ -9,17 +9,14 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { useParams } from 'react-router-dom';
 import TableContainer from '@material-ui/core/TableContainer';
 import { useSelector } from 'react-redux';
 import { getLeaveType } from '../../../actions/adminLeaveAction';
 import store from '../../../store';
-import { loadUser } from '../../../actions/authAction/auth';
 import moment from 'moment';
 import axios from 'axios';
 import { getLeave } from '../../../actions/leaveAction';
-import Button from '@material-ui/core/Button';
 import Modal from './Modal';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,8 +74,6 @@ function LeaveDetail() {
 
   const leave = useSelector((state) => state.leave);
   const { id } = useParams();
-  console.log(id);
-  console.log(data?.adminActionDate);
 
   let date = data?.joinDate;
   const newDate = new Date(date);
@@ -96,12 +91,13 @@ function LeaveDetail() {
   useEffect(() => {
     getLeaveById();
   }, [update]);
-  console.log(update);
 
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Leave Detail</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          LEAVE DETAILS
+        </h3>
         <div
           style={{
             width: '100%',
@@ -112,7 +108,7 @@ function LeaveDetail() {
           }}
         >
           <Grid className={classes.bodyContainer}>
-            <p style={{ fontWeight: 'bold' }}>Leave Detail</p>
+            <p style={{ fontWeight: 'bold' }}>Leave Details</p>
             <LaunchIcon />
           </Grid>
           <br />
@@ -360,7 +356,6 @@ function LeaveDetail() {
               md={9}
             >
               <TableContainer
-                component={Paper}
                 className={classes.rootTable}
                 style={{ background: '#F5F5F5' }}
               >

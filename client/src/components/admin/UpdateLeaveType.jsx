@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import LeaveTypeTable from '../layout/LeaveTypeTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteLeaveType, getLeaveType } from '../../actions/adminLeaveAction';
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UpdateLeaveType() {
+  const [q, setQ] = useState('');
   const adminleave = useSelector((state) => state.adminleave);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -32,9 +33,20 @@ function UpdateLeaveType() {
   useEffect(() => {
     store.dispatch(getLeaveType());
   }, []);
+  function search(rows) {
+    const columns = rows[0] && Object.keys(rows[0]);
+    return rows?.filter((row) =>
+      columns.some(
+        (column) =>
+          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
+  }
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>Manager Leave</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        MANAGE LEAVE TYPE
+      </h3>{' '}
       <div
         style={{
           minHeight: '59vh',
@@ -46,11 +58,11 @@ function UpdateLeaveType() {
         }}
       >
         <br />
-        <br />
-        <br />{' '}
         <LeaveTypeTable
-          adminleave={adminleave}
+          adminleave={search(adminleave)}
           HandleDeleteLeaveType={HandleDeleteLeaveType}
+          setQ={setQ}
+          q={q}
         />
       </div>
     </div>

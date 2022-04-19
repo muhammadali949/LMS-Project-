@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AllLeavetable from './AllLeavetable';
 import { getLeave } from '../../../actions/leaveAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -23,14 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
 function AllLeave() {
   const [q, setQ] = useState('');
-
+  const location = useLocation();
   const classes = useStyles();
   const leave = useSelector((state) => state.leave);
-
   const dispatch = useDispatch();
-  console.log('*********************^^^^^^^^^^^^^^^');
-  console.log(leave);
-  console.log('*********************^^^^^^^^^^^^^^^');
   useEffect(() => {
     dispatch(getLeave());
   }, []);
@@ -44,10 +41,14 @@ function AllLeave() {
       )
     );
   }
-
   return (
-    <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>All Leaves</h3>
+    <div
+      className={classes.mainContainer}
+      style={{ width: location.pathname == '/admindashboard' ? '100%' : '' }}
+    >
+      <h3 style={{ marginTop: '5px' }} className="title">
+        {location.pathname == '/admindashboard' ? null : 'LEAVE HISTORY'}
+      </h3>
       <div
         style={{
           minHeight: '59vh',
@@ -58,13 +59,7 @@ function AllLeave() {
           boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <br />
-        <br />
-        <br />
-
         <AllLeavetable leave={search(leave)} setQ={setQ} q={q} />
-        <br />
-        <br />
       </div>
     </div>
   );

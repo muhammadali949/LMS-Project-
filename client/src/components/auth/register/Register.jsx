@@ -53,7 +53,6 @@ const Register = ({ setAlert, register }) => {
   const [users, setUsers] = useState([]);
   const alert = useSelector((state) => state.alert);
   const navigate = useNavigate();
-  console.log(alert);
 
   const getAllusers = () => {
     axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
@@ -137,7 +136,9 @@ const Register = ({ setAlert, register }) => {
     <>
       <form onSubmit={formik.handleSubmit} id="validation-forms">
         <div className={classes.mainContainer}>
-          <h3 style={{ marginTop: '5px' }}>Add Employee</h3>
+          <h3 style={{ marginTop: '5px' }} className="title">
+            ADD EMPLOYEE
+          </h3>{' '}
           <div
             style={{
               width: '100%',

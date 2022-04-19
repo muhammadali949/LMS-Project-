@@ -64,10 +64,11 @@ const AddLeaveType = ({ alerts }) => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Leave Type</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          ADD LEAVE TYPE
+        </h3>{' '}
         <div
           style={{
-            minHeight: '100%',
             width: '100%',
             borderRadius: '0px',
             background: '#F5F5F5',
@@ -79,43 +80,46 @@ const AddLeaveType = ({ alerts }) => {
             style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
           >
             <br />
-            <br />
             <form onSubmit={formik.handleSubmit}>
-              <input
-                type="text"
-                placeholder="Add Leave Type"
-                name="leaveType"
-                className={
-                  formik.touched.leaveType && formik.errors.leaveType
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.leaveType}
-              />
-              <br />
+              <div>
+                <label htmlFor="">Leave Type</label>
+                <input
+                  type="text"
+                  placeholder="Add Leave Type"
+                  name="leaveType"
+                  className={
+                    formik.touched.leaveType && formik.errors.leaveType
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.leaveType}
+                />
+              </div>
               {formik.touched.leaveType && formik.errors.leaveType ? (
                 <div style={{ color: 'red' }}>{formik.errors.leaveType}</div>
               ) : null}
               <br />
-              <br />
-
-              <input
-                type="text"
-                placeholder="Add Number"
-                name="numberLeave"
-                className={
-                  formik.touched.numberLeave && formik.errors.numberLeave
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.numberLeave}
-              />
-              {formik.touched.numberLeave && formik.errors.numberLeave ? (
-                <div style={{ color: 'red' }}>{formik.errors.numberLeave}</div>
-              ) : null}
-              <br />
+              <div>
+                <label htmlFor="">Max Number Of Leave Allowed</label>
+                <input
+                  type="text"
+                  placeholder="Enter Max Number Of Leave Allowed"
+                  name="numberLeave"
+                  className={
+                    formik.touched.numberLeave && formik.errors.numberLeave
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.numberLeave}
+                />
+                {formik.touched.numberLeave && formik.errors.numberLeave ? (
+                  <div style={{ color: 'red' }}>
+                    {formik.errors.numberLeave}
+                  </div>
+                ) : null}
+              </div>
               <br />
               <Alert />
 
@@ -129,6 +133,7 @@ const AddLeaveType = ({ alerts }) => {
               </Button>
             </form>
           </Grid>
+          <br />
         </div>
       </div>
     </>

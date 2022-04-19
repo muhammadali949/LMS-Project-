@@ -2,7 +2,8 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
 * {
-  font-family: Nunito !important;
+  font-family: 'Nunito' !important;
+
 font-style: 'Regular';
 font-size: 16px;
 
@@ -12,7 +13,7 @@ font-size: 16px;
 }
 
 i {
-  font-family: Nunito, sans-serif !important;
+  font-family: 'Nunito', sans-serif !important;
   cursor: pointer;
 }
 
@@ -29,6 +30,14 @@ box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);
 .search-input:focus {
   outline: none;
 }
+.title{
+margin-bottom: 5px;
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+}
+
 .page{
   background: #FFFFFF;
 box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);

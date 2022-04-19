@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@material-ui/core/Button';
 import TablePagination from '@material-ui/core/TablePagination';
+import { useLocation } from 'react-router-dom';
 
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -58,6 +58,7 @@ function AllLeavetable({ leave, setQ, q }) {
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const location = useLocation();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -77,12 +78,26 @@ function AllLeavetable({ leave, setQ, q }) {
       }}
       xs={11}
     >
+      <br />
+      <h3 style={{ marginTop: '5px', fontWeight: 'bold' }}>
+        {location.pathname == '/admindashboard'
+          ? 'Latest Leave Applications'
+          : location.pathname == '/pendingleave'
+          ? 'Pending Leave'
+          : location.pathname == '/rejectedleave'
+          ? 'Rejected Leave'
+          : location.pathname == '/grantedleave'
+          ? 'Granted Leave'
+          : 'Leave History'}
+      </h3>
+      <br />
       <Grid
+        spacing={1}
         container
-        xs={11}
+        xs={12}
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <Grid lg={6} xs={12}>
+        <Grid item lg={5} xs={12} md={7} sm={12}>
           {' '}
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -96,19 +111,19 @@ function AllLeavetable({ leave, setQ, q }) {
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
         </Grid>
-        <Grid lg={2} xs={12}>
+        <Grid item lg={3} xs={12} md={4} sm={12}>
           <input
             type="text"
             className="search-input"
             placeholder="Search Records"
             onChange={(e) => setQ(e.target.value)}
+            style={{ width: '100%' }}
             value={q}
           />
         </Grid>
       </Grid>
       <br />
       <TableContainer
-        component={Paper}
         className={classes.rootTable}
         style={{ background: '#F5F5F5' }}
       >
@@ -153,11 +168,19 @@ function AllLeavetable({ leave, setQ, q }) {
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow key={row._id}>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ borderBottom: 'none' }}
+                  >
                     {row.name}
                   </TableCell>
-                  <TableCell>{row.leaveCategory}</TableCell>
-                  <TableCell>{moment(row.date).format('DD/MM/YYYY')}</TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row.leaveCategory}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {moment(row.date).format('DD/MM/YYYY')}
+                  </TableCell>
                   <TableCell
                     style={{
                       color:
@@ -166,12 +189,13 @@ function AllLeavetable({ leave, setQ, q }) {
                           : row.status === 'Granted'
                           ? '#0EA900'
                           : 'red',
+                      borderBottom: 'none',
                     }}
                   >
                     {row.status}
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
                     <Button
                       className={classes.btn}
                       style={{ textTransform: 'none', fontSize: '8px' }}

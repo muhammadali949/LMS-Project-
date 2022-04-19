@@ -6,19 +6,17 @@ import {
 
 function leave(leave = [], action) {
     const { type, payload } = action;
-    // console.log("this is the pay load")
-    // console.log(payload)
     switch (type) {
         case GET_LEAVE:
-            return payload
+            return payload.reverse()
         case ADD_LEAVE:
-            return payload
+            return payload.reverse()
         case GET_LEAVE_PENDEING:
-            return payload
+            return payload.reverse()
         case GET_LEAVE_GRANTED:
-            return payload
+            return payload.reverse()
         case GET_LEAVE_REJECTED:
-            return payload
+            return payload.reverse()
         case UPDATE_LEAVE:
             return leave.map((l) =>
                 l._id === payload._id ? payload : l

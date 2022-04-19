@@ -48,10 +48,7 @@ export default function Modal({ id, setupdate, update }) {
 
   const getLeaveById = async (id) => {
     await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
-      console.log('***********');
-      console.log(res.data);
       setIStatus(res.data);
-      console.log('***********');
     });
   };
   useEffect(() => {
@@ -77,9 +74,6 @@ export default function Modal({ id, setupdate, update }) {
     onSubmit: (values) => {
       let status = values.status;
       let adminRemark = values.adminRemark;
-      console.log(status);
-      console.log(adminRemark);
-      //   dispatch(addLeaveType({ leaveType, numberLeave }));
       const body = {
         _id: id,
         status: status,

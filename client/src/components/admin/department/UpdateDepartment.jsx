@@ -66,7 +66,9 @@ const UpdateDepartment = () => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Update Department</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          UPDATE DEPARTMENT
+        </h3>{' '}
         <div
           style={{
             minHeight: '100%',

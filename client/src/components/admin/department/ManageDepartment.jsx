@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import store from '../../../store';
@@ -29,16 +29,29 @@ function ManageDepartment() {
   const department = useSelector((state) => state.department);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [q, setQ] = useState('');
+
+  function search(rows) {
+    const columns = rows[0] && Object.keys(rows[0]);
+    return rows?.filter((row) =>
+      columns.some(
+        (column) =>
+          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
+  }
+
   const HandleDeletedepartment = (id) => {
     dispatch(deleteDepartment(id));
   };
-  console.log(department);
   useEffect(() => {
     store.dispatch(getDepartment());
   }, []);
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>Manager Leave</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        MANAGE DEPARTMENT
+      </h3>
       <div
         style={{
           minHeight: '59vh',
@@ -49,13 +62,13 @@ function ManageDepartment() {
           boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <br />
-        <br />
-        <br />{' '}
         <DepartmentTable
-          department={department}
+          department={search(department)}
           HandleDeletedepartment={HandleDeletedepartment}
+          setQ={setQ}
+          q={q}
         />
+        <br />
       </div>
     </div>
   );

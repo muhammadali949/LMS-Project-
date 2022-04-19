@@ -45,7 +45,9 @@ function GrantedLeave() {
 
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>All Leaves</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        GRANTED HISTORY
+      </h3>{' '}
       <div
         style={{
           minHeight: '59vh',
@@ -56,12 +58,7 @@ function GrantedLeave() {
           boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <br />
-        <br />
-        <br />
-
         <AllLeavetable leave={search(leave)} setQ={setQ} q={q} />
-        <br />
         <br />
       </div>
     </div>

@@ -12,7 +12,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { logout } from '../../actions/authAction/auth';
 import { connect } from 'react-redux';
@@ -71,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    color: '#fff',
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
@@ -186,12 +186,48 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const redirect = (path) => {
-    navigate(path);
-  };
+
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/employee':
+        return (
+          setEmpCheck(true),
+          setDepartmentCheck(false),
+          setLeaveCheck(false),
+          setLevaeManagementCheck(false)
+        );
+        break;
+      case '/managedepartment':
+        return (
+          setDepartmentCheck(true),
+          setEmpCheck(false),
+          setLeaveCheck(false),
+          setLevaeManagementCheck(false)
+        );
+        break;
+      case '/updateleavetype':
+        return (
+          setLeaveCheck(true),
+          setEmpCheck(false),
+          setDepartmentCheck(false),
+          setLevaeManagementCheck(false)
+        );
+        break;
+      case '/allleave':
+        return (
+          setLevaeManagementCheck(true),
+          setEmpCheck(false),
+          setDepartmentCheck(false),
+          setLeaveCheck(false)
+        );
+        break;
+      default:
+        return location.pathname;
+    }
+  }, [location.pathname]);
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -204,7 +240,13 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                 <ListItem
                   button
                   key={item.text}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    navigate(item.path);
+                    setEmpCheck(false);
+                    setDepartmentCheck(false);
+                    setLevaeManagementCheck(false);
+                    setLeaveCheck(false);
+                  }}
                   className={
                     location.pathname == item.path ? classes.active : null
                   }
@@ -242,7 +284,13 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
             <ListItem
               button
               key={item.text}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                navigate(item.path);
+                setEmpCheck(false);
+                setDepartmentCheck(false);
+                setLevaeManagementCheck(false);
+                setLeaveCheck(false);
+              }}
               className={location.pathname == item.path ? classes.active : null}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -293,7 +341,12 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           <>
             <ListItem
               button
-              onClick={() => setDepartmentCheck((prevCheck) => !prevCheck)}
+              onClick={() => {
+                setDepartmentCheck((prevCheck) => !prevCheck);
+                setEmpCheck(false);
+                setLevaeManagementCheck(false);
+                setLeaveCheck(false);
+              }}
             >
               <ListItemIcon>
                 <SpeakerNotesIcon style={{ color: '#000' }} />
@@ -331,7 +384,12 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           <>
             <ListItem
               button
-              onClick={() => setLevaeManagementCheck((prevCheck) => !prevCheck)}
+              onClick={() => {
+                setLevaeManagementCheck((prevCheck) => !prevCheck);
+                setEmpCheck(false);
+                setDepartmentCheck(false);
+                setLeaveCheck(false);
+              }}
             >
               <ListItemIcon>
                 <DesktopWindowsIcon style={{ color: '#000' }} />
@@ -369,7 +427,12 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           <>
             <ListItem
               button
-              onClick={() => setEmpCheck((prevCheck) => !prevCheck)}
+              onClick={() => {
+                setEmpCheck((prevCheck) => !prevCheck);
+                setDepartmentCheck(false);
+                setLevaeManagementCheck(false);
+                setLeaveCheck(false);
+              }}
             >
               <ListItemIcon>
                 <PersonIcon style={{ color: '#000' }} />
@@ -407,7 +470,12 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           <>
             <ListItem
               button
-              onClick={() => setLeaveCheck((prevCheck) => !prevCheck)}
+              onClick={() => {
+                setLeaveCheck((prevCheck) => !prevCheck);
+                setEmpCheck(false);
+                setDepartmentCheck(false);
+                setLevaeManagementCheck(false);
+              }}
             >
               <ListItemIcon>
                 <CodeIcon style={{ color: '#000' }} />

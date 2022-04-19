@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Admin from '../Admin';
 import { getDepartment } from '../../../actions/department/departmentAction';
 import { Link } from 'react-router-dom';
+import AllLeave from '../leaveManagement/AllLeave';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -232,7 +233,7 @@ function AdminDashboard() {
             <Link to="/allleave">
               <Paper className={classes.boxThree}>
                 <h1 style={{ marginRight: 'auto', marginLeft: 'auto' }}>
-                  Manages Leaves
+                  Manage Leaves
                 </h1>
                 <br />
                 <div className={classes.boxThreeCircle}>
@@ -252,18 +253,13 @@ function AdminDashboard() {
           </Grid>
         </Grid>
       </div>
-      <br />
-
       <div
         style={{
           width: '100%%',
           borderRadius: '0px',
-          background: '#F5F5F5',
-          marginTop: '0.5%',
-          boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <Admin />
+        <AllLeave />
         <br />
       </div>
     </div>

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Alert from '../../layout/Alert';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadUser, updatepassword } from '../../../actions/./authAction/auth';
 import store from '../../../store';
-import { setAlert } from '../../../actions/alert';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -45,9 +44,6 @@ const UpdatePassword = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const alert = useSelector((state) => state.alert);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
   const classes = useStyles();
   useEffect(() => {
     store.dispatch(loadUser());
@@ -57,19 +53,6 @@ const UpdatePassword = () => {
   const role = auth?.user?.role;
   const email = auth?.user?.email;
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== password2) {
-      setAlert('Password do not match', 'danger');
-      alert('password do not match');
-    } else {
-      await dispatch(
-        updatepassword({ _id, role, password, currentPassword, email })
-      );
-      setAlert('update...', 'success');
-    }
-  };
   const formik = useFormik({
     initialValues: {
       currentPassword: '',
@@ -102,7 +85,9 @@ const UpdatePassword = () => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Change Password</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          CHANGE PASSWORD
+        </h3>
         <div
           style={{
             width: '100%',
@@ -117,23 +102,25 @@ const UpdatePassword = () => {
           >
             <br />
             <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
-              <label htmlFor="">Current Password</label>
-              <input
-                id="standard-basic"
-                label="Standard"
-                name="currentPassword"
-                fullWidth
-                placeholder="Enter Current Password"
-                className={
-                  formik.touched.currentPassword &&
-                  formik.errors.currentPassword
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.currentPassword}
-                type="password"
-              />
+              <div>
+                <label htmlFor="">Current Password</label>
+                <input
+                  id="standard-basic"
+                  label="Standard"
+                  name="currentPassword"
+                  fullWidth
+                  placeholder="Enter Current Password"
+                  className={
+                    formik.touched.currentPassword &&
+                    formik.errors.currentPassword
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.currentPassword}
+                  type="password"
+                />
+              </div>
               {formik.touched.currentPassword &&
               formik.errors.currentPassword ? (
                 <div style={{ color: 'red' }}>
@@ -141,49 +128,50 @@ const UpdatePassword = () => {
                 </div>
               ) : null}
               <br />
-              <br />
-              <label htmlFor="">New Password</label>
-              <input
-                id="standard-basic"
-                label="Standard"
-                placeholder="Enter New Password"
-                name="password"
-                className={
-                  formik.touched.password && formik.errors.password
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                type="password"
-                fullWidth
-              />
+              <div>
+                <label htmlFor="">New Password</label>
+                <input
+                  id="standard-basic"
+                  label="Standard"
+                  placeholder="Enter New Password"
+                  name="password"
+                  className={
+                    formik.touched.password && formik.errors.password
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  type="password"
+                  fullWidth
+                />
+              </div>
               {formik.touched.password && formik.errors.password ? (
                 <div style={{ color: 'red' }}>{formik.errors.password}</div>
               ) : null}
               <br />
-              <br />
-              <label htmlFor="">Confirm Password</label>
-              <input
-                id="standard-basic"
-                placeholder="Confirm Password"
-                name="password2"
-                minLength="6"
-                className={
-                  formik.touched.password2 && formik.errors.password2
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.password2}
-                label="Standard"
-                type="password"
-                fullWidth
-              />
-              {formik.touched.password2 && formik.errors.password2 ? (
-                <div style={{ color: 'red' }}>{formik.errors.password2}</div>
-              ) : null}
-              <br />
+              <div>
+                <label htmlFor="">Confirm Password</label>
+                <input
+                  id="standard-basic"
+                  placeholder="Enter Confirm Password"
+                  name="password2"
+                  minLength="6"
+                  className={
+                    formik.touched.password2 && formik.errors.password2
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.password2}
+                  label="Standard"
+                  type="password"
+                  fullWidth
+                />
+                {formik.touched.password2 && formik.errors.password2 ? (
+                  <div style={{ color: 'red' }}>{formik.errors.password2}</div>
+                ) : null}
+              </div>
               <br />
               <Alert />
               <Button
@@ -196,6 +184,7 @@ const UpdatePassword = () => {
               </Button>
             </form>
           </Grid>
+          <br />
         </div>
       </div>
     </>

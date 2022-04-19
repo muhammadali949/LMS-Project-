@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import EmployeeTable from './EmployeeTable';
@@ -25,6 +24,17 @@ function ManageEmployee() {
   const [deleteCheck, setDeleteCheck] = useState(false);
   const classes = useStyles();
   const [users, setUsers] = useState([]);
+  const [q, setQ] = useState('');
+
+  function search(rows) {
+    const columns = rows[0] && Object.keys(rows[0]);
+    return rows?.filter((row) =>
+      columns.some(
+        (column) =>
+          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
+  }
   const getAllusers = () => {
     axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
       setUsers(user.data);
@@ -36,7 +46,9 @@ function ManageEmployee() {
 
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>Manager Leave</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        MANAGE EMPLOYEE
+      </h3>{' '}
       <div
         style={{
           minHeight: '59vh',
@@ -49,13 +61,13 @@ function ManageEmployee() {
       >
         {' '}
         <br />
-        <br />
-        <br />
         <EmployeeTable
-          users={users}
+          users={search(users)}
           getAllusers={getAllusers}
           setDeleteCheck={setDeleteCheck}
           deleteCheck={deleteCheck}
+          setQ={setQ}
+          q={q}
         />
       </div>
     </div>

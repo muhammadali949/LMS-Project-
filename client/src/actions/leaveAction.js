@@ -124,13 +124,11 @@ export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, use
                 body,
                 config
             );
-            console.log(res);
             dispatch({
                 type: ADD_LEAVE,
                 payload: res,
             });
         } catch (err) {
-            console.log(err);
             const errors = err.response.data.errors;
 
             if (errors) {
@@ -159,8 +157,6 @@ export const updateLeave = (a, id) =>
             },
         };
         try {
-            console.log("Action Leave")
-            console.log(a)
             const res = await axios.patch(
                 `http://localhost:5000/users/request/${id}`,
                 a,

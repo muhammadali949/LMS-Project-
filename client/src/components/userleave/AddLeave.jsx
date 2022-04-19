@@ -63,7 +63,6 @@ const AddLeave = ({ alerts }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const navigate = useNavigate();
-  console.log(auth);
   const formik = useFormik({
     initialValues: {
       leaveDate: new Date(),

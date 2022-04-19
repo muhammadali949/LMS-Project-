@@ -22,7 +22,6 @@ router.post('/department', auth, [
     const newDepartment = new department({ name, shortName, code });
     try {
         let departmentCheck = await department.findOne({ name });
-        // console.log(userLeave)
         if (departmentCheck) {
             res.status(400).json({ errors: [{ msg: "Department name is already exist in the system" }] });
         } else {

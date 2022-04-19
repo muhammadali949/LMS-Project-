@@ -67,10 +67,11 @@ const AddLeaveType = ({ alerts }) => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Department</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          ADD DEPARTMENT
+        </h3>
         <div
           style={{
-            minHeight: '100%',
             width: '100%',
             borderRadius: '0px',
             background: '#F5F5F5',
@@ -82,64 +83,66 @@ const AddLeaveType = ({ alerts }) => {
             style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
           >
             <br />
-            <br />
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor="">Name</label>
-              <input
-                type="text"
-                placeholder="Name"
-                name="name"
-                className={
-                  formik.touched.name && formik.errors.name
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.name}
-              />
+              <div>
+                <label htmlFor="">Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter Name"
+                  name="name"
+                  className={
+                    formik.touched.name && formik.errors.name
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                />
+              </div>
               {formik.touched.name && formik.errors.name ? (
                 <div style={{ color: 'red' }}>{formik.errors.name}</div>
               ) : null}
               <br />
-              <br />
-              <label htmlFor="">Short Name</label>
-              <input
-                type="text"
-                placeholder="Short Name"
-                name="shortName"
-                className={
-                  formik.touched.shortName && formik.errors.shortName
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.shortName}
-              />
+              <div>
+                <label htmlFor="">Short Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter Short Name"
+                  name="shortName"
+                  className={
+                    formik.touched.shortName && formik.errors.shortName
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.shortName}
+                />
+              </div>
               {formik.touched.shortName && formik.errors.shortName ? (
                 <div style={{ color: 'red' }}>{formik.errors.shortName}</div>
               ) : null}
               <br />
-              <br />
-              <label htmlFor="">Code</label>
-              <input
-                type="text"
-                placeholder="Code"
-                name="code"
-                className={
-                  formik.touched.code && formik.errors.code
-                    ? 'inputstyleTwo'
-                    : 'inputstyle'
-                }
-                onChange={formik.handleChange}
-                value={formik.values.code}
-              />
+              <div>
+                <label htmlFor="">Code</label>
+                <input
+                  type="text"
+                  placeholder="Enter Code"
+                  name="code"
+                  className={
+                    formik.touched.code && formik.errors.code
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.code}
+                />
+              </div>
+
               {formik.touched.code && formik.errors.code ? (
                 <div style={{ color: 'red' }}>{formik.errors.code}</div>
               ) : null}
               <br />
-              <br />
               <Alert />
-
               <Button
                 variant="contained"
                 className={classes.btn}
@@ -150,6 +153,7 @@ const AddLeaveType = ({ alerts }) => {
               </Button>
             </form>
           </Grid>
+          <br />
         </div>
       </div>
     </>

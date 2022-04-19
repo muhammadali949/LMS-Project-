@@ -12,6 +12,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const useStyles = makeStyles({
   table: {
@@ -41,8 +42,22 @@ const useStyles = makeStyles({
   },
 });
 
-function DepartmentTable({ department, HandleDeletedepartment }) {
+function DepartmentTable({ department, HandleDeletedepartment, setQ, q }) {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage -
+    Math.min(rowsPerPage, department?.length - page * rowsPerPage);
 
   const HandleDelete = (id) => {
     HandleDeletedepartment(id);
@@ -55,8 +70,41 @@ function DepartmentTable({ department, HandleDeletedepartment }) {
       }}
       xs={11}
     >
+      <br />
+      <h1>Department Info</h1>
+      <br />
+      <Grid
+        spacing={1}
+        container
+        xs={12}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Grid item lg={5} xs={12} md={7} sm={12}>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            className="page"
+            count={department?.length}
+            style={{ width: '100%' }}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Grid>
+        <Grid item lg={3} xs={12} md={4} sm={12}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search Records"
+            style={{ width: '100%' }}
+            onChange={(e) => setQ(e.target.value)}
+            value={q}
+          />
+        </Grid>
+      </Grid>
+      <br />
       <TableContainer
-        component={Paper}
         className={classes.rootTable}
         style={{ background: '#F5F5F5' }}
       >
@@ -93,12 +141,20 @@ function DepartmentTable({ department, HandleDeletedepartment }) {
           <TableBody>
             {department?.map((row) => (
               <TableRow key={row._id}>
-                <TableCell component="th" scope="row">
+                <TableCell
+                  component="th"
+                  scope="row"
+                  style={{ borderBottom: 'none' }}
+                >
                   {row.name}
                 </TableCell>
-                <TableCell>{row.shortName}</TableCell>
-                <TableCell>{row.code}</TableCell>
-                <TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row.shortName}
+                </TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row.code}
+                </TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
                   <div style={{ display: 'flex', justifyContent: 'start' }}>
                     <IconButton
                       className={classes.button1}
@@ -117,6 +173,11 @@ function DepartmentTable({ department, HandleDeletedepartment }) {
                 </TableCell>
               </TableRow>
             ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

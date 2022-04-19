@@ -54,7 +54,6 @@ const UpdateMyLeave = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     await setFormData({ ...formData, _id: id });
-    console.log(leaveCategory, leaveDescription, leaveDate);
     dispatch(updateLeave(formData, id));
     navigate('/userleave');
   };

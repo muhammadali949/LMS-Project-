@@ -19,7 +19,6 @@ router.post('/leave', [
     const newLeaveType = new leavetype(leave);
     try {
         let userLeave = await leavetype.findOne({ leaveType: lType });
-        // console.log(userLeave)
         if (userLeave) {
             res.status(400).json({ errors: [{ msg: "This Type Already Decleared" }] });
         } else {

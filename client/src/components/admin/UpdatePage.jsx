@@ -48,7 +48,6 @@ const UpdatePage = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(leaveType, numberLeave);
     dispatch(updateLeaveType({ leaveType, numberLeave, _id: id }));
     navigate('/updateleavetype');
   };

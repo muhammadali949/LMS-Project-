@@ -124,33 +124,15 @@ const EmployeeUpdate = ({ setAlert, register }) => {
       'Content-Type': 'application/json',
     },
   };
-  console.log(joinDate);
 
   const Handlesubmit = (e) => {
     e.preventDefault();
-    console.log({
-      datepicker,
-      employee,
-      gender,
-      firstname,
-      lastname,
-      department,
-      position,
-      address,
-      phoneNo,
-      email,
-      manager,
-      joinDate,
-    });
-
     axios
       .patch(`http://localhost:5000/users/${params.id}`, formData, config)
       .then((res) => {
         navigate(-1);
       })
-      .catch((error) => {
-        console.log(error.code);
-      });
+      .catch((error) => {});
   };
   return (
     <div className={classes.mainContainer}>

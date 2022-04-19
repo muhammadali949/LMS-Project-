@@ -38,7 +38,6 @@ import ManageDepartment from "./components/admin/department/ManageDepartment";
 import UpdateDepartment from "./components/admin/department/UpdateDepartment";
 import AllLeave from "./components/admin/leaveManagement/AllLeave";
 import LeaveDetails from "./components/admin/leaveManagement/LeaveDetails";
-import { getLeave, getLeavePending } from "./actions/leaveAction";
 import PendingLeave from "./components/admin/leaveManagement/PendingLeave";
 import GrantedLeave from "./components/admin/leaveManagement/GrantedLeave";
 import RejectedLeave from "./components/admin/leaveManagement/RejectedLeave";
@@ -79,8 +78,6 @@ function App({ auth: { user } }) {
             <>
               <Routes>
                 <Route exact path="/" element={<Landing />} />
-
-
                 <Route
                   exact
                   path="/myprofile"
