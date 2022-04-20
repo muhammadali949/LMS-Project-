@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Alert from '../layout/Alert';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateLeaveType } from '../../actions/adminLeaveAction';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import { LEAVE_TYPE_URL } from '../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -52,7 +53,7 @@ const UpdatePage = () => {
     navigate('/updateleavetype');
   };
   const getLeaveById = async (id) => {
-    await axios.get(`http://localhost:5000/admin/leave/${id}`).then((res) => {
+    await axios.get(`${LEAVE_TYPE_URL}/${id}`).then((res) => {
       setFormData(res.data);
     });
   };

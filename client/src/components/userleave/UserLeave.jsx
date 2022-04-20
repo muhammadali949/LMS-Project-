@@ -5,6 +5,7 @@ import MyLeaveTable from '../layout/MyLeaveTable';
 import { deleteLeave } from '../../actions/leaveAction';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
+import { UPDATE_USER_URL } from '../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -54,7 +55,7 @@ function UserLeave() {
   };
   const getLeaveById = async () => {
     await axios
-      .get(`http://localhost:5000/users/request/userleave/${id}`)
+      .get(`${UPDATE_USER_URL}/request/userleave/${id}`)
       .then((res) => {
         setleaveMy(res.data);
       });

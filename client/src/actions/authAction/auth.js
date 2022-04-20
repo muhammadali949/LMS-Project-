@@ -14,6 +14,7 @@ import {
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 import { setAlert } from "../alert";
+import { LOGIN_URL, LOAD_USER_URL, LOAD_ALL_USER_URL, REGISTER_URL, UPDATE_PASSWORD_URL } from "../../apis/apiUrls";
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -22,7 +23,7 @@ export const loadUser = () => async (dispatch) => {
     }
 
     try {
-        const res = await axios.get("http://localhost:5000/users/auth");
+        const res = await axios.get(LOAD_USER_URL);
 
         dispatch({
             type: USER_LOADED,
@@ -40,7 +41,7 @@ export const loadAllUser = () => async (dispatch) => {
     }
 
     try {
-        const res = await axios.get("http://localhost:5000/users/auth/alluser");
+        const res = await axios.get(LOAD_ALL_USER_URL);
         dispatch({
             type: USER_All_LOADED,
             payload: res.data,
@@ -91,7 +92,7 @@ export const register = ({ datepicker,
 
         try {
             const res = await axios.post(
-                "http://localhost:5000/users/",
+                REGISTER_URL,
                 body,
                 config
             );
@@ -131,7 +132,7 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
         const res = await axios.post(
-            "http://localhost:5000/users/auth",
+            LOGIN_URL,
             body,
             config
         );
@@ -166,7 +167,7 @@ export const updatepassword = ({ _id, password, role, currentPassword, email }) 
 
         try {
             const res = await axios.patch(
-                "http://localhost:5000/users/",
+                UPDATE_PASSWORD_URL,
                 body,
                 config
             );

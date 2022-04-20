@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import store from '../../../store';
 import { getDepartment } from '../../../actions/department/departmentAction';
+import { LOAD_ALL_USER_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -58,7 +59,7 @@ const Register = ({ setAlert, register }) => {
   const navigate = useNavigate();
 
   const getAllusers = () => {
-    axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
+    axios.get(LOAD_ALL_USER_URL).then((user) => {
       setUsers(user.data);
     });
   };

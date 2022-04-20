@@ -19,6 +19,7 @@ import store from '../../store';
 import { loadUser } from '../../actions/authAction/auth';
 import moment from 'moment';
 import axios from 'axios';
+import { GET_MANAGER_URL } from '../../apis/apiUrls';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -93,27 +94,11 @@ function Profile() {
   }, []);
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:5000/users/authid?id=${auth?.user?.manager}&type=single`
-      )
+      .get(`${GET_MANAGER_URL}?id=${auth?.user?.manager}&type=single`)
       .then((res) => {
         setManageremail(res.data.email);
       });
-  }, []);
-  const getLeaveById = async () => {
-    await axios
-      .get(`http://localhost:5000/users/request/userleave/${auth?.user?._id}`)
-      .then((res) => {
-        res.data.map((data) => {
-          if (data.status == 'Granted') {
-            setCount((count) => count + 1);
-          }
-        });
-      });
-  };
-  useEffect(() => {
-    getLeaveById();
-  }, []);
+  }, [auth?.user]);
 
   return (
     <>

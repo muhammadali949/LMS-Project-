@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LEAVE_URL } from '../apis/apiUrls';
 import { setAlert } from './alert';
 import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED } from './leaveType';
 
@@ -12,7 +13,7 @@ export const getLeave = () =>
         };
         try {
             const res = await axios.get(
-                "http://localhost:5000/users/request",
+                LEAVE_URL,
                 config
             );
 
@@ -39,7 +40,7 @@ export const getLeavePending = () =>
         };
         try {
             const res = await axios.get(
-                "http://localhost:5000/users/request/api?status=Pending",
+                `${LEAVE_URL}/api?status=Pending`,
                 config
             );
 
@@ -66,7 +67,7 @@ export const getLeaveGranted = () =>
         };
         try {
             const res = await axios.get(
-                "http://localhost:5000/users/request/api?status=Granted",
+                `${LEAVE_URL}/api?status=Granted`,
                 config
             );
 
@@ -93,7 +94,7 @@ export const getLeaveRejected = () =>
         };
         try {
             const res = await axios.get(
-                "http://localhost:5000/users/request/api?status=Rejected",
+                `${LEAVE_URL}/api?status=Rejected`,
                 config
             );
 
@@ -120,7 +121,7 @@ export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, use
         const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate, date });
         try {
             const res = await axios.post(
-                "http://localhost:5000/users/request",
+                LEAVE_URL,
                 body,
                 config
             );
@@ -158,7 +159,7 @@ export const updateLeave = (a, id) =>
         };
         try {
             const res = await axios.patch(
-                `http://localhost:5000/users/request/${id}`,
+                `${LEAVE_URL}/${id}`,
                 a,
                 config
             );
@@ -185,7 +186,7 @@ export const deleteLeave = (id) =>
         };
         try {
             const res = await axios.delete(
-                `http://localhost:5000/users/request/${id}`,
+                `${LEAVE_URL}/${id}`,
                 config,
                 id
             );

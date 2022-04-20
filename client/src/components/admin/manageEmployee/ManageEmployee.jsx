@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import EmployeeTable from './EmployeeTable';
+import { LOAD_ALL_USER_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -42,7 +43,7 @@ function ManageEmployee() {
     );
   }
   const getAllusers = () => {
-    axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
+    axios.get(LOAD_ALL_USER_URL).then((user) => {
       setUsers(user.data);
     });
   };

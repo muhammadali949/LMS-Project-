@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import { LOAD_USER_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles({
   table: {
@@ -61,7 +62,7 @@ function EmployeeTable({ users, getAllusers, setDeleteCheck, setQ, q }) {
     rowsPerPage - Math.min(rowsPerPage, users?.length - page * rowsPerPage);
 
   const HandleDeleteOne = (id) => {
-    axios.delete(`http://localhost:5000/users/auth/${id}`).then((res) => {});
+    axios.delete(`${LOAD_USER_URL}/${id}`).then((res) => {});
     getAllusers();
     setDeleteCheck((deleteCheck) => !deleteCheck);
   };

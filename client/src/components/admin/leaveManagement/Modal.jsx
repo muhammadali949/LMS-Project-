@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import { updateLeave } from '../../../actions/leaveAction';
 import moment from 'moment';
+import { LEAVE_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -47,7 +48,7 @@ export default function Modal({ id, setupdate, update }) {
   //   const { id } = useParams();
 
   const getLeaveById = async (id) => {
-    await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
+    await axios.get(`${LEAVE_URL}/${id}`).then((res) => {
       setIStatus(res.data);
     });
   };

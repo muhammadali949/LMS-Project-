@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { updateLeaveType } from '../../../actions/department/departmentAction';
+import { DEPARTMENT_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -53,11 +54,9 @@ const UpdateDepartment = () => {
     navigate('/managedepartment');
   };
   const getLeaveById = async (id) => {
-    await axios
-      .get(`http://localhost:5000/admin/department/${id}`)
-      .then((res) => {
-        setFormData(res.data);
-      });
+    await axios.get(`${DEPARTMENT_URL}/${id}`).then((res) => {
+      setFormData(res.data);
+    });
   };
   useEffect(() => {
     getLeaveById(id);

@@ -16,6 +16,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import moment from 'moment';
+import { UPDATE_USER_URL } from '../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -79,7 +80,7 @@ const UpdateMyLeave = () => {
     // navigate('/userleave');
   };
   const getLeaveById = async (id) => {
-    await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
+    await axios.get(`${UPDATE_USER_URL}/request/${id}`).then((res) => {
       setFormData(res.data);
     });
   };

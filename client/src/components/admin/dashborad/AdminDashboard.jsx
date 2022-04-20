@@ -10,6 +10,7 @@ import Admin from '../Admin';
 import { getDepartment } from '../../../actions/department/departmentAction';
 import { Link } from 'react-router-dom';
 import AllLeave from '../leaveManagement/AllLeave';
+import { LOAD_ALL_USER_URL } from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,7 +128,7 @@ function AdminDashboard() {
   const department = useSelector((state) => state.department);
 
   const getAllusers = () => {
-    axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
+    axios.get(LOAD_ALL_USER_URL).then((user) => {
       setUsers(user.data);
     });
   };

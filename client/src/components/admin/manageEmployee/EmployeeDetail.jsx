@@ -19,6 +19,7 @@ import { getLeaveType } from '../../../actions/adminLeaveAction';
 import store from '../../../store';
 import moment from 'moment';
 import axios from 'axios';
+import { LOAD_USER_URL, GET_MANAGER_URL } from '../../../apis/apiUrls';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -93,8 +94,8 @@ function EmployeeDetail() {
   let month = newDate.getMonth();
 
   const getUser = () => {
-    axios.get(`http://localhost:5000/users/auth/${params.id}`).then((res) => {
-      setUser(res.data);
+    axios.get(`${LOAD_USER_URL}/${params.id}`).then((res) => {
+      setUser(res?.data);
     });
   };
   useEffect(() => {
@@ -103,11 +104,12 @@ function EmployeeDetail() {
   }, []);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/users/authid?id=${user?.manager}&type=single`)
+      .get(`${GET_MANAGER_URL}?id=${user?.manager}&type=single`)
       .then((res) => {
-        setManageremail(res.data.email);
+        setManageremail(res?.data?.email);
       });
-  }, [user.manager]);
+    console.log(user?.manager);
+  });
 
   return (
     <div className={classes.mainContainer}>

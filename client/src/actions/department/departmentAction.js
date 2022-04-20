@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ADD_DEPARTMENT, DELETE_DEPARTMENT, UPDATE_DEPARTMENT, GET_DEPARTMENT } from "./type";
 import { setAlert } from "../alert";
+import { DEPARTMENT_URL } from "../../apis/apiUrls";
 
 export const getDepartment = () =>
     async (dispatch) => {
@@ -11,7 +12,7 @@ export const getDepartment = () =>
         };
         try {
             const res = await axios.get(
-                "http://localhost:5000/admin/department",
+                DEPARTMENT_URL,
                 config
             );
 
@@ -39,7 +40,7 @@ export const addDepartmentReq = ({ name, shortName, code }) =>
         const body = JSON.stringify({ name, shortName, code });
         try {
             const res = await axios.post(
-                "http://localhost:5000/admin/department",
+                DEPARTMENT_URL,
                 body,
                 config
             )
@@ -70,7 +71,7 @@ export const updateLeaveType = ({ name, shortName, code, _id }) =>
 
         try {
             const res = await axios.patch(
-                `http://localhost:5000/admin/department/${_id}`,
+                `${DEPARTMENT_URL}/${_id}`,
                 body,
                 config
             );
@@ -97,7 +98,7 @@ export const deleteDepartment = (id) =>
         };
         try {
             const res = await axios.delete(
-                ` http://localhost:5000/admin/department/${id}`,
+                `${DEPARTMENT_URL}/${id}`,
                 config,
                 id
             );

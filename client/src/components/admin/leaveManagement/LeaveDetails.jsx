@@ -18,6 +18,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { getLeave } from '../../../actions/leaveAction';
 import Modal from './Modal';
+import { LEAVE_URL } from '../../../apis/apiUrls';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -84,7 +85,7 @@ function LeaveDetail() {
   }, [update]);
 
   const getLeaveById = async () => {
-    await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
+    await axios.get(`${LEAVE_URL}/${id}`).then((res) => {
       setData(res?.data);
     });
   };

@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import AllLeave from '../admin/leaveManagement/AllLeave';
 import AllLeavetable from '../admin/leaveManagement/AllLeavetable';
+import { UPDATE_USER_URL } from '../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -30,11 +31,9 @@ function ManagerLeave() {
   const classes = useStyles();
   const id = auth?.user?._id;
   const getManagerLeave = () => {
-    axios
-      .get(`http://localhost:5000/users/request/manageleave/${id}`)
-      .then((user) => {
-        setLeave(user.data);
-      });
+    axios.get(`${UPDATE_USER_URL}/request/manageleave/${id}`).then((user) => {
+      setLeave(user.data);
+    });
   };
   useEffect(() => {
     getManagerLeave();

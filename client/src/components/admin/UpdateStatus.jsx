@@ -6,6 +6,7 @@ import axios from 'axios';
 import { updateLeave } from '../../actions/leaveAction';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { LEAVE_URL } from '../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -53,7 +54,7 @@ function UpdateStatus() {
   };
 
   const getLeaveById = async (id) => {
-    await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
+    await axios.get(`${LEAVE_URL}/${id}`).then((res) => {
       setIStatus(res.data);
     });
   };

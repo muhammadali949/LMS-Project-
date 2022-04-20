@@ -15,6 +15,11 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import {
+  LOAD_ALL_USER_URL,
+  LOAD_USER_URL,
+  UPDATE_EMPLOYEE_URL,
+} from '../../../apis/apiUrls';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -85,7 +90,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const [users, setUsers] = useState([]);
   const getAllusers = () => {
-    axios.get('http://localhost:5000/users/auth/alluser').then((user) => {
+    axios.get(LOAD_ALL_USER_URL).then((user) => {
       setUsers(user.data);
     });
   };
@@ -93,26 +98,10 @@ const EmployeeUpdate = ({ setAlert, register }) => {
     getAllusers();
   }, []);
 
-  // const [datepicker, setDatePicker] = useState(new Date());
-  // const [employee, setEmployee] = useState('');
-  // const [gender, setGender] = useState('');
-  // const [firstname, setFirstname] = useState('');
-  // const [lastname, setLastname] = useState('');
-  // const [department, setDepartment] = useState('');
-  // const [position, setPosition] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [phoneNo, setPhoneNo] = useState('');
-
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
-  // const [manager, setManager] = useState('');
-  const [user, setUser] = useState({ manager: '' });
-
   const classes = useStyles();
 
   const getUser = () => {
-    axios.get(`http://localhost:5000/users/auth/${params.id}`).then((res) => {
+    axios.get(`${LOAD_USER_URL}/${params.id}`).then((res) => {
       setFormData(res.data);
     });
   };
@@ -128,7 +117,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
   const Handlesubmit = (e) => {
     e.preventDefault();
     axios
-      .patch(`http://localhost:5000/users/${params.id}`, formData, config)
+      .patch(`${UPDATE_EMPLOYEE_URL}/${params.id}`, formData, config)
       .then((res) => {
         navigate(-1);
       })
@@ -355,62 +344,6 @@ const EmployeeUpdate = ({ setAlert, register }) => {
         </Grid>
       </div>
     </div>
-    // <div className="register-form">
-    // 	<h1 className="heading">Add User</h1>
-    // 	<p className="lead">
-    // 		<i className="fas fa-user"></i> Create An Account
-    // 	</p>
-    // 	<Alert />
-    // 	<br />
-    // 	<form className="form">
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="text"
-    // 				placeholder="Name"
-    // 				name="name"
-    // 				value={name}
-    // 				onChange={(e) => setName(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="email"
-    // 				placeholder="Email Address"
-    // 				name="email"
-    // 				value={email}
-    // 				onChange={(e) => setEmail(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="password"
-    // 				placeholder="Password"
-    // 				name="password"
-    // 				minLength="6"
-    // 				value={password}
-    // 				onChange={(e) => setPassword(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<div className="form-group">
-    // 			<input
-    // 				type="password"
-    // 				placeholder="Confirm Password"
-    // 				name="password2"
-    // 				minLength="6"
-    // 				value={password2}
-    // 				onChange={(e) => setPassword2(e.target.value)}
-    // 			/>
-    // 		</div>
-    // 		<div className="form-group" style={{marginLeft:'252px'}}>
-    // 			<DatePickers datepicker={datepicker} setDatePicker={setDatePicker} />
-    // 		</div>
-    // 		<div className="form-group" style={{marginLeft:'252px',marginTop:'10px'}}>
-    // 			<SelectUser manager={manager} setManager={setManager} />
-    // 		</div>
-    // 		<button  className="btn btn-primary" onClick={Handlesubmit} >Submit</button>
-    // 	</form>
-
-    // </div>
   );
 };
 
