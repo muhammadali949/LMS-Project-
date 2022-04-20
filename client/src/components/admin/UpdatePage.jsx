@@ -64,7 +64,9 @@ const UpdatePage = () => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Update Leave Type</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          UPDATE LEAVE TYPE
+        </h3>
         <div
           style={{
             minHeight: '100%',

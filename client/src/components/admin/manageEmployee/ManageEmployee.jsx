@@ -27,11 +27,17 @@ function ManageEmployee() {
   const [q, setQ] = useState('');
 
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);
+    const columns = [
+      'employee',
+      'firstname',
+      'lastname',
+      'position',
+      'joinDate',
+    ];
     return rows?.filter((row) =>
       columns.some(
         (column) =>
-          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+          row[column]?.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
       )
     );
   }

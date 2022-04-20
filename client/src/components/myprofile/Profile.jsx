@@ -118,7 +118,9 @@ function Profile() {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>My Profile</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          MY PROFILE
+        </h3>
         <div
           style={{
             width: '100%',

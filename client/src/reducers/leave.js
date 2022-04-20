@@ -10,7 +10,7 @@ function leave(leave = [], action) {
         case GET_LEAVE:
             return payload.reverse()
         case ADD_LEAVE:
-            return payload.reverse()
+            return payload
         case GET_LEAVE_PENDEING:
             return payload.reverse()
         case GET_LEAVE_GRANTED:

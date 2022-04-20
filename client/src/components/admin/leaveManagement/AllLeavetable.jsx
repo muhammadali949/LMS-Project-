@@ -179,7 +179,7 @@ function AllLeavetable({ leave, setQ, q }) {
                     {row.leaveCategory}
                   </TableCell>
                   <TableCell style={{ borderBottom: 'none' }}>
-                    {moment(row.date).format('DD/MM/YYYY')}
+                    {row.date}
                   </TableCell>
                   <TableCell
                     style={{

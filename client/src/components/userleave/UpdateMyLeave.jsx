@@ -10,6 +10,12 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import store from '../../store';
+import TextField from '@material-ui/core/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Stack from '@mui/material/Stack';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -33,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#0EA900',
     },
   },
+  inputstyle: {
+    background: '#ffffff',
+    borderRadius: '10px 10px 0px 0px !important',
+    height: '50px',
+    padding: '14px',
+    borderBottom: '2px solid #000 !important',
+    border: 'none !important',
+  },
 }));
 const UpdateMyLeave = () => {
   const dispatch = useDispatch();
@@ -47,15 +61,22 @@ const UpdateMyLeave = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { leaveCategory, leaveDescription, leaveDate, _id } = formData;
-
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await setFormData({ ...formData, _id: id });
-    dispatch(updateLeave(formData, id));
-    navigate('/userleave');
+    const d = moment(formData).format('DD/MM/YYYY');
+    await setFormData({
+      ...formData,
+      _id: id,
+      leaveDate: d,
+    });
+    // dispatch(updateLeave(formData, id));
+    // navigate('/userleave');
   };
   const getLeaveById = async (id) => {
     await axios.get(`http://localhost:5000/users/request/${id}`).then((res) => {
@@ -71,7 +92,9 @@ const UpdateMyLeave = () => {
   return (
     <>
       <div className={classes.mainContainer}>
-        <h3 style={{ marginTop: '5px' }}>Update Leave</h3>
+        <h3 style={{ marginTop: '5px' }} className="title">
+          UPDATE LEAVE
+        </h3>
         <div
           style={{
             minHeight: '59vh',
@@ -85,51 +108,74 @@ const UpdateMyLeave = () => {
           <Grid
             style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}
           >
+            <br />
             <form noValidate autoComplete="off">
-              <label htmlFor="">Leave Type</label>
-              <select
-                name="leaveCategory"
-                className="inputstyle"
-                value={leaveCategory}
-                onChange={(e) => onChange(e)}
-              >
-                <option value="" disabled hidden>
-                  Select Leave Type
-                </option>{' '}
-                {adminleave?.map(function (n) {
-                  return (
-                    <option
-                      key={n._id}
-                      value={n.leaveType}
-                      selected={leaveCategory}
-                      placeholder="Enter a Description"
-                    >
-                      {n.leaveType}
-                    </option>
-                  );
-                })}
-              </select>
+              <div>
+                <label htmlFor="">Leave Type</label>
+                <select
+                  name="leaveCategory"
+                  className="inputstyle"
+                  value={leaveCategory}
+                  onChange={(e) => onChange(e)}
+                >
+                  <option value="" disabled hidden>
+                    Select Leave Type
+                  </option>{' '}
+                  {adminleave?.map(function (n) {
+                    return (
+                      <option
+                        key={n._id}
+                        value={n.leaveType}
+                        selected={leaveCategory}
+                        placeholder="Enter a Description"
+                      >
+                        {n.leaveType}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
               <br />
+              <div>
+                <label htmlFor="">Date</label>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={2}>
+                    <MobileDatePicker
+                      name="leaveDate"
+                      minDate={new Date()}
+                      value={leaveDate}
+                      onChange={(newValue) => {
+                        setFormData({
+                          ...formData,
+                          leaveDate: newValue,
+                        });
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          className={classes.inputstyle}
+                          style={{ width: '100%' }}
+                          {...params}
+                          InputProps={{ disableUnderline: true }}
+                        />
+                      )}
+                    />
+                  </Stack>
+                </LocalizationProvider>{' '}
+              </div>
               <br />
-              <label htmlFor="">Date</label>
-              <UpdateDatePickers
-                formData={formData}
-                setFormData={setFormData}
-              />
-              <br />
-              <br />
-              <label htmlFor="">Description</label>
-              <input
-                id="standard-basic"
-                className="inputstyle"
-                placeholder="Enter a Description"
-                name="leaveDescription"
-                value={leaveDescription}
-                onChange={(e) => onChange(e)}
-                label="Standard"
-                fullWidth
-              />
-              <br />
+              <div>
+                <label htmlFor="">Description</label>
+                <input
+                  id="standard-basic"
+                  className="inputstyle"
+                  placeholder="Enter a Description"
+                  name="leaveDescription"
+                  value={leaveDescription}
+                  onChange={(e) => onChange(e)}
+                  label="Standard"
+                  fullWidth
+                />
+              </div>
               <br />
               <Button
                 variant="contained"

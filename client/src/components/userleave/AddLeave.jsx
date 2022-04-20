@@ -70,17 +70,18 @@ const AddLeave = ({ alerts }) => {
       leaveDescription: '',
     },
     validationSchema: Yup.object({
-      leaveCategory: Yup.string().required('Leave Category is required'),
-      leaveDescription: Yup.string().required('Leave Description is required'),
+      leaveCategory: Yup.string().required('Leave category is required'),
+      leaveDescription: Yup.string().required('Leave description is required'),
     }),
     onSubmit: (values, { resetForm }) => {
       if (alert?.length === 0) {
-        let leaveDate = moment(values.leaveDate).format('DD/MM/YYYY');
         let leaveCategory = values.leaveCategory;
         let leaveDescription = values.leaveDescription;
+        let d = new Date();
+        let date = moment(d).format('DD/MM/YYYY');
         dispatch(
           addLeave({
-            leaveDate,
+            leaveDate: moment(values.leaveDate).format('DD/MM/YYYY'),
             leaveCategory,
             leaveDescription,
             userid: auth?.user?._id,
@@ -92,6 +93,7 @@ const AddLeave = ({ alerts }) => {
             phoneNo: auth?.user?.phoneNo,
             joinDate: auth?.user?.joinDate,
             adminRemark: '',
+            date: date,
           })
         );
       }
@@ -107,7 +109,9 @@ const AddLeave = ({ alerts }) => {
 
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>Apply For Leave</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        APPLY FOR LEAVE
+      </h3>
       <div
         style={{
           minHeight: '100%',
@@ -121,85 +125,88 @@ const AddLeave = ({ alerts }) => {
         <Grid style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
           <br />
           <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
-            <label htmlFor="">Leave Type</label>
-            <select
-              placeholder="Enter a Description"
-              name="leaveCategory"
-              className={
-                formik.touched.leaveCategory && formik.errors.leaveCategory
-                  ? 'inputstyleTwo'
-                  : 'inputstyle'
-              }
-              onChange={formik.handleChange}
-              value={formik.values.leaveCategory}
-            >
-              <option value="" disabled hidden>
-                Select Leave Type
-              </option>{' '}
-              {adminleave.map(function (n) {
-                return (
-                  <option
-                    key={n._id}
-                    value={n.leaveType}
-                    selected={formik.values.leaveCategory}
-                    placeholder="Enter a Description"
-                  >
-                    {n.leaveType}
-                  </option>
-                );
-              })}
-            </select>
+            <div>
+              <label htmlFor="">Leave Type</label>
+              <select
+                placeholder="Enter a Description"
+                name="leaveCategory"
+                className={
+                  formik.touched.leaveCategory && formik.errors.leaveCategory
+                    ? 'inputstyleTwo'
+                    : 'inputstyle'
+                }
+                onChange={formik.handleChange}
+                value={formik.values.leaveCategory}
+              >
+                <option value="" disabled hidden>
+                  Select Leave Type
+                </option>{' '}
+                {adminleave.map(function (n) {
+                  return (
+                    <option
+                      key={n._id}
+                      value={n.leaveType}
+                      selected={formik.values.leaveCategory}
+                      placeholder="Enter a Description"
+                    >
+                      {n.leaveType}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
             {formik.touched.leaveCategory && formik.errors.leaveCategory ? (
               <div style={{ color: 'red' }}>{formik.errors.leaveCategory}</div>
             ) : null}
             <br />
+            <div>
+              <label htmlFor="">Date</label>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <MobileDatePicker
+                  name="leaveDate"
+                  minDate={new Date()}
+                  onChange={(val) => {
+                    //val is the variable which contain the selected date
+                    //You can set it anywhere
+                    formik.setFieldValue('leaveDate', val);
+                  }}
+                  value={formik.values.leaveDate}
+                  renderInput={(params) => (
+                    <TextField
+                      className={classes.inputstyle}
+                      style={{ width: '100%' }}
+                      {...params}
+                      InputProps={{ disableUnderline: true }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </div>
             <br />
-            <label htmlFor="">Date</label>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
-                name="leaveDate"
-                minDate={new Date()}
-                onChange={(val) => {
-                  //val is the variable which contain the selected date
-                  //You can set it anywhere
-                  formik.setFieldValue('leaveDate', val);
-                }}
-                value={formik.values.leaveDate}
-                renderInput={(params) => (
-                  <TextField
-                    className={classes.inputstyle}
-                    style={{ width: '100%' }}
-                    {...params}
-                    InputProps={{ disableUnderline: true }}
-                  />
-                )}
+            <div>
+              <label htmlFor="">Description</label>
+              <input
+                id="standard-basic"
+                placeholder="Enter a Description"
+                label="Standard"
+                name="leaveDescription"
+                className={
+                  formik.touched.leaveDescription &&
+                  formik.errors.leaveDescription
+                    ? 'inputstyleTwo'
+                    : 'inputstyle'
+                }
+                onChange={formik.handleChange}
+                value={formik.values.leaveDescription}
+                fullWidth
               />
-            </LocalizationProvider>
-            <br />
-            <br />
-            <label htmlFor="">Description</label>
-            <input
-              id="standard-basic"
-              placeholder="Enter a Description"
-              label="Standard"
-              name="leaveDescription"
-              className={
-                formik.touched.leaveDescription &&
-                formik.errors.leaveDescription
-                  ? 'inputstyleTwo'
-                  : 'inputstyle'
-              }
-              onChange={formik.handleChange}
-              value={formik.values.leaveDescription}
-              fullWidth
-            />
+            </div>
             {formik.touched.leaveDescription &&
             formik.errors.leaveDescription ? (
               <div style={{ color: 'red' }}>
                 {formik.errors.leaveDescription}
               </div>
             ) : null}
-            <br />
             <br />
             <Alert />
             <Button

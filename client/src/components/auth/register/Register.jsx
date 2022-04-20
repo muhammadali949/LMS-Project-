@@ -16,7 +16,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import store from '../../../store';
+import { getDepartment } from '../../../actions/department/departmentAction';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -52,6 +54,7 @@ const Register = ({ setAlert, register }) => {
   const classes = useStyles();
   const [users, setUsers] = useState([]);
   const alert = useSelector((state) => state.alert);
+  const department = useSelector((state) => state.department);
   const navigate = useNavigate();
 
   const getAllusers = () => {
@@ -61,6 +64,7 @@ const Register = ({ setAlert, register }) => {
   };
   useEffect(() => {
     getAllusers();
+    store.dispatch(getDepartment());
   }, []);
   const formik = useFormik({
     initialValues: {
@@ -110,7 +114,7 @@ const Register = ({ setAlert, register }) => {
       let manager = values.manager;
       let email = values.email;
       let password = values.password;
-      let joinDate = values.joinDate;
+      let joinDate = moment(values.joinDate).format('DD/MM/YYYY');
       register({
         datepicker,
         joinDate,
@@ -276,8 +280,9 @@ const Register = ({ setAlert, register }) => {
                   <option value="" disabled hidden>
                     Select
                   </option>
-                  <option value="a">a</option>
-                  <option value="b">b</option>
+                  {department?.map((d) => {
+                    return <option value={d.name}>{d.name}</option>;
+                  })}
                 </select>
                 {formik.touched.department && formik.errors.department ? (
                   <div style={{ color: 'red' }}>{formik.errors.department}</div>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyLeaveTable from '../layout/MyLeaveTable';
 import { deleteLeave } from '../../actions/leaveAction';
 import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -26,7 +27,31 @@ function UserLeave() {
   const auth = useSelector((state) => state.auth);
   const classes = useStyles();
   const [leaveMy, setleaveMy] = useState([]);
+  const [q, setQ] = useState('');
+  const [checkDelete, setcheckDelete] = useState(false);
+  const id = auth?.user?._id;
+  const dispatch = useDispatch();
 
+  function search(rows) {
+    const columns = [
+      'leaveCategory',
+      'leaveDate',
+      'leaveDescription',
+      'date',
+      'adminRemark',
+      'status',
+    ];
+    return rows?.filter((row) =>
+      columns.some(
+        (column) =>
+          row[column]?.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
+  }
+
+  const HandleDeleteLeaveType = (id) => {
+    dispatch(deleteLeave(id));
+  };
   const getLeaveById = async () => {
     await axios
       .get(`http://localhost:5000/users/request/userleave/${id}`)
@@ -36,17 +61,12 @@ function UserLeave() {
   };
   useEffect(() => {
     getLeaveById();
-  }, []);
-
-  const id = auth?.user?._id;
-  const dispatch = useDispatch();
-  const HandleDeleteLeaveType = (id) => {
-    dispatch(deleteLeave(id));
-  };
-
+  }, [dispatch]);
   return (
     <div className={classes.mainContainer}>
-      <h3 style={{ marginTop: '5px' }}>My Leave</h3>
+      <h3 style={{ marginTop: '5px' }} className="title">
+        MY LEAVE
+      </h3>
       <div
         style={{
           minHeight: '59vh',
@@ -57,17 +77,17 @@ function UserLeave() {
           boxShadow: '5.29353px 0px 13.2338px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {' '}
-        <br />
-        <br />
-        <br />
         <MyLeaveTable
           HandleDeleteLeaveType={HandleDeleteLeaveType}
           id={id}
-          leaveMy={leaveMy}
+          leaveMy={search(leaveMy)}
           setleaveMy={setleaveMy}
           getLeaveById={getLeaveById}
+          setQ={setQ}
+          q={q}
+          setcheckDelete={setcheckDelete}
         />
+        <br />
       </div>
     </div>
   );

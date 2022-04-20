@@ -79,6 +79,7 @@ export default function Modal({ id, setupdate, update }) {
         status: status,
         adminRemark,
         adminActionDate: moment(Date.now()).format('DD/MM/YYYY'),
+        date: Istatus.date,
       };
       dispatch(updateLeave(body, id));
       navigate(`/leavedetails/${id}`);

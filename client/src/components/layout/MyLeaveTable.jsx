@@ -13,6 +13,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LaunchIcon from '@mui/icons-material/Launch';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
+import TablePagination from '@material-ui/core/TablePagination';
+
 import axios from 'axios';
 import moment from 'moment';
 
@@ -46,17 +48,28 @@ const useStyles = makeStyles({
 
 function MyLeaveTable({
   HandleDeleteLeaveType,
+  setcheckDelete,
   id,
   leaveMy,
   setleaveMy,
   getLeaveById,
+  setQ,
+  q,
 }) {
   const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const HandleDelete = (id) => {
-    HandleDeleteLeaveType(id);
-    getLeaveById();
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, leaveMy?.length - page * rowsPerPage);
   return (
     <Grid
       style={{
@@ -65,8 +78,42 @@ function MyLeaveTable({
       }}
       xs={11}
     >
+      <br />
+      <h3 style={{ marginTop: '5px', fontWeight: 'bold' }}>My Leave</h3>
+      <br />
+      <Grid
+        spacing={1}
+        container
+        xs={12}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Grid item lg={5} xs={12} md={7} sm={12}>
+          {' '}
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            className="page"
+            count={leaveMy?.length}
+            style={{ width: '100%' }}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Grid>
+        <Grid item lg={3} xs={12} md={4} sm={12}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search Records"
+            onChange={(e) => setQ(e.target.value)}
+            style={{ width: '100%' }}
+            value={q}
+          />
+        </Grid>
+      </Grid>
+      <br />
       <TableContainer
-        component={Paper}
         className={classes.rootTable}
         style={{ background: '#F5F5F5' }}
       >
@@ -74,13 +121,20 @@ function MyLeaveTable({
           <TableHead>
             <TableRow>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                LeaveDate{' '}
+                {' '}
+                Leave Type
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                LeaveCategory{' '}
+                Leave Date
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                LeaveDescription{' '}
+                Description{' '}
+              </TableCell>
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Posting Date
+              </TableCell>
+              <TableCell style={{ borderBottom: '2px solid gray' }}>
+                Admin Remark
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
                 Status
@@ -93,15 +147,41 @@ function MyLeaveTable({
           <TableBody>
             {leaveMy?.map((row) => (
               <TableRow key={row?._id}>
-                <TableCell component="th" scope="row">
+                <TableCell
+                  component="th"
+                  scope="row"
+                  style={{ borderBottom: 'none' }}
+                >
                   {/* {moment(row.leaveDate).format('DD/MM/YYYY')} */}
-                  {row.leaveDate}
+                  {row.leaveCategory}
                 </TableCell>
-                <TableCell>{row?.leaveCategory}</TableCell>
-                <TableCell>{row?.leaveDescription}</TableCell>
-                <TableCell>{row?.status}</TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row?.leaveDate}
+                </TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row?.leaveDescription}
+                </TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row?.date}
+                </TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
+                  {row?.adminRemark}
+                </TableCell>
+                <TableCell
+                  style={{
+                    color:
+                      row.status === 'Pending'
+                        ? '#EDBE17'
+                        : row.status === 'Granted'
+                        ? '#0EA900'
+                        : 'red',
+                    borderBottom: 'none',
+                  }}
+                >
+                  {row?.status}
+                </TableCell>
 
-                <TableCell>
+                <TableCell style={{ borderBottom: 'none' }}>
                   <div style={{ display: 'flex', justifyContent: 'start' }}>
                     <IconButton
                       className={classes.button1}
@@ -112,7 +192,10 @@ function MyLeaveTable({
                     </IconButton>
                     <IconButton
                       className={classes.button2}
-                      onClick={() => HandleDelete(row?._id)}
+                      onClick={() => {
+                        HandleDeleteLeaveType(row?._id);
+                        setcheckDelete((pre) => !pre);
+                      }}
                     >
                       <DeleteIcon className={classes.delete} />
                     </IconButton>
@@ -120,6 +203,11 @@ function MyLeaveTable({
                 </TableCell>
               </TableRow>
             ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

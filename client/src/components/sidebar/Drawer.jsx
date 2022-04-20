@@ -246,6 +246,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     setDepartmentCheck(false);
                     setLevaeManagementCheck(false);
                     setLeaveCheck(false);
+                    setMobileOpen(false);
                   }}
                   className={
                     location.pathname == item.path ? classes.active : null
@@ -266,7 +267,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                 <ListItem
                   button
                   key={item.text}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    navigate(item.path);
+                    setMobileOpen(false);
+                  }}
                   className={
                     location.pathname == item.path ? classes.active : null
                   }
@@ -290,6 +294,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                 setDepartmentCheck(false);
                 setLevaeManagementCheck(false);
                 setLeaveCheck(false);
+                setMobileOpen(false);
               }}
               className={location.pathname == item.path ? classes.active : null}
             >
@@ -323,7 +328,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     <ListItem
                       button
                       key={item.text}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      }}
                       className={
                         location.pathname == item.path ? classes.active : null
                       }
@@ -366,7 +374,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     <ListItem
                       button
                       key={item.text}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      }}
                       className={
                         location.pathname == item.path ? classes.active : null
                       }
@@ -409,7 +420,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     <ListItem
                       button
                       key={item.text}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      }}
                       className={
                         location.pathname == item.path ? classes.active : null
                       }
@@ -452,7 +466,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     <ListItem
                       button
                       key={item.text}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      }}
                       className={
                         location.pathname == item.path ? classes.active : null
                       }
@@ -495,7 +512,10 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     <ListItem
                       button
                       key={item.text}
-                      onClick={() => navigate(item.path)}
+                      onClick={() => {
+                        navigate(item.path);
+                        setMobileOpen(false);
+                      }}
                       className={
                         location.pathname == item.path ? classes.active : null
                       }

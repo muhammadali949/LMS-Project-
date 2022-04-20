@@ -226,7 +226,7 @@ function LeaveDetail() {
               <Grid xs={6} style={{ fontWeight: 'bold' }}>
                 Leave Date :{' '}
               </Grid>
-              <Grid xs={6}>{data?.leaveDate} </Grid>
+              <Grid xs={6}>{data?.leaveDate}</Grid>
             </Grid>
             <Grid
               style={{
@@ -240,7 +240,7 @@ function LeaveDetail() {
               <Grid xs={6} style={{ fontWeight: 'bold' }}>
                 Posting date :{' '}
               </Grid>
-              <Grid xs={6}> {moment(data?.date).format('DD/MM/YYYY')}</Grid>
+              <Grid xs={6}> {data?.date}</Grid>
             </Grid>
           </Grid>
           <Grid container className={classes.bodyContainer}>

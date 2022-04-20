@@ -164,6 +164,12 @@ function App({ auth: { user } }) {
                     </PrivateRoute>
                   }
                 />
+                <Route exact path="/leavedetails/:id" element={
+                  <PrivateRoute>
+                    <DrawerBar>
+                      <LeaveDetails />
+                    </DrawerBar></PrivateRoute>}
+                />
 
                 {
                   user?.role == 'admin' ? <Route
@@ -249,12 +255,6 @@ function App({ auth: { user } }) {
                 {
                   user?.role == 'admin' ? <Route exact path="/rejectedleave" element={<PrivateRoute><DrawerBar><RejectedLeave /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/rejectedleave" element={<NotFound />} />
-                }
-
-
-                {
-                  user?.role == 'admin' ? <Route exact path="/leavedetails/:id" element={<PrivateRoute><DrawerBar><LeaveDetails /></DrawerBar></PrivateRoute>} />
-                    : <Route exact path="/leavedetails/:id" element={<NotFound />} />
                 }
 
                 <Route exact path="/login" element={<Login />} />

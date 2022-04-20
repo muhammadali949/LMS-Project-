@@ -32,7 +32,7 @@ function ManageDepartment() {
   const [q, setQ] = useState('');
 
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);
+    const columns = ['name', 'shortName', 'code'];
     return rows?.filter((row) =>
       columns.some(
         (column) =>

@@ -50,12 +50,12 @@ const UserRequestSchema = new mongoose.Schema({
         type: String,
     },
     joinDate: {
-        type: Date,
+        type: String,
         required: true,
 
     },
     date: {
-        type: Date,
+        type: String,
         default: Date.now,
     },
 });

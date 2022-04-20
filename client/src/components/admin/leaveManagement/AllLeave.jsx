@@ -33,11 +33,11 @@ function AllLeave() {
   }, []);
 
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);
+    const columns = ['name', 'leaveCategory', 'date', 'status'];
     return rows?.filter((row) =>
       columns.some(
         (column) =>
-          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+          row[column]?.toString().toLowerCase().indexOf(q.toLowerCase()) > -1
       )
     );
   }

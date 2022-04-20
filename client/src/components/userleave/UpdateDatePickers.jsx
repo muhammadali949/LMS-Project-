@@ -17,14 +17,14 @@ const useStyles = makeStyles({
     border: 'none !important',
   },
 });
-function UpdateDatePickers({ formData, setFormData }) {
+function UpdateDatePickers({ formData, setFormData, leaveDate }) {
   const classes = useStyles();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack spacing={2}>
         <MobileDatePicker
-          value={formData.leaveDate}
+          value={leaveDate}
           onChange={(newValue) => {
             setFormData({ ...formData, leaveDate: newValue });
           }}

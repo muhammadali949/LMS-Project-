@@ -110,14 +110,14 @@ export const getLeaveRejected = () =>
             }
         }
     }
-export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate }) =>
+export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate, date }) =>
     async (dispatch) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
             },
         };
-        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate });
+        const body = JSON.stringify({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate, date });
         try {
             const res = await axios.post(
                 "http://localhost:5000/users/request",

@@ -34,7 +34,7 @@ function UpdateLeaveType() {
     store.dispatch(getLeaveType());
   }, []);
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);
+    const columns = ['leaveType', 'numberLeave'];
     return rows?.filter((row) =>
       columns.some(
         (column) =>
