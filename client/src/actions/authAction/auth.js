@@ -66,7 +66,8 @@ export const register = ({ datepicker,
     phoneNo,
     email,
     password,
-    manager, }) =>
+    manager,
+    role }) =>
     async (dispatch) => {
         const config = {
             headers: {
@@ -87,7 +88,8 @@ export const register = ({ datepicker,
             email,
             password,
             manager,
-            joinDate
+            joinDate,
+            role
         });
 
         try {
@@ -140,6 +142,10 @@ export const login = (email, password) => async (dispatch) => {
             type: LOGIN_SUCCESS,
             payload: res.data,
         });
+        console.log(res.data)
+        console.log('&&&&&&&&&&&&')
+        console.log(res.data)
+
 
         dispatch(loadUser());
     } catch (err) {

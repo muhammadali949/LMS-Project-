@@ -117,10 +117,6 @@ const levaemenuItems = [
     text: 'My Leaves',
     path: '/userleave',
   },
-  {
-    text: 'Manager Leaves',
-    path: '/managerleave',
-  },
 ];
 const Employees = [
   {
@@ -260,7 +256,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
           </>
         ) : null}
         <Divider />
-        {user?.role === 'user' ? (
+        {user?.role === 'user' || user?.role === 'manager' ? (
           <>
             {profile.map((item) => (
               <>
@@ -304,7 +300,7 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
             <hr />
           </>
         ))}{' '}
-        {user?.role === 'user' ? (
+        {user?.role === 'user' || user?.role === 'manager' ? (
           <>
             <ListItem
               button
@@ -341,6 +337,26 @@ function DrawerBar({ children, window, logout, auth: { user } }) {
                     </ListItem>
                   </>
                 ))}
+                {user?.role === 'manager' ? (
+                  <>
+                    <ListItem
+                      button
+                      key="Manager Leaves"
+                      onClick={() => {
+                        navigate('/managerleave');
+                        setMobileOpen(false);
+                      }}
+                      className={
+                        location.pathname == '/managerleave'
+                          ? classes.active
+                          : null
+                      }
+                    >
+                      <ListItemIcon></ListItemIcon>
+                      <ListItemText primary="Manager Leaves" />
+                    </ListItem>
+                  </>
+                ) : null}
               </>
             ) : null}
           </>

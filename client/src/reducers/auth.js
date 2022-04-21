@@ -13,7 +13,8 @@ const initialState = {
     isAuthenticated: !!localStorage.getItem("token"),
     loading: true,
     user: null,
-    datepicker: null
+    datepicker: null,
+    role: ''
 };
 
 function auth(state = initialState, action) {
@@ -35,7 +36,9 @@ function auth(state = initialState, action) {
                 ...payload,
                 isAuthenticated: true,
                 loading: false,
-                datepicker: payload.datepicker
+                datepicker: payload.datepicker,
+                role: payload.role
+
             };
 
         case AUTH_ERROR:

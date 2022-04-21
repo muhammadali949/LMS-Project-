@@ -78,17 +78,21 @@ function App({ auth: { user } }) {
             <>
               <Routes>
                 <Route exact path="/" element={<Landing />} />
-                <Route
-                  exact
-                  path="/myprofile"
-                  element={
-                    <PrivateRoute>
-                      <DrawerBar>
-                        <Profile />
-                      </DrawerBar>
-                    </PrivateRoute>
-                  }
-                />
+                {
+                  user?.role !== 'admin' ?
+                    <Route
+                      exact
+                      path="/myprofile"
+                      element={
+                        <PrivateRoute>
+                          <DrawerBar>
+                            <Profile />
+                          </DrawerBar>
+                        </PrivateRoute>
+                      }
+                    /> : <Route exact path="/myprofile" element={<NotFound />} />
+                }
+
                 <Route
                   exact
                   path="/leave"

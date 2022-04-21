@@ -1,5 +1,5 @@
 import {
-    ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED
+    ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED, GET_LEAVE_BY_ID, LEAVE_COUNT
 } from "../actions/leaveType";
 
 
@@ -11,6 +11,10 @@ function leave(leave = [], action) {
             return payload.reverse()
         case ADD_LEAVE:
             return payload
+        case LEAVE_COUNT:
+            return payload
+        case GET_LEAVE_BY_ID:
+            return payload.reverse()
         case GET_LEAVE_PENDEING:
             return payload.reverse()
         case GET_LEAVE_GRANTED:

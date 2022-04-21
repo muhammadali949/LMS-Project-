@@ -37,7 +37,9 @@ router.post(
             email,
             password,
             manager,
-            joinDate } = req.body;
+            joinDate,
+            role
+        } = req.body;
 
         try {
             // See if user exists
@@ -60,7 +62,8 @@ router.post(
                     email,
                     password,
                     manager,
-                    joinDate
+                    joinDate,
+                    role
                 });
 
                 //Encrypt Password
@@ -256,7 +259,7 @@ router.post(
 
             jwt.sign(payload, jwtSecret, { expiresIn: "5 days" }, (err, token) => {
                 if (err) throw err;
-                res.json({ token });
+                res.json({ token, role: user.role });
             });
         } catch (err) {
             console.error(err.message);

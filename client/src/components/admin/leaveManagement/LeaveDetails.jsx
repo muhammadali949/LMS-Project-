@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import LaunchIcon from '@mui/icons-material/Launch';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,7 +13,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import { useSelector } from 'react-redux';
 import { getLeaveType } from '../../../actions/adminLeaveAction';
 import store from '../../../store';
-import moment from 'moment';
 import axios from 'axios';
 import { getLeave } from '../../../actions/leaveAction';
 import Modal from './Modal';
@@ -52,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 'auto',
     width: '96%',
   },
+  btn: {
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: '20px',
+    },
+  },
 }));
 
 const styles = (theme) => ({
@@ -73,7 +76,6 @@ function LeaveDetail() {
 
   const adminleave = useSelector((state) => state.adminleave);
 
-  const leave = useSelector((state) => state.leave);
   const { id } = useParams();
 
   let date = data?.joinDate;
@@ -87,6 +89,7 @@ function LeaveDetail() {
   const getLeaveById = async () => {
     await axios.get(`${LEAVE_URL}/${id}`).then((res) => {
       setData(res?.data);
+      console.log(res.data.joinDate);
     });
   };
   useEffect(() => {
@@ -110,7 +113,6 @@ function LeaveDetail() {
         >
           <Grid className={classes.bodyContainer}>
             <p style={{ fontWeight: 'bold' }}>Leave Details</p>
-            <LaunchIcon />
           </Grid>
           <br />
           <Grid container className={classes.bodyContainer}>
@@ -335,14 +337,20 @@ function LeaveDetail() {
               sm={12}
               md={6}
             >
-              <Grid xs={6} style={{ fontWeight: 'bold' }}>
+              <Grid
+                xs={6}
+                style={{ fontWeight: 'bold' }}
+                className={classes.btn}
+              >
                 <Modal id={id} setupdate={setupdate} update={update} />
               </Grid>
             </Grid>
           </Grid>
           <br />
           <Grid style={{ display: 'flex', justifyContent: 'center' }} xs={12}>
-            <h2>Leave Details</h2>
+            <h3 style={{ marginTop: '5px' }} className="title">
+              Leave Details{' '}
+            </h3>
           </Grid>
           <br />
           <Grid container className={classes.bodyContainer}>
@@ -360,10 +368,6 @@ function LeaveDetail() {
                 className={classes.rootTable}
                 style={{ background: '#F5F5F5' }}
               >
-                {/* <Paper
-                className={classes.rootTable}
-                style={{ background: '#F5F5F5' }}
-              > */}
                 <Table
                   className={classes.table}
                   style={{ maxWidth: '90vw', overflow: 'auto' }}

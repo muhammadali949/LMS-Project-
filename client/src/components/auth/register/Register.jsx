@@ -83,11 +83,13 @@ const Register = ({ setAlert, register }) => {
       password: '',
       confirmPassword: '',
       manager: '',
+      role: '',
     },
     validationSchema: Yup.object({
       employee: Yup.string().required('Emp Id is required'),
       email: Yup.string().email('Invalid email').required('Email is required'),
       gender: Yup.string().required('Gender is required'),
+      role: Yup.string().required('Role is required'),
       datepicker: Yup.string().required('Birthday is required'),
       firstname: Yup.string().required('Firstname  is required'),
       lastname: Yup.string().required('Lastname is required'),
@@ -115,6 +117,7 @@ const Register = ({ setAlert, register }) => {
       let manager = values.manager;
       let email = values.email;
       let password = values.password;
+      let role = values.role;
       let joinDate = moment(values.joinDate).format('DD/MM/YYYY');
       register({
         datepicker,
@@ -130,6 +133,7 @@ const Register = ({ setAlert, register }) => {
         email,
         password,
         manager,
+        role,
       });
     },
   });
@@ -396,7 +400,7 @@ const Register = ({ setAlert, register }) => {
                   <div style={{ color: 'red' }}>{formik.errors.address}</div>
                 ) : null}
               </Grid>
-              <Grid item lg={6} xs={12} md={6}>
+              <Grid item lg={3} xs={12} md={3}>
                 <label htmlFor="">Phone No</label>
                 <input
                   id="standard-basic"
@@ -414,6 +418,29 @@ const Register = ({ setAlert, register }) => {
                 />
                 {formik.touched.phoneNo && formik.errors.phoneNo ? (
                   <div style={{ color: 'red' }}>{formik.errors.phoneNo}</div>
+                ) : null}
+              </Grid>
+              <Grid item lg={3} xs={12} md={3}>
+                <label htmlFor="">Role</label>
+                <select
+                  name="role"
+                  className={
+                    formik.touched.role && formik.errors.role
+                      ? 'inputstyleTwo'
+                      : 'inputstyle'
+                  }
+                  onChange={formik.handleChange}
+                  value={formik.values.role}
+                >
+                  <option value="" disabled hidden>
+                    Select
+                  </option>
+                  <option value="user">User</option>
+                  <option value="manager">Manager</option>
+                  <option value="admin">Admin</option>
+                </select>
+                {formik.touched.role && formik.errors.role ? (
+                  <div style={{ color: 'red' }}>{formik.errors.role}</div>
                 ) : null}
               </Grid>
               <Grid item lg={6} xs={12} md={6}>

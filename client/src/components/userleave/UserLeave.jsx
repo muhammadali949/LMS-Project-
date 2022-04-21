@@ -33,6 +33,10 @@ function UserLeave() {
   const id = auth?.user?._id;
   const dispatch = useDispatch();
 
+  // const newleave = leaveMy?.map((l) => ({
+  //   ...l,
+  //   leaveDate: moment(l.leaveDate).format('DD/MM/YYYY'),
+  // }));
   function search(rows) {
     const columns = [
       'leaveCategory',
@@ -50,19 +54,20 @@ function UserLeave() {
     );
   }
 
-  const HandleDeleteLeaveType = (id) => {
-    dispatch(deleteLeave(id));
-  };
   const getLeaveById = async () => {
     await axios
       .get(`${UPDATE_USER_URL}/request/userleave/${id}`)
       .then((res) => {
-        setleaveMy(res.data);
+        setleaveMy(res.data.reverse());
       });
   };
   useEffect(() => {
-    getLeaveById();
-  }, [dispatch]);
+    getLeaveById(id);
+  }, [id]);
+  const HandleDeleteLeaveType = (id) => {
+    dispatch(deleteLeave(id));
+  };
+
   return (
     <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }} className="title">

@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = ({ login, isAuthenticated }) => {
+const Login = ({ login, isAuthenticated, role }) => {
   const classes = useStyles();
   const alert = useSelector((state) => state.alert);
 
@@ -88,7 +88,11 @@ const Login = ({ login, isAuthenticated }) => {
   // Redirect if logged in
 
   if (isAuthenticated) {
-    return <Navigate to="/myprofile" />;
+    if (role === 'admin') {
+      return <Navigate to="/admindashboard" />;
+    } else {
+      return <Navigate to="/myprofile" />;
+    }
   }
 
   return (
@@ -124,9 +128,11 @@ const Login = ({ login, isAuthenticated }) => {
             <Grid item xs={9.3} lg={5} md={5} sm={5}>
               <div>
                 <p className="paragraph-Style">Welcome To</p>
+
                 <p className="paragraph-Style" style={{ fontWeight: 'bold' }}>
                   Leave Management System
                 </p>
+                <br />
                 <p>Login To Access Your Account</p>
               </div>
             </Grid>
@@ -226,6 +232,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  role: state.auth.role,
 });
 
 export default connect(mapStateToProps, { login })(Login);

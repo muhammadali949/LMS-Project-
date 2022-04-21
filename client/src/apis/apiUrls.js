@@ -11,6 +11,8 @@ export const DEPARTMENT_URL = `${config.apiUrl}admin/department`;
 export const LEAVE_URL = `${config.apiUrl}users/request`;
 export const LEAVE_TYPE_URL = `${config.apiUrl}admin/leave`;
 export const GET_MANAGER_URL = `${config.apiUrl}users/authid`;
+export const LEAVE_COUNT_URL = `${config.apiUrl}users/request/usercount`;
+
 
 
 

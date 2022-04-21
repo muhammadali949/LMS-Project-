@@ -37,8 +37,7 @@ function UpdateLeaveType() {
     const columns = ['leaveType', 'numberLeave'];
     return rows?.filter((row) =>
       columns.some(
-        (column) =>
-          row[column].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+        (column) => row[column].toLowerCase().indexOf(q.toLowerCase()) > -1
       )
     );
   }

@@ -139,40 +139,42 @@ function DepartmentTable({ department, HandleDeletedepartment, setQ, q }) {
           </TableHead>
 
           <TableBody>
-            {department?.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  style={{ borderBottom: 'none' }}
-                >
-                  {row.name}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row.shortName}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row.code}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  <div style={{ display: 'flex', justifyContent: 'start' }}>
-                    <IconButton
-                      className={classes.button1}
-                      component={Link}
-                      to={`/updatedepartment/${row._id}`}
-                    >
-                      <LaunchIcon />
-                    </IconButton>
-                    <IconButton
-                      className={classes.button2}
-                      onClick={() => HandleDelete(row._id)}
-                    >
-                      <DeleteIcon className={classes.delete} />
-                    </IconButton>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {department
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row._id}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ borderBottom: 'none' }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row.shortName}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row.code}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'start' }}>
+                      <IconButton
+                        className={classes.button1}
+                        component={Link}
+                        to={`/updatedepartment/${row._id}`}
+                      >
+                        <LaunchIcon />
+                      </IconButton>
+                      <IconButton
+                        className={classes.button2}
+                        onClick={() => HandleDelete(row._id)}
+                      >
+                        <DeleteIcon className={classes.delete} />
+                      </IconButton>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />

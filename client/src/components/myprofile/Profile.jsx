@@ -1,16 +1,15 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
 import Grid from '@material-ui/core/Grid';
-import LaunchIcon from '@mui/icons-material/Launch';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import TableContainer from '@material-ui/core/TableContainer';
 
 import { useSelector } from 'react-redux';
@@ -20,6 +19,7 @@ import { loadUser } from '../../actions/authAction/auth';
 import moment from 'moment';
 import axios from 'axios';
 import { GET_MANAGER_URL } from '../../apis/apiUrls';
+import { leaveCount } from '../../actions/leaveAction';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -66,25 +66,17 @@ const styles = (theme) => ({
     minWidth: 100,
   },
 });
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData('Casual', '05 Days', 2, 2),
-  createData('Casual', '05 Days', 2, 2),
-  createData('Casual', '05 Days', 2, 2),
-];
 function Profile() {
   const classes = useStyles();
   const [manageremail, setManageremail] = useState([]);
-  const [count, setCount] = useState(0);
 
   const adminleave = useSelector((state) => state.adminleave);
-
   const auth = useSelector((state) => state.auth);
+  const leave = useSelector((state) => state.leave);
+  const data = [];
+
+  const userid = auth?.user?._id;
   let date = auth?.user?.datepicker;
   const newDate = new Date(date);
   let month = newDate.getMonth();
@@ -99,6 +91,20 @@ function Profile() {
         setManageremail(res.data.email);
       });
   }, [auth?.user]);
+  useEffect(() => {
+    store.dispatch(leaveCount(userid));
+  }, [auth?.user]);
+  adminleave?.forEach(function (entry) {
+    leave.forEach(function (childrenEntry) {
+      if (entry.leaveType == childrenEntry._id.leaveCategory) {
+        data.push({ ...entry, count: childrenEntry.count });
+      }
+    });
+  });
+  const newArr = adminleave?.map((t1) => ({
+    ...t1,
+    ...data?.find((t2) => t2._id === t1._id),
+  }));
 
   return (
     <>
@@ -117,7 +123,6 @@ function Profile() {
         >
           <Grid className={classes.bodyContainer}>
             <p style={{ fontWeight: 'bold' }}>Employee Detail</p>
-            <LaunchIcon />
           </Grid>
           <br />
           <Grid container className={classes.bodyContainer}>
@@ -278,7 +283,9 @@ function Profile() {
           </Grid>
           <br />
           <Grid style={{ display: 'flex', justifyContent: 'center' }} xs={12}>
-            <h2>Leave Details</h2>
+            <h3 style={{ marginTop: '5px' }} className="title">
+              Leave Details{' '}
+            </h3>
           </Grid>
           <br />
           <Grid container className={classes.bodyContainer}>
@@ -293,14 +300,9 @@ function Profile() {
               md={9}
             >
               <TableContainer
-                component={Paper}
                 className={classes.rootTable}
                 style={{ background: '#F5F5F5' }}
               >
-                {/* <Paper
-                className={classes.rootTable}
-                style={{ background: '#F5F5F5' }}
-              > */}
                 <Table
                   className={classes.table}
                   style={{ maxWidth: '90vw', overflow: 'auto' }}
@@ -322,7 +324,7 @@ function Profile() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {adminleave?.map((row) => (
+                    {newArr?.map((row) => (
                       <TableRow key={row?.id}>
                         <TableCell
                           style={{ borderBottom: 'none' }}
@@ -335,10 +337,12 @@ function Profile() {
                           {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
                         </TableCell>
                         <TableCell style={{ borderBottom: 'none' }}>
-                          {count}
+                          {row?.count ? row?.count : 0}
                         </TableCell>
+
                         <TableCell style={{ borderBottom: 'none' }}>
-                          {12}
+                          {((row?.numberLeave / 12) * (12 - month)).toFixed(1) -
+                            (row?.count ? row?.count : 0)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -347,6 +351,7 @@ function Profile() {
               </TableContainer>
             </Grid>
           </Grid>
+          <br />
           <br />
         </div>
         <br />

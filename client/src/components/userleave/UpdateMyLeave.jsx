@@ -70,14 +70,13 @@ const UpdateMyLeave = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const d = moment(formData).format('DD/MM/YYYY');
+
     await setFormData({
       ...formData,
       _id: id,
-      leaveDate: d,
     });
-    // dispatch(updateLeave(formData, id));
-    // navigate('/userleave');
+    dispatch(updateLeave(formData, id));
+    navigate('/userleave');
   };
   const getLeaveById = async (id) => {
     await axios.get(`${UPDATE_USER_URL}/request/${id}`).then((res) => {

@@ -84,6 +84,44 @@ router.get('/request/userleave/:id', async (req, res) => {
         res.json({ message: error.message })
     }
 })
+// @route   get Group by/userRequest
+// @desc    Get Group user levae
+// @access  Private
+router.get('/request/usercount/:id', async (req, res) => {
+
+    // const userid = req.body.userid
+    try {
+        const pipeline = [
+            {
+                $match: {
+                    "userid": req.params.id,
+                    "status": "Granted"
+                },
+
+            },
+            {
+                $group: {
+                    _id: {
+                        status: "$status",
+                        leaveCategory: "$leaveCategory"
+                    },
+                    count: {
+                        $sum: 1
+                    }
+                }
+            }
+        ]
+        const countleave = UserRequest.aggregate(pipeline);
+        const arr = []
+        for await (const doc of countleave) {
+            arr.push(doc)
+        }
+        res.status(200).json(arr);
+
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+})
 // @route   get by manager /userRequest
 // @desc    manager
 // @access  Private

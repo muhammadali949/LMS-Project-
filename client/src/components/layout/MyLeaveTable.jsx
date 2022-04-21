@@ -51,8 +51,6 @@ function MyLeaveTable({
   setcheckDelete,
   id,
   leaveMy,
-  setleaveMy,
-  getLeaveById,
   setQ,
   q,
 }) {
@@ -139,58 +137,60 @@ function MyLeaveTable({
               <TableCell style={{ borderBottom: '2px solid gray' }}>
                 Status
               </TableCell>
-              <TableCell style={{ borderBottom: '2px solid gray' }}>
+              {/* <TableCell style={{ borderBottom: '2px solid gray' }}>
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
-            {leaveMy?.map((row) => (
-              <TableRow key={row?._id}>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  style={{ borderBottom: 'none' }}
-                >
-                  {/* {moment(row.leaveDate).format('DD/MM/YYYY')} */}
-                  {row.leaveCategory}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row?.leaveDate}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row?.leaveDescription}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row?.date}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row?.adminRemark}
-                </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      row.status === 'Pending'
-                        ? '#EDBE17'
-                        : row.status === 'Granted'
-                        ? '#0EA900'
-                        : 'red',
-                    borderBottom: 'none',
-                  }}
-                >
-                  {row?.status}
-                </TableCell>
+            {leaveMy
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row?._id}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ borderBottom: 'none' }}
+                  >
+                    {/* {moment(row.leaveDate).format('DD/MM/YYYY')} */}
+                    {row.leaveCategory}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row?.leaveDate}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row?.leaveDescription}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row?.date}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row?.adminRemark}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        row.status === 'Pending'
+                          ? '#EDBE17'
+                          : row.status === 'Granted'
+                          ? '#0EA900'
+                          : 'red',
+                      borderBottom: 'none',
+                    }}
+                  >
+                    {row?.status}
+                  </TableCell>
 
-                <TableCell style={{ borderBottom: 'none' }}>
+                  {/* <TableCell style={{ borderBottom: 'none' }}> */}
                   <div style={{ display: 'flex', justifyContent: 'start' }}>
-                    <IconButton
+                    {/* <IconButton
                       className={classes.button1}
                       component={Link}
                       to={`/updatemyleave/${row?._id}`}
                     >
                       <LaunchIcon />
-                    </IconButton>
-                    <IconButton
+                    </IconButton> */}
+                    {/* <IconButton
                       className={classes.button2}
                       onClick={() => {
                         HandleDeleteLeaveType(row?._id);
@@ -198,11 +198,11 @@ function MyLeaveTable({
                       }}
                     >
                       <DeleteIcon className={classes.delete} />
-                    </IconButton>
+                    </IconButton> */}
                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                  {/* </TableCell> */}
+                </TableRow>
+              ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />

@@ -134,53 +134,55 @@ function EmployeeTable({ users, getAllusers, setDeleteCheck, setQ, q }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users?.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  style={{ borderBottom: 'none' }}
-                >
-                  {row.employee}
-                </TableCell>
-                <TableCell
-                  style={{ borderBottom: 'none' }}
-                >{`${row.firstname} ${row.lastname} `}</TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {row.position}
-                </TableCell>
-                <TableCell style={{ borderBottom: 'none' }}>
-                  {moment(row.datepicker).format('DD/MM/YYYY')}
-                </TableCell>
+            {users
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <TableRow key={row._id}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ borderBottom: 'none' }}
+                  >
+                    {row.employee}
+                  </TableCell>
+                  <TableCell
+                    style={{ borderBottom: 'none' }}
+                  >{`${row.firstname} ${row.lastname} `}</TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {row.position}
+                  </TableCell>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    {moment(row.datepicker).format('DD/MM/YYYY')}
+                  </TableCell>
 
-                <TableCell style={{ borderBottom: 'none' }}>
-                  <div style={{ display: 'flex' }}>
-                    <IconButton
-                      className={classes.button1}
-                      style={{ paddingRight: '15px' }}
-                      component={Link}
-                      to={`/employee/${row._id}`}
-                    >
-                      <VisibilityIcon />
-                    </IconButton>
-                    <IconButton
-                      className={classes.button1}
-                      component={Link}
-                      to={`/updateemployee/${row._id}`}
-                    >
-                      <LaunchIcon />
-                    </IconButton>
+                  <TableCell style={{ borderBottom: 'none' }}>
+                    <div style={{ display: 'flex' }}>
+                      <IconButton
+                        className={classes.button1}
+                        style={{ paddingRight: '15px' }}
+                        component={Link}
+                        to={`/employee/${row._id}`}
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton
+                        className={classes.button1}
+                        component={Link}
+                        to={`/updateemployee/${row._id}`}
+                      >
+                        <LaunchIcon />
+                      </IconButton>
 
-                    <IconButton
-                      className={classes.button2}
-                      onClick={() => HandleDeleteOne(row._id)}
-                    >
-                      <DeleteIcon className={classes.delete} />
-                    </IconButton>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                      <IconButton
+                        className={classes.button2}
+                        onClick={() => HandleDeleteOne(row._id)}
+                      >
+                        <DeleteIcon className={classes.delete} />
+                      </IconButton>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />

@@ -114,50 +114,51 @@ export default function Modal({ id, setupdate, update }) {
           >
             <form onSubmit={formik.handleSubmit}>
               <DialogContent>
-                <select
-                  name="status"
-                  className={
-                    formik.touched.status && formik.errors.status
-                      ? 'inputstyleTwo'
-                      : 'inputstyle'
-                  }
-                  onChange={formik.handleChange}
-                  value={formik.values.status}
-                >
-                  <option value="" disabled hidden>
-                    Select
-                  </option>
-                  <option value="Pending">Pending</option>
-                  <option value="Granted">Granted</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
+                <div>
+                  <select
+                    name="status"
+                    className={
+                      formik.touched.status && formik.errors.status
+                        ? 'inputstyleTwo'
+                        : 'inputstyle'
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.status}
+                  >
+                    <option value="" disabled hidden>
+                      Select
+                    </option>
+                    <option value="Pending">Pending</option>
+                    <option value="Granted">Granted</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
                 {formik.touched.status && formik.errors.status ? (
                   <div style={{ color: 'red' }}>{formik.errors.status}</div>
                 ) : null}
                 <br />
-                <br />
-                <input
-                  id="standard-basic"
-                  name="adminRemark"
-                  placeholder="Write a description"
-                  label="Standard"
-                  className={
-                    formik.touched.adminRemark && formik.errors.adminRemark
-                      ? 'inputstyleTwo'
-                      : 'inputstyle'
-                  }
-                  onChange={formik.handleChange}
-                  value={formik.values.adminRemark}
-                  fullWidth
-                />
+                <div>
+                  <input
+                    id="standard-basic"
+                    name="adminRemark"
+                    placeholder="Write a description"
+                    label="Standard"
+                    className={
+                      formik.touched.adminRemark && formik.errors.adminRemark
+                        ? 'inputstyleTwo'
+                        : 'inputstyle'
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.adminRemark}
+                    fullWidth
+                  />
+                </div>
                 {formik.touched.adminRemark && formik.errors.adminRemark ? (
                   <div style={{ color: 'red' }}>
                     {formik.errors.adminRemark}
                   </div>
                 ) : null}
                 <br />
-                <br />
-
                 <Button className={classes.btn} type="submit">
                   Add
                 </Button>

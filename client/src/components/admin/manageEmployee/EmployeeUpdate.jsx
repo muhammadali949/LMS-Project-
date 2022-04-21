@@ -15,11 +15,15 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Stack from '@mui/material/Stack';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import store from '../../../store';
+import { useSelector } from 'react-redux';
+
 import {
   LOAD_ALL_USER_URL,
   LOAD_USER_URL,
   UPDATE_EMPLOYEE_URL,
 } from '../../../apis/apiUrls';
+import { getDepartment } from '../../../actions/department/departmentAction';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -54,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmployeeUpdate = ({ setAlert, register }) => {
+  const departmentData = useSelector((state) => state.department);
   const [formData, setFormData] = useState({
     datepicker: null,
     department: '',
@@ -82,6 +87,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
     gender,
     lastname,
     manager,
+    role,
     phoneNo,
     position,
     joinDate,
@@ -113,6 +119,9 @@ const EmployeeUpdate = ({ setAlert, register }) => {
       'Content-Type': 'application/json',
     },
   };
+  useEffect(() => {
+    store.dispatch(getDepartment());
+  }, []);
 
   const Handlesubmit = (e) => {
     e.preventDefault();
@@ -232,8 +241,10 @@ const EmployeeUpdate = ({ setAlert, register }) => {
               <option value="" disabled hidden>
                 Select
               </option>
-              <option>a</option>
-              <option>b</option>
+
+              {departmentData?.map((d) => {
+                return <option value={d.name}>{d.name}</option>;
+              })}
             </select>
           </Grid>{' '}
           <Grid item lg={3} xs={12} md={3}>
@@ -317,7 +328,7 @@ const EmployeeUpdate = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
-          <Grid item lg={6} xs={12} md={6}>
+          <Grid item lg={3} xs={12} md={6}>
             <label htmlFor="">Phone No</label>
             <input
               id="standard-basic"
@@ -330,6 +341,22 @@ const EmployeeUpdate = ({ setAlert, register }) => {
               fullWidth
             />
           </Grid>
+          <Grid item lg={3} xs={12} md={3}>
+            <label htmlFor="">Role</label>
+            <select
+              name="role"
+              className="inputstyle"
+              value={role}
+              onChange={(e) => onChange(e)}
+            >
+              <option value="" disabled hidden>
+                Select
+              </option>
+              <option value="user">User</option>
+              <option value="manager">Manager</option>
+              <option value="admin">Admin</option>
+            </select>
+          </Grid>{' '}
           <Grid item lg={6} md={12}>
             <Alert />
             <Button

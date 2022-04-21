@@ -77,11 +77,12 @@ const AddLeave = ({ alerts }) => {
       if (alert?.length === 0) {
         let leaveCategory = values.leaveCategory;
         let leaveDescription = values.leaveDescription;
+        let leaveDate = moment(values.leaveDate).format('DD/MM/YYYY');
         let d = new Date();
         let date = moment(d).format('DD/MM/YYYY');
         dispatch(
           addLeave({
-            leaveDate: moment(values.leaveDate).format('DD/MM/YYYY'),
+            leaveDate: leaveDate,
             leaveCategory,
             leaveDescription,
             userid: auth?.user?._id,
