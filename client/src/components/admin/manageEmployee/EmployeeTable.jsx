@@ -126,7 +126,7 @@ function EmployeeTable({ users, getAllusers, setDeleteCheck, setQ, q }) {
                 Position
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
-                Reg Date
+                Join Date
               </TableCell>
               <TableCell style={{ borderBottom: '2px solid gray' }}>
                 Action
@@ -152,7 +152,7 @@ function EmployeeTable({ users, getAllusers, setDeleteCheck, setQ, q }) {
                     {row.position}
                   </TableCell>
                   <TableCell style={{ borderBottom: 'none' }}>
-                    {moment(row.datepicker).format('DD/MM/YYYY')}
+                    {row?.joinDate}
                   </TableCell>
 
                   <TableCell style={{ borderBottom: 'none' }}>

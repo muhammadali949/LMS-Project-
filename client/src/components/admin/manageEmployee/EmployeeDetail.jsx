@@ -2,28 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
-
 import Grid from '@material-ui/core/Grid';
-import LaunchIcon from '@mui/icons-material/Launch';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import TableContainer from '@material-ui/core/TableContainer';
-
 import { useSelector } from 'react-redux';
 import { getLeaveType } from '../../../actions/adminLeaveAction';
 import store from '../../../store';
 import moment from 'moment';
 import axios from 'axios';
-import { LOAD_USER_URL, GET_MANAGER_URL } from '../../../apis/apiUrls';
+import {
+  LOAD_USER_URL,
+  GET_MANAGER_URL,
+  LEAVE_COUNT_URL,
+} from '../../../apis/apiUrls';
+import { leaveCount } from '../../../actions/leaveAction';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height: '95vh',
+    height: '100vh',
     borderRadius: '0px',
     background: '#F5F5F5',
     marginTop: '0.5%',
@@ -82,14 +83,14 @@ function EmployeeDetail() {
   const classes = useStyles();
   const [manageremail, setManageremail] = useState([]);
   const [user, setUser] = useState({ manager: '' });
+  const [LeaveCount, setLeaveCount] = useState([]);
 
-  const [count, setCount] = useState(0);
   const params = useParams();
-
   const adminleave = useSelector((state) => state.adminleave);
+  const leave = useSelector((state) => state.leave);
+  const dataArr = [];
 
-  const auth = useSelector((state) => state.auth);
-  let date = auth.user.datepicker;
+  let date = user?.joinDate;
   const newDate = new Date(date);
   let month = newDate.getMonth();
 
@@ -108,9 +109,24 @@ function EmployeeDetail() {
       .then((res) => {
         setManageremail(res?.data?.email);
       });
-    console.log(user?.manager);
   });
-
+  useEffect(() => {
+    axios.get(`${LEAVE_COUNT_URL}/${user._id}`).then((res) => {
+      setLeaveCount(res?.data);
+    });
+  }, [user._id]);
+  adminleave?.forEach(function (entry) {
+    LeaveCount?.forEach(function (childrenEntry) {
+      if (entry?.leaveType == childrenEntry?._id?.leaveCategory) {
+        dataArr.push({ ...entry, count: childrenEntry.count });
+      }
+    });
+  });
+  const newArr = adminleave?.map((t1) => ({
+    ...t1,
+    ...dataArr?.find((t2) => t2._id === t1._id),
+  }));
+  console.log(leave);
   return (
     <div className={classes.mainContainer}>
       <h3 style={{ marginTop: '5px' }} className="title">
@@ -295,107 +311,84 @@ function EmployeeDetail() {
             <Grid xs={8}>{user.address} </Grid>
           </Grid>
         </Grid>
-        <br />
-        <Grid style={{ display: 'flex', justifyContent: 'center' }} xs={12}>
-          <h2>Leave Details</h2>
-        </Grid>
-        <br />
-        <Grid container className={classes.bodyContainer}>
-          <Grid
-            style={{
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-            xs={9}
-            sm={9}
-            lg={9}
-            md={9}
-          >
-            {/* <TableContainer component={Paper}>
-              <Table
-                className={classes.table}
-                size="small"
-                aria-label="a dense table"
+
+        {user.role !== 'admin' ? (
+          <>
+            <br />
+            <Grid style={{ display: 'flex', justifyContent: 'center' }} xs={12}>
+              <h2>Leave Details</h2>
+            </Grid>
+            <br />
+            <Grid container className={classes.bodyContainer}>
+              <Grid
+                style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+                xs={9}
+                sm={9}
+                lg={9}
+                md={9}
               >
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer> */}
-            <TableContainer
-              component={Paper}
-              className={classes.rootTable}
-              style={{ background: '#F5F5F5' }}
-            >
-              {/* <Paper
-                className={classes.rootTable}
-                style={{ background: '#F5F5F5' }}
-              > */}
-              <Table
-                className={classes.table}
-                style={{ maxWidth: '90vw', overflow: 'auto' }}
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ borderBottom: '2px solid gray' }}>
-                      Leave Type
-                    </TableCell>
-                    <TableCell style={{ borderBottom: '2px solid gray' }}>
-                      Total Leave
-                    </TableCell>
-                    <TableCell style={{ borderBottom: '2px solid gray' }}>
-                      Used
-                    </TableCell>
-                    <TableCell style={{ borderBottom: '2px solid gray' }}>
-                      Available
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {adminleave?.map((row) => (
-                    <TableRow key={row?.id}>
-                      <TableCell
-                        style={{ borderBottom: 'none' }}
-                        component="th"
-                        scope="row"
-                      >
-                        {row?.leaveType}
-                      </TableCell>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
-                      </TableCell>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        {count}
-                      </TableCell>
-                      <TableCell style={{ borderBottom: 'none' }}>
-                        {12}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
-        </Grid>
+                <TableContainer
+                  className={classes.rootTable}
+                  style={{ background: '#F5F5F5' }}
+                >
+                  <Table
+                    className={classes.table}
+                    style={{ maxWidth: '90vw', overflow: 'auto' }}
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell style={{ borderBottom: '2px solid gray' }}>
+                          Leave Type
+                        </TableCell>
+                        <TableCell style={{ borderBottom: '2px solid gray' }}>
+                          Total Leave
+                        </TableCell>
+                        <TableCell style={{ borderBottom: '2px solid gray' }}>
+                          Used
+                        </TableCell>
+                        <TableCell style={{ borderBottom: '2px solid gray' }}>
+                          Available
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {newArr?.map((row) => (
+                        <TableRow key={row?.id}>
+                          <TableCell
+                            style={{ borderBottom: 'none' }}
+                            component="th"
+                            scope="row"
+                          >
+                            {row?.leaveType}
+                          </TableCell>
+                          <TableCell style={{ borderBottom: 'none' }}>
+                            {((row?.numberLeave / 12) * (12 - month)).toFixed(
+                              1
+                            )}
+                          </TableCell>
+                          <TableCell style={{ borderBottom: 'none' }}>
+                            {row?.count ? row?.count : 0}
+                          </TableCell>
+                          <TableCell style={{ borderBottom: 'none' }}>
+                            {(
+                              ((row?.numberLeave / 12) * (12 - month)).toFixed(
+                                1
+                              ) - (row?.count ? row?.count : 0)
+                            ).toFixed(1)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <br />
+              </Grid>
+            </Grid>
+          </>
+        ) : null}
       </div>
     </div>
   );

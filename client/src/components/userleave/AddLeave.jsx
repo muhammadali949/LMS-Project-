@@ -56,10 +56,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
 }));
-const AddLeave = ({ alerts }) => {
+const AddLeave = () => {
   const adminleave = useSelector((state) => state.adminleave);
   const auth = useSelector((state) => state.auth);
   const leave = useSelector((state) => state.leave);
+  const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
   const classes = useStyles();
   const navigate = useNavigate();
@@ -74,33 +75,31 @@ const AddLeave = ({ alerts }) => {
       leaveDescription: Yup.string().required('Leave description is required'),
     }),
     onSubmit: (values, { resetForm }) => {
-      if (alert?.length === 0) {
-        let leaveCategory = values.leaveCategory;
-        let leaveDescription = values.leaveDescription;
-        let leaveDate = moment(values.leaveDate).format('DD/MM/YYYY');
-        let d = new Date();
-        let date = moment(d).format('DD/MM/YYYY');
-        dispatch(
-          addLeave({
-            leaveDate: leaveDate,
-            leaveCategory,
-            leaveDescription,
-            userid: auth?.user?._id,
-            name: `${auth?.user?.firstname} ${auth.user.lastname}`,
-            manager: auth?.user?.manager,
-            employee: auth?.user?.employee,
-            gender: auth?.user?.gender,
-            email: auth?.user?.email,
-            phoneNo: auth?.user?.phoneNo,
-            joinDate: auth?.user?.joinDate,
-            adminRemark: '',
-            date: date,
-          })
-        );
-      }
+      let leaveCategory = values.leaveCategory;
+      let leaveDescription = values.leaveDescription;
+      let leaveDate = moment(values.leaveDate).format('DD/MM/YYYY');
+      let d = new Date();
+      let date = moment(d).format('DD/MM/YYYY');
+      dispatch(
+        addLeave({
+          leaveDate: leaveDate,
+          leaveCategory,
+          leaveDescription,
+          userid: auth?.user?._id,
+          name: `${auth?.user?.firstname} ${auth.user.lastname}`,
+          manager: auth?.user?.manager,
+          employee: auth?.user?.employee,
+          gender: auth?.user?.gender,
+          email: auth?.user?.email,
+          phoneNo: auth?.user?.phoneNo,
+          joinDate: auth?.user?.joinDate,
+          adminRemark: '',
+          date: date,
+        })
+      );
     },
   });
-  if (leave[0]?.msg !== 'your leave request has been send') {
+  if (leave[0]?.msg !== 'Request is already send on this date') {
     store.dispatch(clearState());
     navigate('/userleave');
   }
@@ -215,6 +214,7 @@ const AddLeave = ({ alerts }) => {
               className={classes.btn}
               color="secondary"
               type="submit"
+              disabled={alert.length > 0 ? true : false}
             >
               Apply
             </Button>
@@ -225,12 +225,4 @@ const AddLeave = ({ alerts }) => {
   );
 };
 
-AddLeave.propTypes = {
-  alerts: PropTypes.array.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  alerts: state.alert,
-});
-
-export default connect(mapStateToProps)(AddLeave);
+export default AddLeave;

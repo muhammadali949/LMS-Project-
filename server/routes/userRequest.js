@@ -28,7 +28,7 @@ router.post('/request', [
         let user = await UserRequest.findOne({ leaveDate, userid });
 
         if (user) {
-            res.status(409).json({ errors: [{ msg: "your leave request has been send" }] });
+            res.status(409).json({ errors: [{ msg: "Request is already send on this date" }] });
         } else {
             await newUser.save()
             res.status(201).json(newUser);

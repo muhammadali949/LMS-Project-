@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LEAVE_URL, UPDATE_USER_URL, LEAVE_COUNT_URL } from '../apis/apiUrls';
+import { LEAVE_URL, UPDATE_USER_URL } from '../apis/apiUrls';
 import { setAlert } from './alert';
 import { ADD_LEAVE, DELETE_LEAVE, GET_LEAVE, UPDATE_LEAVE, GET_LEAVE_PENDEING, GET_LEAVE_GRANTED, GET_LEAVE_REJECTED, GET_LEAVE_BY_ID, LEAVE_COUNT } from './leaveType';
 
@@ -138,37 +138,6 @@ export const getLeaveRejected = () =>
             }
         }
     }
-export const leaveCount = (userid) =>
-
-    async (dispatch) => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
-        try {
-            const res = await axios.get(
-                `${LEAVE_COUNT_URL}/${userid}`,
-                config
-            );
-            console.log(res)
-            console.log('********88')
-            dispatch({
-                type: LEAVE_COUNT,
-                payload: res.data,
-            });
-
-        } catch (err) {
-            const errors = err.response.data.errors;
-            console.log(err)
-
-
-            if (errors) {
-                errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-            }
-        }
-    }
-
 export const addLeave = ({ name, leaveDate, leaveCategory, leaveDescription, userid, manager, employee, gender, email, phoneNo, adminActionDate, joinDate, date }) =>
     async (dispatch) => {
         const config = {
@@ -204,7 +173,7 @@ export const clearState = () =>
     async (dispatch) => {
         dispatch({
             type: ADD_LEAVE,
-            payload: [{ msg: 'your leave request has been send' }],
+            payload: [{ msg: 'Request is already send on this date' }],
         });
     }
 export const updateLeave = (a, id) =>

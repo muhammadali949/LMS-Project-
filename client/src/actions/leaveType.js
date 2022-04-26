@@ -7,7 +7,6 @@ export const GET_LEAVE_ID = "GET_LEAVE_ID";
 export const UPDATE_LEAVE = "UPDATE_LEAVE";
 export const DELETE_LEAVE = "DELETE_LEAVE";
 export const GET_LEAVE_BY_ID = "GET_LEAVE_BY_ID";
-export const LEAVE_COUNT = "LEAVE_COUNT";
 
 
 

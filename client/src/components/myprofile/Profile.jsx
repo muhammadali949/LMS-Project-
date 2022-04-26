@@ -18,7 +18,7 @@ import store from '../../store';
 import { loadUser } from '../../actions/authAction/auth';
 import moment from 'moment';
 import axios from 'axios';
-import { GET_MANAGER_URL } from '../../apis/apiUrls';
+import { GET_MANAGER_URL, LEAVE_COUNT_URL } from '../../apis/apiUrls';
 import { leaveCount } from '../../actions/leaveAction';
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,14 +70,14 @@ const styles = (theme) => ({
 function Profile() {
   const classes = useStyles();
   const [manageremail, setManageremail] = useState([]);
-
+  const [leaveCount, setLeaveCount] = useState([]);
   const adminleave = useSelector((state) => state.adminleave);
   const auth = useSelector((state) => state.auth);
   const leave = useSelector((state) => state.leave);
   const data = [];
 
   const userid = auth?.user?._id;
-  let date = auth?.user?.datepicker;
+  let date = auth?.user?.joinDate;
   const newDate = new Date(date);
   let month = newDate.getMonth();
   useEffect(() => {
@@ -92,11 +92,14 @@ function Profile() {
       });
   }, [auth?.user]);
   useEffect(() => {
-    store.dispatch(leaveCount(userid));
-  }, [auth?.user]);
+    axios.get(`${LEAVE_COUNT_URL}/${userid}`).then((res) => {
+      setLeaveCount(res?.data);
+    });
+  }, [userid]);
+
   adminleave?.forEach(function (entry) {
-    leave.forEach(function (childrenEntry) {
-      if (entry.leaveType == childrenEntry._id.leaveCategory) {
+    leaveCount?.forEach(function (childrenEntry) {
+      if (entry?.leaveType == childrenEntry?._id?.leaveCategory) {
         data.push({ ...entry, count: childrenEntry.count });
       }
     });
@@ -341,8 +344,11 @@ function Profile() {
                         </TableCell>
 
                         <TableCell style={{ borderBottom: 'none' }}>
-                          {((row?.numberLeave / 12) * (12 - month)).toFixed(1) -
-                            (row?.count ? row?.count : 0)}
+                          {(
+                            ((row?.numberLeave / 12) * (12 - month)).toFixed(
+                              1
+                            ) - (row?.count ? row?.count : 0)
+                          ).toFixed(1)}
                         </TableCell>
                       </TableRow>
                     ))}

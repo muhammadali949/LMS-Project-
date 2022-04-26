@@ -103,7 +103,7 @@ const AddLeaveType = ({ alerts }) => {
               <div>
                 <label htmlFor="">Max Number Of Leave Allowed</label>
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Enter Max Number Of Leave Allowed"
                   name="numberLeave"
                   className={
@@ -128,6 +128,7 @@ const AddLeaveType = ({ alerts }) => {
                 className={classes.btn}
                 color="secondary"
                 type="submit"
+                disabled={alert.length > 0 ? true : false}
               >
                 Submit
               </Button>

@@ -179,6 +179,7 @@ const UpdatePassword = () => {
                 className={classes.btn}
                 color="secondary"
                 type="submit"
+                disabled={alert.length > 0 ? true : false}
               >
                 Change
               </Button>

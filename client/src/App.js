@@ -1,6 +1,5 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect } from "react";
-
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
@@ -78,9 +77,11 @@ function App({ auth: { user } }) {
             <>
               <Routes>
                 <Route exact path="/" element={<Landing />} />
+
                 {
-                  user?.role !== 'admin' ?
-                    <Route
+                  user?.role == 'admin' ?
+                    <Route exact path="/myprofile" element={<NotFound />} />
+                    : <Route
                       exact
                       path="/myprofile"
                       element={
@@ -90,9 +91,8 @@ function App({ auth: { user } }) {
                           </DrawerBar>
                         </PrivateRoute>
                       }
-                    /> : <Route exact path="/myprofile" element={<NotFound />} />
+                    />
                 }
-
                 <Route
                   exact
                   path="/leave"
@@ -199,13 +199,13 @@ function App({ auth: { user } }) {
                   } />
                     : <Route exact path="/admin" element={<NotFound />} />
                 }
+
                 {
                   user?.role == 'admin' ? <Route exact path="/updateleavetype" element={<PrivateRoute><DrawerBar><UpdateLeaveType /></DrawerBar></PrivateRoute>} />
                     : <Route exact path="/updateleavetype" element={<NotFound />} />
                 }
                 {
-                  user?.role == 'admin' ? <Route exact path="/admindashboard" element={<PrivateRoute><DrawerBar><AdminDashboard /></DrawerBar></PrivateRoute>} />
-                    : <Route exact path="/admindashboard" element={<NotFound />} />
+                  user?.role == 'admin' && <Route exact path="/admindashboard" element={<PrivateRoute><DrawerBar><AdminDashboard /></DrawerBar></PrivateRoute>} />
                 }
                 {
 

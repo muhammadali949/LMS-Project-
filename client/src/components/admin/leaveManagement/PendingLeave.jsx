@@ -28,13 +28,13 @@ function PendingLeave() {
   const leave = useSelector((state) => state.leave);
 
   const dispatch = useDispatch();
-
+  console.log(leave);
   useEffect(() => {
     dispatch(getLeavePending());
-  }, []);
+  }, [leave.length]);
 
   function search(rows) {
-    const columns = rows[0] && Object.keys(rows[0]);
+    const columns = ['name', 'leaveCategory', 'date', 'status'];
     return rows?.filter((row) =>
       columns.some(
         (column) =>

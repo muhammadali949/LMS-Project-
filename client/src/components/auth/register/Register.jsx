@@ -91,17 +91,19 @@ const Register = ({ setAlert, register }) => {
       gender: Yup.string().required('Gender is required'),
       role: Yup.string().required('Role is required'),
       datepicker: Yup.string().required('Birthday is required'),
-      firstname: Yup.string().required('Firstname  is required'),
-      lastname: Yup.string().required('Lastname is required'),
+      firstname: Yup.string().required('First name  is required'),
+      lastname: Yup.string().required('Last name is required'),
       department: Yup.string().required('Department is required'),
       position: Yup.string().required('Position is required'),
       joinDate: Yup.string().required('Join Date is required'),
       manager: Yup.string().required('Manager is required'),
       address: Yup.string().required('Address is required'),
       phoneNo: Yup.string().required('Phone No is required'),
-      password: Yup.string().required('Password is required'),
+      password: Yup.string()
+        .min(6, 'Password should be at least 6 characters')
+        .required('Password is required'),
       confirmPassword: Yup.string()
-        .required('ConfirmPassword is required')
+        .required('Confirm Password is required')
         .oneOf([Yup.ref('password'), null], 'Password must match'),
     }),
     onSubmit: (values) => {
@@ -118,7 +120,7 @@ const Register = ({ setAlert, register }) => {
       let email = values.email;
       let password = values.password;
       let role = values.role;
-      let joinDate = moment(values.joinDate).format('DD/MM/YYYY');
+      let joinDate = values.joinDate;
       register({
         datepicker,
         joinDate,
@@ -405,6 +407,7 @@ const Register = ({ setAlert, register }) => {
                 <input
                   id="standard-basic"
                   placeholder="Enter Phone No"
+                  type="number"
                   label="Standard"
                   name="phoneNo"
                   fullWidth
@@ -490,12 +493,13 @@ const Register = ({ setAlert, register }) => {
                 ) : null}
               </Grid>
               <Grid item lg={6} md={12}>
-                <Alert />
+                {alert.length === 1 ? <Alert /> : null}
                 <Button
                   variant="contained"
                   className={classes.btn}
                   color="secondary"
                   type="submit"
+                  disabled={alert.length > 0 ? true : false}
                 >
                   Apply
                 </Button>

@@ -14,9 +14,9 @@ import { useSelector } from 'react-redux';
 import { getLeaveType } from '../../../actions/adminLeaveAction';
 import store from '../../../store';
 import axios from 'axios';
-import { getLeave } from '../../../actions/leaveAction';
+import { getLeave, leaveCount } from '../../../actions/leaveAction';
 import Modal from './Modal';
-import { LEAVE_URL } from '../../../apis/apiUrls';
+import { LEAVE_COUNT_URL, LEAVE_URL } from '../../../apis/apiUrls';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -73,8 +73,11 @@ function LeaveDetail() {
   const classes = useStyles();
   const [data, setData] = useState({});
   const [update, setupdate] = useState(false);
+  const [leaveCount, setLeaveCount] = useState([]);
 
+  const dataArr = [];
   const adminleave = useSelector((state) => state.adminleave);
+  const leave = useSelector((state) => state.leave);
 
   const { id } = useParams();
 
@@ -89,12 +92,31 @@ function LeaveDetail() {
   const getLeaveById = async () => {
     await axios.get(`${LEAVE_URL}/${id}`).then((res) => {
       setData(res?.data);
-      console.log(res.data.joinDate);
     });
   };
   useEffect(() => {
     getLeaveById();
   }, [update]);
+  useEffect(() => {
+    axios.get(`${LEAVE_COUNT_URL}/${data?.userid}`).then((res) => {
+      setLeaveCount(res?.data);
+    });
+  }, [data?.userid]);
+
+  adminleave?.forEach(function (entry) {
+    leaveCount?.forEach(function (childrenEntry) {
+      if (entry?.leaveType == childrenEntry?._id?.leaveCategory) {
+        dataArr.push({ ...entry, count: childrenEntry.count });
+      }
+    });
+  });
+  const newArr = adminleave?.map((t1) => ({
+    ...t1,
+    ...dataArr?.find((t2) => t2._id === t1._id),
+  }));
+  console.log('(*******)');
+  console.log(newArr);
+  console.log('(*******)');
 
   return (
     <>
@@ -389,7 +411,7 @@ function LeaveDetail() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {adminleave?.map((row) => (
+                    {newArr?.map((row) => (
                       <TableRow key={row?.id}>
                         <TableCell
                           style={{ borderBottom: 'none' }}
@@ -402,10 +424,14 @@ function LeaveDetail() {
                           {((row?.numberLeave / 12) * (12 - month)).toFixed(1)}
                         </TableCell>
                         <TableCell style={{ borderBottom: 'none' }}>
-                          0
+                          {row?.count ? row?.count : 0}
                         </TableCell>
                         <TableCell style={{ borderBottom: 'none' }}>
-                          {12}
+                          {(
+                            ((row?.numberLeave / 12) * (12 - month)).toFixed(
+                              1
+                            ) - (row?.count ? row?.count : 0)
+                          ).toFixed(1)}
                         </TableCell>
                       </TableRow>
                     ))}

@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
+import Button from '@material-ui/core/Button';
 
 import * as Yup from 'yup';
 import './Login.css';
@@ -61,6 +62,20 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '50px',
     },
   },
+  btn: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '150px',
+    height: '60px',
+    cursor: 'pointer',
+    border: 'none',
+    color: '#fff !important',
+    /* sea blue */
+
+    background: 'linear-gradient(90deg, #2b5876 0%, #4e4376 100%)',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: '10px',
+  },
 }));
 
 const Login = ({ login, isAuthenticated, role }) => {
@@ -77,11 +92,9 @@ const Login = ({ login, isAuthenticated, role }) => {
       password: Yup.string().required('Password is required'),
     }),
     onSubmit: (values) => {
-      if (alert?.length === 0) {
-        let email = values.email;
-        let password = values.password;
-        login(email, password);
-      }
+      let email = values.email;
+      let password = values.password;
+      login(email, password);
     },
   });
 
@@ -207,12 +220,13 @@ const Login = ({ login, isAuthenticated, role }) => {
                         justifyContent: 'center',
                       }}
                     >
-                      <input
-                        className="btnTwo"
-                        style={{ color: '#fff' }}
-                        value="Login"
+                      <Button
+                        className={classes.btn}
                         type="submit"
-                      />
+                        disabled={alert.length > 0 ? true : false}
+                      >
+                        Login
+                      </Button>
                     </div>
                   </form>{' '}
                 </Paper>

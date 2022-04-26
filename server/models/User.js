@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
     },
     joinDate: {
-        type: String,
+        type: Date,
         required: true
     },
     datepicker: {

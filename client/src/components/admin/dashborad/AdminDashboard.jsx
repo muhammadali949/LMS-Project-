@@ -6,11 +6,11 @@ import axios from 'axios';
 import store from '../../../store';
 import { getLeaveType } from '../../../actions/adminLeaveAction';
 import { useSelector } from 'react-redux';
-import Admin from '../Admin';
 import { getDepartment } from '../../../actions/department/departmentAction';
 import { Link } from 'react-router-dom';
 import AllLeave from '../leaveManagement/AllLeave';
 import { LOAD_ALL_USER_URL } from '../../../apis/apiUrls';
+import { getLeave } from '../../../actions/leaveAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,6 +126,7 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const adminleave = useSelector((state) => state.adminleave);
   const department = useSelector((state) => state.department);
+  const leave = useSelector((state) => state.leave);
 
   const getAllusers = () => {
     axios.get(LOAD_ALL_USER_URL).then((user) => {
@@ -138,6 +139,7 @@ function AdminDashboard() {
   useEffect(() => {
     store.dispatch(getLeaveType());
     store.dispatch(getDepartment());
+    store.dispatch(getLeave());
   }, []);
 
   return (
@@ -246,7 +248,7 @@ function AdminDashboard() {
                       fontWeight: 'bold',
                     }}
                   >
-                    12
+                    {leave.length}
                   </h1>
                 </div>
               </Paper>{' '}
